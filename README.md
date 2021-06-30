@@ -1,5 +1,5 @@
 # Mandoo
 
 **TEST Ver. 2**
-
-**권한 확인**
+**hayonug  
+**권한 확인 완료**
