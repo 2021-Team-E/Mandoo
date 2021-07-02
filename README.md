@@ -6,6 +6,6 @@
 # Architecture
 
 <p align="center">
-  <img src="architecture_test.png">
+  <img src="mandoo_arch.png">
   <br/>
 </p>
