@@ -1,6 +1,6 @@
 # Mandoo
 
-**hayonug  
+
 **권한 확인 완료**
 
 # Architecture
