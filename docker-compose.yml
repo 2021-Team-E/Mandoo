@@ -1,0 +1,59 @@
+version: "3.8"
+
+services:
+  mongo_db:
+    image: mongo:latest
+    restart: unless-stopped
+    networks:
+      - app-tier
+    volumes:
+      - ./mongo/db:/data/db
+    ports:
+      - "27017:27017"
+
+  flask_app:
+    build:
+      context: .
+      dockerfile: ./Backend/Dockerfile
+    ports:
+      - "5000:5000"
+    links:
+      - mongo_db:mongo_db
+    depends_on:
+      - mongo_db
+      # - redis
+    networks:
+      - app-tier
+    restart: always
+    volumes:
+      - ./Backend:/app
+  # elastic_search:
+  #   image: docker.elastic.co/elasticsearch/elasticsearch:7.10.1
+  #   container_name: es01
+  #   environment:
+  #     - node.name=es01
+  #     - cluster.name=es-docker-cluster
+  #     - cluster.initial_master_nodes=es01
+  #     - bootstrap.memory_lock=true
+  #     - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+  #   ulimits:
+  #     memlock:
+  #       soft: -1
+  #       hard: -1
+  #   volumes:
+  #     - ./elasticsearch/data01:/usr/share/elasticsearch/data
+  #   ports:
+  #     - 9200:9200
+  #   networks:
+  #     - app-tier
+
+  # redis:
+  #   image: "redis:alpine"
+  #   networks:
+  #      - app-tier
+  #   ports:
+  #     - "6379:6379"
+
+networks:
+  app-tier:
+    driver: bridge
