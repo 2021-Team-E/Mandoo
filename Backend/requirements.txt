@@ -6,3 +6,6 @@ flask-mysql
 jsonify
 requests
 cryptography
+bcrypt
+PyJWT
+flask_cors
