@@ -6,3 +6,4 @@ flask-mysql
 jsonify
 requests
 cryptography
+gunicorn
