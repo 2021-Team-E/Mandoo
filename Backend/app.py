@@ -6,8 +6,10 @@ from bson import json_util
 
 app = Flask(__name__)
 
+#docker-compose 사용시
 mongo = MongoClient('mongo_db', 27017)
-
+# 로컬호스트 사용시
+# mongo = MongoClient('localhost',27017)
 
 @app.route('/', methods=['GET'])
 def home():
@@ -30,4 +32,6 @@ def mongo_kpop_fetch():
     return jsonify(result=result)
 
 
-app.run(host='0.0.0.0',debug=True)
+# app.run(host='0.0.0.0',debug=True)
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', debug=True)
