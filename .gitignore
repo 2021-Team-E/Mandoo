@@ -1,3 +1,5 @@
 mongo/
 __pycache__
 venv/
+.vscode/
+node_modules/
