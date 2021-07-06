@@ -8,6 +8,7 @@ import bcrypt
 from flask_restx import Resource, Api, Namespace, fields, reqparse
 from flask_cors import CORS
 from detection import get_img
+import base64
 
 app = Flask(__name__)
 api = Api(app)  # Flask 객체에 Api 객체 등록
@@ -17,9 +18,9 @@ parser = reqparse.RequestParser()
 
 mongo = MongoClient('localhost', 27017)
 
-db = mongo['Mandoo']#Mandoo database
-user = db['user']   #user table
-quiz = db['quiz']   #quiz table
+db = mongo.Mandoo #Mandoo database
+user = db.user   #user table
+quiz = db.quiz   #quiz table
 
 def get_user_id(request):
     token = request.headers.get('Authorization')
@@ -40,10 +41,11 @@ class HelloWorld(Resource):
 class Signup(Resource):
     @api.expect(parser)
     def post(self):
+        #회원가입에서 중복 아이디 확인하는 기능은 아직 없음
         new_user = request.json
 
         new_user['password'] = bcrypt.hashpw(new_user['password'].encode('utf-8'), bcrypt.gensalt()) # 비밀번호 해싱
-
+        
         user_info = {
             "id": new_user["id"],
             "name": new_user["name"],
@@ -60,13 +62,52 @@ class Signup(Resource):
                 "id" : new_user["id"],
                 "name" : new_user["name"]
             }
-            
         })
 
 @api.route('/login')
 class login(Resource):
     @api.expect(parser)
     def post(self):  
-        return "login"
+        login_user = request.json
+        id = login_user['id']
+        password = login_user['password']
+
+        result = user.find_one({ "id" : id })   #user table에서 일치하는 아이디 검색
+    
+    
+        if result is None:  #일치하는 아이디가 없음
+            return jsonify({
+                "status": 401,
+                "success": False,
+                "message": "해당 아이디가 없습니다"
+            }) 
+
+        if result and bcrypt.checkpw(password.encode('utf-8'), result['password'].decode("utf8").encode('utf-8')):
+            id = result['id']
+            payload = {
+                'id' : id
+            }
+            token = jwt.encode(payload, SECRET_KEY, ALGORITHM)  #토큰 생성(인코딩)
+            #token = jwt.decode(token, SECRET_KEY, ALGORITHM)   #토큰 디코팅
+
+            session['id'] = login_user['id']
+           
+            return jsonify({
+            "status": 200,
+            "success": True,
+            "message" : "로그인 성공",
+            "data" : { 
+                "accessToken": token,
+                "user_id" : login_user['id']
+                }
+            })
+        else:
+            return jsonify({
+            "status": 401,
+            "success": False,
+            "message": "비밀번호가 틀렸습니다."
+            })
+        
+
 
 app.run(host='0.0.0.0',debug=True)

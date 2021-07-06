@@ -9,3 +9,4 @@ cryptography
 bcrypt
 PyJWT
 flask_cors
+base64
