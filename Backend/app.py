@@ -1,22 +1,33 @@
 from flask import Flask, jsonify, request, Blueprint, session
 from pymongo import MongoClient
-
+from development import SECRET_KEY, ALGORITHM
 from bson.json_util import dumps
 from bson import json_util, ObjectId
 import jwt
 import bcrypt
 from flask_restx import Resource, Api, Namespace, fields, reqparse
-
+from flask_cors import CORS
+from detection import get_img
 
 app = Flask(__name__)
 api = Api(app)  # Flask 객체에 Api 객체 등록
+app.secret_key=SECRET_KEY
+CORS(app)
 parser = reqparse.RequestParser()
 
 mongo = MongoClient('localhost', 27017)
 
-db = mongo['Mandoo'] #Mandoo database
-user = db['user'] #user table
+db = mongo['Mandoo']#Mandoo database
+user = db['user']   #user table
+quiz = db['quiz']   #quiz table
 
+def get_user_id(request):
+    token = request.headers.get('Authorization')
+    if token is None:
+        return None
+    payload = jwt.decode(token, SECRET_KEY, ALGORITHM)
+
+    return payload['id']
 
 @api.route('/hello')
 class HelloWorld(Resource):
@@ -52,5 +63,10 @@ class Signup(Resource):
             
         })
 
+@api.route('/login')
+class login(Resource):
+    @api.expect(parser)
+    def post(self):  
+        return "login"
 
 app.run(host='0.0.0.0',debug=True)
