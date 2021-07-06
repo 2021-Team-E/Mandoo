@@ -18,14 +18,14 @@ db = mongo['Mandoo'] #Mandoo database
 user = db['user'] #user table
 
 
-@api.route('/hello', methods=['GET'])
+@api.route('/hello')
 class HelloWorld(Resource):
     @api.expect(parser)
     def get(self):  
         return "hello"
 
 
-@api.route('/signup', methods=['POST','GET'])
+@api.route('/signup')
 class Signup(Resource):
     @api.expect(parser)
     def post(self):
@@ -40,7 +40,7 @@ class Signup(Resource):
         }
         user_id = user.insert_one(user_info).inserted_id
         print(user_id)
-
+        print(user_info)
         return jsonify({
             "status": 200,
             "success": True,
@@ -51,24 +51,6 @@ class Signup(Resource):
             }
             
         })
-        
-    def get(self):
-        return "...."
-
-# @app.route('/mongo', methods=['GET'])
-# def mongo_fetch():
-#     db = mongo.netflix
-#     netflix = db.netflix_titles.find()
-#     result = dumps(netflix, default=json_util.default)
-#     return jsonify(result=result)
-
-
-# @app.route('/mongo/kpop', methods=['GET'])
-# def mongo_kpop_fetch():
-#     db = mongo.kpop
-#     girl_grops = db.kpop_idols_girl_groups.find()
-#     result = dumps(girl_grops, default=json_util.default)
-#     return jsonify(result=result)
 
 
 app.run(host='0.0.0.0',debug=True)
