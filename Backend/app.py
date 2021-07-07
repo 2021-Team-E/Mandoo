@@ -1,12 +1,11 @@
 from flask import Flask, jsonify, request, session
+from flask.helpers import make_response
 from pymongo import MongoClient
-import werkzeug
 from development import SECRET_KEY, ALGORITHM
 from bson.json_util import dumps
 from bson import json_util, ObjectId
 import jwt
 import bcrypt
-import argparse
 from flask_restx import Resource, Api, Namespace, fields, reqparse
 from flask_cors import CORS
 from detection import get_img
@@ -28,7 +27,6 @@ login_parser.add_argument('id', required=True, location='json',type=str, help='�
 login_parser.add_argument('password', required=True, location='json',type=str, help="비밀번호")
 
 image_parser = reqparse.RequestParser()
-image_parser.add_argument('Authorization', required=True, location='headers', type=str, help="jwt값")
 image_parser.add_argument('image', required=True, location='files', help="문제 이미지")
 
 mongo = MongoClient('localhost', 27017) # 나중에 localhost를 mongo_db 로 바꾸기
@@ -37,14 +35,6 @@ mongo = MongoClient('localhost', 27017) # 나중에 localhost를 mongo_db 로 �
 db = mongo.Mandoo #Mandoo database
 user = db.user   #user table
 quiz = db.quiz   #quiz table
-
-
-def get_user_id(token):
-    if token is None:
-        return None
-    payload = jwt.decode(token, SECRET_KEY, ALGORITHM)
-
-    return payload['id']
 
 
 @api.route('/hello')
@@ -107,7 +97,7 @@ class login(Resource):
                 "success": False,
                 "message": "해당 아이디가 없습니다"
             }) 
-        
+
         if result and bcrypt.checkpw(password.encode('utf-8'), result['password'].decode("utf8").encode('utf-8')):
             id = result['id']
             payload = {
@@ -118,20 +108,24 @@ class login(Resource):
 
             session['id'] = login_user['id']
            
-            return jsonify({
-                "status": 200,
-                "success": True,
-                "message" : "로그인 성공",
-                "data" : { 
-                    "accessToken": token,
-                    "user_id" : login_user['id']
-                    }
+            out = jsonify({
+            "status": 200,
+            "success": True,
+            "message" : "로그인 성공",
+            "data" : { 
+                "accessToken": token,
+                "user_id" : login_user['id']
+                }
             })
+            out.set_cookie('jwt', token)
+
+            return out
+
         else:
             return jsonify({
-                "status": 401,
-                "success": False,
-                "message": "비밀번호가 틀렸습니다."
+            "status": 401,
+            "success": False,
+            "message": "비밀번호가 틀렸습니다."
             })
 
 
@@ -140,37 +134,36 @@ class Image(Resource):
     @api.expect(image_parser)
     def post(self):
         args = image_parser.parse_args()
-        id = get_user_id(args['Authorization'])
+        id = request.cookies.get('jwt')
         if id is None:
             return jsonify({
                 "status": 401,
                 "success": False,
                 "message": "로그인 필요"
             })
-        if request.method == 'POST':
-            img = args['image']
-            title, choices, answer, script, image = get_img(img)
-            user_id = session.get('id')
-            processed_quiz = {
-                "title":title,
-                "choices": choices,
-                "answer": answer,
-                "script" : script,
-                "image" : image
-            }
-            quiz_id = quiz.insert_one(processed_quiz).inserted_id
-            author = user.find_one({"id":user_id})
-            quiz_set = author['quizzes']
-            quiz_set.append(quiz_id)
-            user.update(
-                {"id":user_id},
-                {"$set" : {"quizzes":quiz_set}}
-            )
-            return {
-                "status": 200,
-                "success": True,
-                "message": "퀴즈 등록 성공."
-            }
+        img = args['image']
+        title, choices, answer, script, image = get_img(img)
+        user_id = session.get('id')
+        processed_quiz = {
+            "title":title,
+            "choices": choices,
+            "answer": answer,
+            "script" : script,
+            "image" : image
+        }
+        quiz_id = quiz.insert_one(processed_quiz).inserted_id
+        author = user.find_one({"id":user_id})
+        quiz_set = author['quizzes']
+        quiz_set.append(quiz_id)
+        user.update(
+            {"id":user_id},
+            {"$set" : {"quizzes":quiz_set}}
+        )
+        return {
+            "status": 200,
+            "success": True,
+            "message": "퀴즈 등록 성공."
+        }
         
 
 
