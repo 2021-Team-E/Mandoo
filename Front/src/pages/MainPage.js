@@ -2,6 +2,7 @@ import React from 'react';
 import BlankTop from '../components/BlankTop';
 import {useHistory} from 'react-router-dom';
 import {useState} from 'react';
+import axios from 'axios';
 
 const border = {
     marginTop: "40px",
@@ -21,6 +22,7 @@ const MainPage = () => {
         const imageUrl = URL.createObjectURL(imageFile);
         setFileUrl(imageUrl)
     }
+
  
     return(
         <div>
@@ -38,6 +40,7 @@ const MainPage = () => {
                     name='question_img'
                     onChange={processImage}>
                 </input>
+                <button onClick={this.handlePost()}>전송</button>
             </div>
         </div>
     );
