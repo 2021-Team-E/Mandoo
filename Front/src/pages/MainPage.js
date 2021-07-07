@@ -9,11 +9,8 @@ import { USER_SERVER } from '../config';
 
 // 테두리 만드는 css
 const divBorder = {
-    marginTop: "40px",
-    marginBottom: "40px",
-    border: "1px solid black",
-    width: "150px",
-    height: "200px"
+    marginTop: "100px",
+    marginBottom: "40px"
 };
 
 
@@ -51,15 +48,15 @@ const MainPage = (props) => {
         }
     
     }
- //<BlankTop DesktopMargin='3' TabletMargin='3' MobileMargin='1'/>
+ //<BlankTop DesktopMargin='100' TabletMargin='3' MobileMargin='1'/>
     return(
         <div>
             <div className="nav">
                 <Header/>
             </div>
-            <div className="content">
+            <div className="content" >
                 <div style={divBorder}>
-                    <img style={{"objectFit": "fill", "width": "150px", "height": "200px"}} src={fileUrl} alt={fileUrl} />
+                    <img style={{"objectFit": "fill", "width": "150px", "height": "200px", "border": "solid 1px black"}} src={fileUrl} alt={fileUrl} />
                 </div>
                 <div>
                     <input type='file'
@@ -68,6 +65,7 @@ const MainPage = (props) => {
                         onChange={processImage}>
                     </input>
                     <button onClick={sendImage}>전송</button>
+                    
                 </div>
             </div>
 
