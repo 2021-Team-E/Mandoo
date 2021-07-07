@@ -40,6 +40,8 @@ quiz = db.quiz   #quiz table
 @api.route('/hello')
 class HelloWorld(Resource):
     @api.expect(parser)
+    @api.response(200, 'Success')
+    @api.response(400, 'Bad Request')
     def get(self):  
         return "hello"
 
@@ -47,6 +49,9 @@ class HelloWorld(Resource):
 @api.route('/signup')
 class Signup(Resource):
     @api.expect(signup_parser)
+    @api.response(200, 'Success')
+    @api.response(400, 'Bad Request')
+    @api.response(401, "아이디가 이미 있습니다.")
     def post(self):
         
         new_user = request.json
@@ -84,6 +89,10 @@ class Signup(Resource):
 @api.route('/login')
 class login(Resource):
     @api.expect(login_parser)
+    @api.response(200, 'Success')
+    @api.response(400, 'Bad Request')
+    @api.response(401, "해당 아이디가 없습니다")
+    @api.response(402, "비밀번호가 틀렸습니다.")
     def post(self):  
         login_user = request.json
         id = login_user['id']
@@ -109,13 +118,13 @@ class login(Resource):
             session['id'] = login_user['id']
            
             out = jsonify({
-            "status": 200,
-            "success": True,
-            "message" : "로그인 성공",
-            "data" : { 
-                "accessToken": token,
-                "user_id" : login_user['id']
-                }
+                "status": 200,
+                "success": True,
+                "message" : "로그인 성공",
+                "data" : { 
+                    "accessToken": token,
+                    "user_id" : login_user['id']
+                    }
             })
             out.set_cookie('jwt', token)
 
@@ -123,15 +132,18 @@ class login(Resource):
 
         else:
             return jsonify({
-            "status": 401,
-            "success": False,
-            "message": "비밀번호가 틀렸습니다."
+                "status": 402,
+                "success": False,
+                "message": "비밀번호가 틀렸습니다."
             })
 
 
 @api.route('/quizupload')
 class Image(Resource):
     @api.expect(image_parser)
+    @api.response(200, 'Success')
+    @api.response(400, 'Bad Request')
+    @api.response(401, '로그인 필요')
     def post(self):
         args = image_parser.parse_args()
         id = request.cookies.get('jwt')
@@ -159,11 +171,11 @@ class Image(Resource):
             {"id":user_id},
             {"$set" : {"quizzes":quiz_set}}
         )
-        return {
+        return jsonify({
             "status": 200,
             "success": True,
             "message": "퀴즈 등록 성공."
-        }
+        })
         
 
 
