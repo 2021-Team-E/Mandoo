@@ -5,6 +5,7 @@ import React, {useState} from 'react';
 import {useHistory} from 'react-router-dom';
 import axios from 'axios';
 import {USER_SERVER} from '../config';
+import Header from '../'
 
 const Fix =styled.div`
 min-height:100vh;
@@ -95,12 +96,8 @@ const SignUp = () => {
 
     return(
         <Fix>
-            <div>
             <BlankTop DesktopMargin='3' TabletMargin='3' MobileMargin='1'/>
-            <button onClick={() => history.push((`/`))}>메인페이지</button>
-            <button onClick={() => history.push((`/signup`))}>회원가입</button>
-            <button onClick={() => history.push((`/login`))}>로그인</button>
-            </div>
+            <Header/>
             <Wrapper>
                 <BlankTop DesktopMargin='3' TabletMargin='3' MobileMargin='1'/>
                 <LargeP>회원가입</LargeP>
