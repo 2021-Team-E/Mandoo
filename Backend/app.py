@@ -12,6 +12,8 @@ from detection import get_img
 
 app = Flask(__name__)
 api = Api(app)  # Flask 객체에 Api 객체 등록
+
+
 app.secret_key=SECRET_KEY
 CORS(app)
 parser = reqparse.RequestParser()
@@ -19,6 +21,10 @@ signup_parser = reqparse.RequestParser()
 signup_parser.add_argument('id', required=True, location='json',type=str, help='아이디')
 signup_parser.add_argument('name', required= True, location='json',type=str, help='사용자명')
 signup_parser.add_argument('password', required=True, location='json',type=str, help="비밀번호")
+
+login_parser = reqparse.RequestParser()
+login_parser.add_argument('id', required=True, location='json',type=str, help='아이디')
+login_parser.add_argument('password', required=True, location='json',type=str, help="비밀번호")
 
 
 mongo = MongoClient('localhost', 27017) # 나중에 localhost를 mongo_db 로 바꾸기
@@ -74,7 +80,7 @@ class Signup(Resource):
 
 @api.route('/login')
 class login(Resource):
-    @api.expect(parser)
+    @api.expect(login_parser)
     def post(self):  
         login_user = request.json
         id = login_user['id']
