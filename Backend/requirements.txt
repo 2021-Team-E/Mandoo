@@ -7,3 +7,7 @@ jsonify
 requests
 cryptography
 gunicorn
+bcrypt
+PyJWT
+flask_cors
+base64
