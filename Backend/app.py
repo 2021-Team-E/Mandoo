@@ -8,7 +8,7 @@ import bcrypt
 from flask_restx import Resource, Api, Namespace, fields, reqparse
 from flask_cors import CORS
 from detection import get_img
-import base64
+
 
 app = Flask(__name__)
 api = Api(app)  # Flask 객체에 Api 객체 등록
