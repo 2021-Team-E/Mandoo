@@ -4,6 +4,8 @@ import Button from '../components/Button';
 import React, {useState} from 'react';
 import { useEffect } from 'react';
 import {useHistory} from 'react-router-dom';
+import axios from 'axios';
+import { USER_SERVER } from '../config';
 
 const Fix =styled.div`
 min-height:100vh;
@@ -51,12 +53,12 @@ const Input = styled.input`
 const Login = () => {
     const history = useHistory();
     const [info, setInfo] = useState({
-        username: '',
+        id: '',
         password: ''
     });
 
     const clear = async () => {
-        setInfo({ username:'', password:'' });
+        setInfo({ id:'', password:'' });
     }
 
     const onInputChange = async e => {
@@ -65,6 +67,18 @@ const Login = () => {
             ...info,
             [name] : value
         })
+    }
+
+    const formSubmit = async evt => {
+        evt.preventDefault();
+        try{
+            await axios.post(`${USER_SERVER}/login`, info);
+            window.localStorage.setItem('isAuth', true);
+            history.push(`/`);
+        }
+        catch{
+            console.log("error")
+        }
     }
 
     useEffect(() => {}, [info]);
@@ -84,9 +98,9 @@ const Login = () => {
                     <LargeP style={{color:"#3B8686", display:"inline-block"}}>아이디</LargeP>
                     <LargeP style={{display:"inline-block"}}>를 통한 로그인</LargeP>
                     <form>
-                        <Input placeholder="   아이디" name='username' value={info.username} onChange={onInputChange}/>
+                        <Input placeholder="   아이디" name='id' value={info.id} onChange={onInputChange}/>
                         <Input style={{fontFamily:"Roboto"}}type="password" placeholder="   비밀번호" name='password' value={info.password} onChange={onInputChange}/>
-                        <Button width='210' font="20" background="#3B8686" color="#FAECEC" marginRight="20" type="submit" onClick={() => console.log("제출")}>로그인</Button>
+                        <Button width='210' font="20" background="#3B8686" color="#FAECEC" marginRight="20" type="submit" onClick={formSubmit}>로그인</Button>
                         <Button width='210' font="20" background="#042525" color="#FAECEC" marginRight="0" onClick={clear}>취소</Button>
                         <Button width='210' font="20" background="#DADBDB" color="#000000" marginTop="10" marginRight="0" onClick={() => history.push(`/signup`)}>회원가입</Button>
                     </form>

@@ -1,1 +1,1 @@
-export const USER_SERVER = '';
+export const USER_SERVER = 'http://localhost:5000';
