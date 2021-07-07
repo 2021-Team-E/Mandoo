@@ -1,6 +1,40 @@
 version: "3.8"
 
 services:
+  # nginx:
+  #   image: jwilder/nginx-proxy
+  #   volumes:
+  #     - /var/run/docker.sock:/tmp/docker.sock:ro
+  #   ports:
+  #     - 80:80
+  #     - 443:443
+  #   restart: always
+
+  react:
+    build:
+      context: .
+      dockerfile: ./Front/Dockerfile
+    ports:
+      - 3000:3000
+    # expose:
+    #   - 3000
+    # working_dir: /app
+    volumes:
+      - "./Front:/app"
+      - "/app/node_modules"
+    stdin_open: true # react-script 3.4.1 부터 필요
+    tty: true
+    # entrypoint: ["npm", "start"]
+    networks:
+      - app-tier
+    restart: always
+    environment:
+      # - VIRTUAL_HOST=himyteamnew.ml, www.himyteamnew.ml
+      - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true # HMR을 위해 필요한 설정
+    depends_on:
+      - flask_app
+
   mongo_db:
     image: mongo:latest
     restart: unless-stopped
@@ -27,6 +61,7 @@ services:
     restart: always
     volumes:
       - ./Backend:/app
+
   # elastic_search:
   #   image: docker.elastic.co/elasticsearch/elasticsearch:7.10.1
   #   container_name: es01
