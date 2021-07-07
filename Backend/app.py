@@ -16,13 +16,12 @@ app.secret_key=SECRET_KEY
 CORS(app)
 parser = reqparse.RequestParser()
 
-#mongo = MongoClient('mongo_db', 27017)
-mongo = MongoClient('localhost', 27017)
+mongo = MongoClient('mongo_db', 27017)
+#mongo = MongoClient('localhost', 27017)
 
 db = mongo.Mandoo #Mandoo database
 user = db.user   #user table
 quiz = db.quiz   #quiz table
-
 
 
 def get_user_id(request):
@@ -93,7 +92,7 @@ class login(Resource):
             token = jwt.encode(payload, SECRET_KEY, ALGORITHM)  #토큰 생성(인코딩)
             #token = jwt.decode(token, SECRET_KEY, ALGORITHM)   #토큰 디코팅
 
-            session['id'] = login_user['_id']
+            session['id'] = id
            
             return jsonify({
             "status": 200,
@@ -133,16 +132,18 @@ def upload():
             "image" : image
         }
         quiz_id = quiz.insert_one(processed_quiz).inserted_id
-        author = user.find_one({"_id":user_id})
+        author = user.find_one({"id":user_id})
         quiz_set = author['quizzes']
         quiz_set.append(quiz_id)
         user.update(
-            {"_id":user_id},
-            {"$set" : {"questions":quiz_set}}
+            {"id":user_id},
+            {"$set" : {"quizzes":quiz_set}}
         )
-        user_result = user.find({"_id":user})
-        result = dumps(user_result, default=json_util.default)
-        return jsonify(result=result)
+        return jsonify({
+            "status": 200,
+            "success": True,
+            "message": "퀴즈 등록 성공."
+        })
         
 
 
