@@ -19,6 +19,8 @@ signup_parser.add_argument('id', required=True, type=str, help='아이디')
 signup_parser.add_argument('name', required= True, type=str, help='사용자명')
 signup_parser.add_argument('password', required=True, type=str, help="비밀번호")
 
+#image_parser.add_argument('image', required=True, type=)
+
 #mongo = MongoClient('mongo_db', 27017)
 mongo = MongoClient('localhost', 27017)
 
