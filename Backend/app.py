@@ -14,9 +14,9 @@ from detection import get_img
 app = Flask(__name__)
 api = Api(app)  # Flask 객체에 Api 객체 등록
 
-
 app.secret_key=SECRET_KEY
 CORS(app)
+
 parser = reqparse.RequestParser()
 signup_parser = reqparse.RequestParser()
 signup_parser.add_argument('id', required=True, location='json',type=str, help='아이디')
@@ -53,35 +53,42 @@ class HelloWorld(Resource):
     def get(self):  
         return "hello"
 
+
 @api.route('/signup')
 class Signup(Resource):
     @api.expect(signup_parser)
     def post(self):
-        args = signup_parser.parse_args()
-        id = args['id']
-        password = args['password']
-        name = args['name']
-        password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()) # 비밀번호 해싱
         
-        #회원가입에서 중복 아이디 확인하는 기능은 아직 없음
+        new_user = request.json
+
+        result = user.find_one({ "id" : new_user["id"] })   #user table에서 일치하는 아이디 검색
+    
+        if result :  #일치하는 아이디가 있음
+            return jsonify({
+                "status": 401,
+                "success": False,
+                "message": "아이디가 이미 있습니다."
+            }) 
+
+        new_user['password'] = bcrypt.hashpw(new_user['password'].encode('utf-8'), bcrypt.gensalt()) # 비밀번호 해싱
         
         user_info = {
-            "id": id,
-            "name": name,
-            "password": password,
+            "id": new_user["id"],
+            "name": new_user["name"],
+            "password": new_user["password"],
             "quizzes" : []
         }
-
         user_id = user.insert_one(user_info).inserted_id
-        return {
+
+        return jsonify({
             "status": 200,
             "success": True,
             "message" : "회원가입 성공",
             "data" : { 
-                "id" : id,
-                "name" : name
+                "id" : new_user["id"],
+                "name" : new_user["name"]
             }
-        }
+        })
 
 
 @api.route('/login')
@@ -93,14 +100,14 @@ class login(Resource):
         password = login_user['password']
 
         result = user.find_one({ "id" : id })   #user table에서 일치하는 아이디 검색
-    
+        print(result)
         if result is None:  #일치하는 아이디가 없음
             return jsonify({
                 "status": 401,
                 "success": False,
                 "message": "해당 아이디가 없습니다"
             }) 
-
+        
         if result and bcrypt.checkpw(password.encode('utf-8'), result['password'].decode("utf8").encode('utf-8')):
             id = result['id']
             payload = {
@@ -109,22 +116,22 @@ class login(Resource):
             token = jwt.encode(payload, SECRET_KEY, ALGORITHM)  #토큰 생성(인코딩)
             #token = jwt.decode(token, SECRET_KEY, ALGORITHM)   #토큰 디코팅
 
-            session['id'] = id
+            session['id'] = login_user['id']
            
             return jsonify({
-            "status": 200,
-            "success": True,
-            "message" : "로그인 성공",
-            "data" : { 
-                "accessToken": token,
-                "user_id" : login_user['id']
-                }
+                "status": 200,
+                "success": True,
+                "message" : "로그인 성공",
+                "data" : { 
+                    "accessToken": token,
+                    "user_id" : login_user['id']
+                    }
             })
         else:
             return jsonify({
-            "status": 401,
-            "success": False,
-            "message": "비밀번호가 틀렸습니다."
+                "status": 401,
+                "success": False,
+                "message": "비밀번호가 틀렸습니다."
             })
 
 
