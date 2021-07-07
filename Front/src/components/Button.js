@@ -15,6 +15,9 @@ const StyledButton = styled.button`
   padding-right:5px;
   outline:none;
   border-radius: ${props => props.round || 0}px;
+  :hover {
+    cursor: pointer;
+  }
 `
 
 const Button = ({ children, border,margin, color,weight, background, font, width, round, marginTop, marginRight, ...rest  }) => {

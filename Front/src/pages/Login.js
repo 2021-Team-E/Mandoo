@@ -72,12 +72,18 @@ const Login = () => {
     const formSubmit = async evt => {
         evt.preventDefault();
         try{
-            await axios.post(`${USER_SERVER}/login`, info);
-            window.localStorage.setItem('isAuth', true);
-            history.push(`/`);
+            const response = await axios.post(`${USER_SERVER}/login`, info);
+            console.log(response.data);
+            if(response.data.success){
+                window.localStorage.setItem('isAuth', true);
+                history.push(`/`);
+            }
+            else{
+                alert("로그인 중 오류 발생!")
+            }
         }
         catch{
-            console.log("error")
+            alert("로그인 중 오류 발생!")
         }
     }
 
