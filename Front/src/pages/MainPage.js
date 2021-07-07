@@ -1,11 +1,11 @@
 import React from 'react';
+import Header from '../components/Header'
 //import BlankTop from '../components/BlankTop';
 //import {useHistory} from 'react-router-dom';
 import {useState} from 'react';
 import axios from 'axios';
 import { USER_SERVER } from '../config';
-import logo from './logo.PNG';
-import { Link } from 'react-router-dom';
+
 
 // 테두리 만드는 css
 const divBorder = {
@@ -18,7 +18,9 @@ const divBorder = {
 
 
 const MainPage = (props) => {
-    
+    if(window.localStorage.getItem("isAuth")===null) {
+        window.localStorage.setItem("isAuth", 'false');
+    }
     //const history = useHistory();
     const [fileUrl, setFileUrl] = useState(null);
     const [fileImg, setFileImg] = useState(null);
@@ -53,10 +55,7 @@ const MainPage = (props) => {
     return(
         <div>
             <div className="nav">
-                <img src={logo} alt="logo" />
-                <Link to="/" >Main </Link>
-                <Link to="/signup" >Signup </Link>
-                <Link to="/login" >Login </Link>
+                <Header/>
             </div>
             <div className="content">
                 <div style={divBorder}>
@@ -71,6 +70,7 @@ const MainPage = (props) => {
                     <button onClick={sendImage}>전송</button>
                 </div>
             </div>
+
         </div>
     );
 }

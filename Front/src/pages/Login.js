@@ -4,6 +4,9 @@ import Button from '../components/Button';
 import React, {useState} from 'react';
 import { useEffect } from 'react';
 import {useHistory} from 'react-router-dom';
+import axios from 'axios';
+import { USER_SERVER } from '../config';
+import Header from '../components/Header'
 
 const Fix =styled.div`
 min-height:100vh;
@@ -51,12 +54,12 @@ const Input = styled.input`
 const Login = () => {
     const history = useHistory();
     const [info, setInfo] = useState({
-        username: '',
+        id: '',
         password: ''
     });
 
     const clear = async () => {
-        setInfo({ username:'', password:'' });
+        setInfo({ id:'', password:'' });
     }
 
     const onInputChange = async e => {
@@ -67,16 +70,30 @@ const Login = () => {
         })
     }
 
+    const formSubmit = async evt => {
+        evt.preventDefault();
+        try{
+            const response = await axios.post(`${USER_SERVER}/login`, info);
+            console.log(response.data);
+            if(response.data.success){
+                window.localStorage.setItem('isAuth', 'true');
+                history.push(`/`);
+            }
+            else{
+                alert("로그인 중 오류 발생!")
+            }
+        }
+        catch{
+            alert("로그인 중 오류 발생!")
+        }
+    }
+
     useEffect(() => {}, [info]);
 
     return(
         <Fix>
-            <div>
             <BlankTop DesktopMargin='3' TabletMargin='3' MobileMargin='1'/>
-            <button onClick={() => history.push((`/`))}>메인페이지</button>
-            <button onClick={() => history.push((`/signup`))}>회원가입</button>
-            <button onClick={() => history.push((`/login`))}>로그인</button>
-            </div>
+            <Header/>
             <Wrapper>
                 <BlankTop DesktopMargin='3' TabletMargin='3' MobileMargin='1'/>
                 <LargeP>로그인</LargeP>
@@ -84,9 +101,9 @@ const Login = () => {
                     <LargeP style={{color:"#3B8686", display:"inline-block"}}>아이디</LargeP>
                     <LargeP style={{display:"inline-block"}}>를 통한 로그인</LargeP>
                     <form>
-                        <Input placeholder="   아이디" name='username' value={info.username} onChange={onInputChange}/>
+                        <Input placeholder="   아이디" name='id' value={info.id} onChange={onInputChange}/>
                         <Input style={{fontFamily:"Roboto"}}type="password" placeholder="   비밀번호" name='password' value={info.password} onChange={onInputChange}/>
-                        <Button width='210' font="20" background="#3B8686" color="#FAECEC" marginRight="20" type="submit" onClick={() => console.log("제출")}>로그인</Button>
+                        <Button width='210' font="20" background="#3B8686" color="#FAECEC" marginRight="20" type="submit" onClick={formSubmit}>로그인</Button>
                         <Button width='210' font="20" background="#042525" color="#FAECEC" marginRight="0" onClick={clear}>취소</Button>
                         <Button width='210' font="20" background="#DADBDB" color="#000000" marginTop="10" marginRight="0" onClick={() => history.push(`/signup`)}>회원가입</Button>
                     </form>

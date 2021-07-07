@@ -3,6 +3,9 @@ import BlankTop from '../components/BlankTop';
 import Button from '../components/Button';
 import React, {useState} from 'react';
 import {useHistory} from 'react-router-dom';
+import axios from 'axios';
+import {USER_SERVER} from '../config';
+import Header from '../components/Header';
 
 const Fix =styled.div`
 min-height:100vh;
@@ -50,14 +53,11 @@ const Input = styled.input`
 const SignUp = () => {
     const history = useHistory();
     const [user, setUser] = useState({
+        id:'',
         name: '',
-        username: '',
         password1: '',
-        password2: '',
-        phone: '',
-        bank_account: ''
+        password2:''
     });
-
     const onInputChange = async e => {
         const{name, value} = e.target;
         setUser({
@@ -65,25 +65,52 @@ const SignUp = () => {
             [name] : value
         })
     }
+    const pwdCheck = (evt) => {
+        if(user.id==='' || user.name==='' || user.password1==='' || user.password2===''){
+            alert('모든 항목의 값을 채워주세요.');
+        }
+        else if (user.password1 !== user.password2) {
+            alert('비밀번호가 동일하지 않습니다.');
+        }
+        else formSubmit(evt);
+    }
+
+    const formSubmit = async evt => {
+        evt.preventDefault();
+        const data = {
+            id : user.id,
+            name: user.name,
+            password: user.password1
+        }
+        try{
+            const response = await axios.post(`${USER_SERVER}/signup`, data);
+            if(response.data.success)
+                history.push(`/`);
+            else
+                alert("회원가입이 완료되지 않았습니다!")
+        }
+        catch{
+            console.log("error")
+        }
+    }
+
     return(
         <Fix>
             <div>
             <BlankTop DesktopMargin='3' TabletMargin='3' MobileMargin='1'/>
-            <button onClick={() => history.push((`/`))}>메인페이지</button>
-            <button onClick={() => history.push((`/signup`))}>회원가입</button>
-            <button onClick={() => history.push((`/login`))}>로그인</button>
+            <Header/>
             </div>
             <Wrapper>
                 <BlankTop DesktopMargin='3' TabletMargin='3' MobileMargin='1'/>
                 <LargeP>회원가입</LargeP>
                 <GrayCard>
-                    <form onSubmit={()=>{console.log("제출")}}>
+                    <form>
                         <Input placeholder="   이름" name="name"  onChange={onInputChange}/>
-                        <Input placeholder="   아이디" name="username" onChange={onInputChange}/>
+                        <Input placeholder="   아이디" name="id" onChange={onInputChange}/>
                         <Input style={{fontFamily:"Roboto"}}type="password" placeholder="   비밀번호" name="password1" onChange={onInputChange}/>
                         <Input style={{fontFamily:"Roboto"}}type="password" placeholder="   비밀번호 확인" name="password2" onChange={onInputChange}/>
-                        <Button width='210' font="20" background="#3B8686" color="#FAECEC" marginTop="30" marginRight="20" type="submit">확인</Button>
                     </form>
+                    <Button width='210' font="20" background="#3B8686" color="#FAECEC" marginTop="30" marginRight="20" onClick={pwdCheck}>확인</Button>
                 </GrayCard>
             </Wrapper>
         </Fix>
