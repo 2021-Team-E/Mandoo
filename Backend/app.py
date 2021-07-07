@@ -22,7 +22,7 @@ signup_parser.add_argument('id', required=True, location='json', type=str, help=
 signup_parser.add_argument('name', required= True, location='json', type=str, help='사용자명')
 signup_parser.add_argument('password', required=True, location='json',type=str, help="비밀번호")
 image_parser.add_argument('Authorization', required=True, location='headers', type=str, help="jwt값")
-image_parser.add_argument('image', required=True, location='json',type=str, help="문제 이미지")
+image_parser.add_argument('image', required=True, location='files', help="문제 이미지")
 
 #mongo = MongoClient('mongo_db', 27017)
 mongo = MongoClient('localhost', 27017)
