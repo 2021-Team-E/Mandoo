@@ -40,7 +40,7 @@ const MainPage = () => {
                     name='question_img'
                     onChange={processImage}>
                 </input>
-                <button onClick={this.handlePost()}>전송</button>
+                <button onClick={null}>전송</button>
             </div>
         </div>
     );
