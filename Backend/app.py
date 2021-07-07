@@ -26,6 +26,8 @@ login_parser = reqparse.RequestParser()
 login_parser.add_argument('id', required=True, location='json',type=str, help='아이디')
 login_parser.add_argument('password', required=True, location='json',type=str, help="비밀번호")
 
+logout_parser= reqparse.RequestParser()
+
 image_parser = reqparse.RequestParser()
 image_parser.add_argument('image', required=True, location='files', help="문제 이미지")
 
@@ -137,6 +139,19 @@ class login(Resource):
                 "message": "비밀번호가 틀렸습니다."
             })
 
+
+@api.route('/logout')
+class logout(Resource):
+    @api.expect(logout_parser)
+    @api.response(200, 'Success')
+    @api.response(400, 'Bad Request')
+    def post(self):  
+        session.pop('id',None)
+        return jsonify({
+                "status": 200,
+                "success": True,
+                "message": "로그아웃 성공"
+        })
 
 @api.route('/quizupload')
 class Image(Resource):
