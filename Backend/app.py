@@ -32,7 +32,7 @@ def get_user_id(request):
 def home():
     return 'Hello, World!'
 
-@app.route('/adduser')
+@app.route('/adduser')  ##로그인 기능 구현되면 지울 부분
 def adduser():
     user = {
         "id" : "yyyyyyyyggy",
