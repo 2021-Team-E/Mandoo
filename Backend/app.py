@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, Blueprint, session
+from flask import Flask, jsonify, request, session
 from pymongo import MongoClient
 from development import SECRET_KEY, ALGORITHM
 from bson.json_util import dumps
@@ -16,11 +16,14 @@ app.secret_key=SECRET_KEY
 CORS(app)
 parser = reqparse.RequestParser()
 
+#mongo = MongoClient('mongo_db', 27017)
 mongo = MongoClient('localhost', 27017)
 
 db = mongo.Mandoo #Mandoo database
 user = db.user   #user table
 quiz = db.quiz   #quiz table
+
+
 
 def get_user_id(request):
     token = request.headers.get('Authorization')
@@ -30,17 +33,12 @@ def get_user_id(request):
 
     return payload['id']
 
+
 @api.route('/hello')
 class HelloWorld(Resource):
     @api.expect(parser)
     def get(self):  
         return "hello"
-
-
-#docker-compose 사용시
-mongo = MongoClient('mongo_db', 27017)
-# 로컬호스트 사용시
-# mongo = MongoClient('localhost',27017)
 
 @api.route('/signup')
 class Signup(Resource):
@@ -54,6 +52,7 @@ class Signup(Resource):
             "id": new_user["id"],
             "name": new_user["name"],
             "password": new_user["password"],
+            "quizzes" : []
         }
         user_id = user.insert_one(user_info).inserted_id
         print(user_id)
@@ -68,6 +67,7 @@ class Signup(Resource):
             }
         })
 
+
 @api.route('/login')
 class login(Resource):
     @api.expect(parser)
@@ -77,7 +77,6 @@ class login(Resource):
         password = login_user['password']
 
         result = user.find_one({ "id" : id })   #user table에서 일치하는 아이디 검색
-    
     
         if result is None:  #일치하는 아이디가 없음
             return jsonify({
@@ -94,7 +93,7 @@ class login(Resource):
             token = jwt.encode(payload, SECRET_KEY, ALGORITHM)  #토큰 생성(인코딩)
             #token = jwt.decode(token, SECRET_KEY, ALGORITHM)   #토큰 디코팅
 
-            session['id'] = login_user['id']
+            session['id'] = login_user['_id']
            
             return jsonify({
             "status": 200,
@@ -111,9 +110,45 @@ class login(Resource):
             "success": False,
             "message": "비밀번호가 틀렸습니다."
             })
+
+
+@app.route('/quizupload', methods=['POST'])
+def upload():
+    id = get_user_id(request)
+    if id is None:
+        return jsonify({
+            "status": 401,
+            "success": False,
+            "message": "로그인 필요"
+        })
+    if request.method == 'POST':
+        img = request.json['image']
+        title, choices, answer, script, image = get_img(img)
+        user_id = session.get('id')
+        processed_quiz = {
+            "title":title,
+            "choices": choices,
+            "answer": answer,
+            "script" : script,
+            "image" : image
+        }
+        quiz_id = quiz.insert_one(processed_quiz).inserted_id
+        author = user.find_one({"_id":user_id})
+        quiz_set = author['quizzes']
+        quiz_set.append(quiz_id)
+        user.update(
+            {"_id":user_id},
+            {"$set" : {"questions":quiz_set}}
+        )
+        user_result = user.find({"_id":user})
+        result = dumps(user_result, default=json_util.default)
+        return jsonify(result=result)
         
 
 
-# app.run(host='0.0.0.0',debug=True)
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', debug=True)
+
+#app.run(host='0.0.0.0',debug=True)
+if __name__ =="__main__":
+    app.config['SESSION_TYPE']='filesystem'
+    app.run(host='0.0.0.0',debug=True)
+
