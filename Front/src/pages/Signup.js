@@ -5,7 +5,7 @@ import React, {useState} from 'react';
 import {useHistory} from 'react-router-dom';
 import axios from 'axios';
 import {USER_SERVER} from '../config';
-import Header from '../'
+import Header from '../components/Header';
 
 const Fix =styled.div`
 min-height:100vh;
