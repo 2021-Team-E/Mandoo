@@ -10,4 +10,4 @@ gunicorn
 bcrypt
 PyJWT
 flask_cors
-base64
+flask_restx
