@@ -8,16 +8,19 @@ import bcrypt
 from flask_restx import Resource, Api, Namespace, fields, reqparse
 from flask_cors import CORS
 from detection import get_img
-import base64
 
 app = Flask(__name__)
 api = Api(app)  # Flask 객체에 Api 객체 등록
 app.secret_key=SECRET_KEY
 CORS(app)
 parser = reqparse.RequestParser()
+signup_parser = reqparse.RequestParser()
+signup_parser.add_argument('id', required=True, type=str, help='아이디')
+signup_parser.add_argument('name', required= True, type=str, help='사용자명')
+signup_parser.add_argument('password', required=True, type=str, help="비밀번호")
 
-mongo = MongoClient('mongo_db', 27017)
-#mongo = MongoClient('localhost', 27017)
+#mongo = MongoClient('mongo_db', 27017)
+mongo = MongoClient('localhost', 27017)
 
 db = mongo.Mandoo #Mandoo database
 user = db.user   #user table
@@ -41,18 +44,31 @@ class HelloWorld(Resource):
 
 @api.route('/signup')
 class Signup(Resource):
-    @api.expect(parser)
+    @api.expect(signup_parser)
     def post(self):
+        args = signup_parser.parse_args()
+        id = args['id']
+        password = args['password']
+        name = args['name']
+        password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()) # 비밀번호 해싱
+        
         #회원가입에서 중복 아이디 확인하는 기능은 아직 없음
-        new_user = request.json
-        new_user['password'] = bcrypt.hashpw(new_user['password'].encode('utf-8'), bcrypt.gensalt()) # 비밀번호 해싱
+        #new_user = request.json
+        #new_user['password'] = bcrypt.hashpw(new_user['password'].encode('utf-8'), bcrypt.gensalt()) # 비밀번호 해싱
         
         user_info = {
+            "id": id,
+            "name": name,
+            "password": password,
+            "quizzes" : []
+        }
+
+        '''user_info = {
             "id": new_user["id"],
             "name": new_user["name"],
             "password": new_user["password"],
             "quizzes" : []
-        }
+        }'''
         user_id = user.insert_one(user_info).inserted_id
         print(user_id)
         print(user_info)
@@ -61,8 +77,8 @@ class Signup(Resource):
             "success": True,
             "message" : "회원가입 성공",
             "data" : { 
-                "id" : new_user["id"],
-                "name" : new_user["name"]
+                "id" : id,
+                "name" : name
             }
         })
 
