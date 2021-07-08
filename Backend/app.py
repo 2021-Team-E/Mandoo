@@ -31,8 +31,8 @@ logout_parser= reqparse.RequestParser()
 image_parser = reqparse.RequestParser()
 image_parser.add_argument('image', required=True, location='files', help="문제 이미지")
 
-mongo = MongoClient('mongo_db', 27017) # 나중에 localhost를 mongo_db 로 바꾸기
-#mongo = MongoClient('localhost', 27017)
+#mongo = MongoClient('mongo_db', 27017) # 나중에 localhost를 mongo_db 로 바꾸기
+mongo = MongoClient('localhost', 27017)
 
 db = mongo.Mandoo #Mandoo database
 user = db.user   #user table
@@ -129,6 +129,8 @@ class login(Resource):
                     }
             })
             out.set_cookie('jwt', token)
+            #session['jwt'] = token
+            print("login"+token)
 
             return out
 
@@ -162,6 +164,8 @@ class Image(Resource):
     def post(self):
         args = image_parser.parse_args()
         id = request.cookies.get('jwt')
+        #id = session.get('jwt')
+        print(id)
         if id is None:
             return jsonify({
                 "status": 401,
