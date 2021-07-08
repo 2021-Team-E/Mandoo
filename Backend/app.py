@@ -31,7 +31,7 @@ logout_parser= reqparse.RequestParser()
 image_parser = reqparse.RequestParser()
 image_parser.add_argument('image', required=True, location='files', help="문제 이미지")
 
-mongo = MongoClient('localhost', 27017) # 나중에 localhost를 mongo_db 로 바꾸기
+mongo = MongoClient('mongo_db', 27017) # 나중에 localhost를 mongo_db 로 바꾸기
 #mongo = MongoClient('localhost', 27017)
 
 db = mongo.Mandoo #Mandoo database
