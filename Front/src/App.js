@@ -1,7 +1,11 @@
+import React from 'react';
 import { HashRouter as Router, Switch, Route } from 'react-router-dom';
 import SignUp from './pages/Signup';
 import Login from './pages/Login';
-import MainPage from './pages/MainPage'
+import MainPage from './pages/MainPage';
+import axios from 'axios';
+
+axios.defaults.withCredentials = true;
 
 function App() {
   return (

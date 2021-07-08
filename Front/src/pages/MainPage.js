@@ -6,15 +6,10 @@ import {useState} from 'react';
 import axios from 'axios';
 import { USER_SERVER } from '../config';
 
-
 // 테두리 만드는 css
 const divBorder = {
-    marginTop: "40px",
-    marginBottom: "40px",
-    border: "1px solid black",
-    width: "150px",
-    height: "200px"
-    
+    marginTop: "100px",
+    marginBottom: "40px"
 };
 
 const MainPage = (props) => {
@@ -36,31 +31,29 @@ const MainPage = (props) => {
 
     // 전송 버튼 클릭 이벤트
     const sendImage = () => {
+        const formData = new FormData()
+        formData.append("image", fileImg)
+        console.log(formData);
         try {
-            const request = axios.post(`${USER_SERVER}/getimg`, {fileImg}, {
-                headers: { "Content-Type": `multipart/form-data` }
-                }
-            ).then(function (response) {console.log(response);})
-            return {
-                payload: request
-            }
-           
+            const request = axios.post(`${USER_SERVER}/quizupload`, formData, {withCredentials:true})
+            .then(function (response) {
+                console.log(response);
+            })
         }
         catch(e){
             console.log("error");
         }
     
     }
- //<BlankTop DesktopMargin='3' TabletMargin='3' MobileMargin='1'/>
+ //<BlankTop DesktopMargin='100' TabletMargin='3' MobileMargin='1'/>
     return(
         <div>
             <div className="nav">
                 <Header/>
             </div>
-            <div className="content" style={{"float":"left"}}>
+            <div className="content" >
                 <div style={divBorder}>
-                    <img style={{"objectFit": "fill", "width": "150px", "height": "200px"}} 
-                        src={fileUrl} alt={fileUrl} />
+                    <img style={{"objectFit": "fill", "width": "150px", "height": "200px", "border": "solid 1px black"}} src={fileUrl} alt={fileUrl} />
                 </div>
                 <div>
                     <input type='file'
@@ -69,6 +62,7 @@ const MainPage = (props) => {
                         onChange={processImage}>
                     </input>
                     <button onClick={sendImage}>전송</button>
+                    
                 </div>
             </div>
             

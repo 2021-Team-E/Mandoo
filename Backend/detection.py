@@ -1,6 +1,6 @@
 def get_img(image):
-    title="title"
-    choices=[1,2,3,4,5]
+    title="test"
+    choices=[1,2,3,4,5,6]
     answer=1
     script="script"
     image="image"
