@@ -74,7 +74,6 @@ const Login = () => {
         evt.preventDefault();
         try{
             const response = await axios.post(`${USER_SERVER}/login`, info);
-            console.log(response.data);
             if(response.data.success){
                 window.localStorage.setItem('isAuth', 'true');
                 history.push(`/`);
