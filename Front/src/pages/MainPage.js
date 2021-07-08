@@ -14,8 +14,8 @@ const divBorder = {
     border: "1px solid black",
     width: "150px",
     height: "200px"
+    
 };
-
 
 const MainPage = (props) => {
     if(window.localStorage.getItem("isAuth")===null) {
@@ -57,9 +57,10 @@ const MainPage = (props) => {
             <div className="nav">
                 <Header/>
             </div>
-            <div className="content">
+            <div className="content" style={{"float":"left"}}>
                 <div style={divBorder}>
-                    <img style={{"objectFit": "fill", "width": "150px", "height": "200px"}} src={fileUrl} alt={fileUrl} />
+                    <img style={{"objectFit": "fill", "width": "150px", "height": "200px"}} 
+                        src={fileUrl} alt={fileUrl} />
                 </div>
                 <div>
                     <input type='file'
@@ -70,7 +71,49 @@ const MainPage = (props) => {
                     <button onClick={sendImage}>전송</button>
                 </div>
             </div>
-
+            
+            <div className="table" align="right" style={{"float":"right", "margin-right":"100px","margin-top":"40px"}} >
+                <table border ="1"  width="1000" height="500">
+                    <thead>
+                        <tr align="center">
+                            <td width="100">문항번호</td>
+                            <td width="150">문항내용</td>
+                            <td width="100">참고내용</td>
+                            <td width="70">선택01</td>
+                            <td width="70">선택02</td>
+                            <td width="70"> 선택03</td>
+                            <td width="70">선택04</td>
+                            <td width="50">정답</td>
+                            <td width="50">점수</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                    
+                </table>
+            </div>
         </div>
     );
 }
