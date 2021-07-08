@@ -33,15 +33,14 @@ const MainPage = (props) => {
 
     // 전송 버튼 클릭 이벤트
     const sendImage = () => {
+        const formData = new FormData()
+        formData.append("image", fileImg)
+        console.log(formData);
         try {
-            const request = axios.post(`${USER_SERVER}/quizupload`, {fileImg}, {
-                headers: { "Content-Type": `multipart/form-data` }
-                }
-            ).then(function (response) {console.log(response);})
-            return {
-                payload: request
-            }
-           
+            const request = axios.post(`${USER_SERVER}/quizupload`, formData)
+            .then(function (response) {
+                console.log(response);
+            })
         }
         catch(e){
             console.log("error");
