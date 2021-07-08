@@ -51,9 +51,10 @@ const MainPage = (props) => {
             <div className="nav">
                 <Header/>
             </div>
-            <div className="content" >
+            <div className="content" style={{"float":"left"}}>
                 <div style={divBorder}>
-                    <img style={{"objectFit": "fill", "width": "150px", "height": "200px", "border": "solid 1px black"}} src={fileUrl} alt={fileUrl} />
+                    <img style={{"objectFit": "fill", "width": "150px", "height": "200px", "border":"solid 1px black"}} 
+                        src={fileUrl} alt={fileUrl} />
                 </div>
                 <div>
                     <input type='file'
@@ -62,12 +63,10 @@ const MainPage = (props) => {
                         onChange={processImage}>
                     </input>
                     <button onClick={sendImage}>전송</button>
-                    
                 </div>
             </div>
-            
-            <div className="table" align="right" style={{"float":"right", "margin-right":"100px","margin-top":"40px"}} >
-                <table border ="1"  width="1000" height="500">
+            <div className="table" align="right" style={{"float":"right", "marginRight":"100px","marginTop":"100px"}} >
+                <table border ="1"  width="1000" height="500" align="center">
                     <thead>
                         <tr align="center">
                             <td width="100">문항번호</td>
@@ -81,34 +80,38 @@ const MainPage = (props) => {
                             <td width="50">점수</td>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody align="center">
                         <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                            <td><input style={{"width":"100px"}} type="text" /></td>
+                            <td><input style={{"width":"150px"}} type="text" /></td>
+                            <td><input style={{"width":"100px"}} type="text" /></td>
+                            <td><input style={{"width":"70px"}} type="text" /></td>
+                            <td><input style={{"width":"70px"}} type="text" /></td>
+                            <td><input style={{"width":"70px"}} type="text" /></td>
+                            <td><input style={{"width":"70px"}} type="text" /></td>
+                            <td><input style={{"width":"50px"}} type="text" /></td>
+                            <td><input style={{"width":"50px"}} type="text" /></td>
                         </tr>
                         <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                        <td><input style={{"width":"100px"}} type="text" /></td>
+                            <td><input style={{"width":"150px"}} type="text" /></td>
+                            <td><input style={{"width":"100px"}} type="text" /></td>
+                            <td><input style={{"width":"70px"}} type="text" /></td>
+                            <td><input style={{"width":"70px"}} type="text" /></td>
+                            <td><input style={{"width":"70px"}} type="text" /></td>
+                            <td><input style={{"width":"70px"}} type="text" /></td>
+                            <td><input style={{"width":"50px"}} type="text" /></td>
+                            <td><input style={{"width":"50px"}} type="text" /></td>
                         </tr>
                     </tbody>
-                    
                 </table>
             </div>
+            <div className="confirm" style={{"clear":"both"}}>
+                    <button>확정</button>
+                    <button>수정</button>
+            </div>
         </div>
+        
     );
 }
 
