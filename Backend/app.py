@@ -18,29 +18,14 @@ app.secret_key=SECRET_KEY
 CORS(app, supports_credentials=True)
 
 parser = reqparse.RequestParser()
-signup_parser = reqparse.RequestParser()
-signup_parser.add_argument('id', required=True, location='json',type=str, help='아이디')
-signup_parser.add_argument('name', required= True, location='json',type=str, help='사용자명')
-signup_parser.add_argument('password', required=True, location='json',type=str, help="비밀번호")
 
-login_parser = reqparse.RequestParser()
-login_parser.add_argument('id', required=True, location='json',type=str, help='아이디')
-login_parser.add_argument('password', required=True, location='json',type=str, help="비밀번호")
 
-logout_parser= reqparse.RequestParser()
 
-image_parser = reqparse.RequestParser()
-image_parser.add_argument('image', required=True, location='files', help="문제 이미지")
 
-quiz_parser = reqparse.RequestParser()
 
-qmodify_parser = reqparse.RequestParser()
-qmodify_parser.add_argument('_id', required=True, location='json',type=str, help="quiz 아이디")
-qmodify_parser.add_argument('title', required=True, location='json',type=str, help="title")
-qmodify_parser.add_argument('choices', required=True, location='json',type=list, help="choices")
-qmodify_parser.add_argument('answer', required=True, location='json',type=int, help="answer")
-qmodify_parser.add_argument('script', required=True, location='json',type=str, help="script")
-qmodify_parser.add_argument('image', required=True, location='json',type=str, help="image") # 추후에 file type으로 변경 가능성 있음
+
+
+
 
 
 
@@ -63,6 +48,10 @@ class HelloWorld(Resource):
 
 @api.route('/signup')
 class Signup(Resource):
+    signup_parser = reqparse.RequestParser()
+    signup_parser.add_argument('id', required=True, location='json',type=str, help='아이디')
+    signup_parser.add_argument('name', required= True, location='json',type=str, help='사용자명')
+    signup_parser.add_argument('password', required=True, location='json',type=str, help="비밀번호")
     @api.expect(signup_parser)
     @api.response(200, 'Success')
     @api.response(400, 'Bad Request')
@@ -103,6 +92,9 @@ class Signup(Resource):
 
 @api.route('/login')
 class login(Resource):
+    login_parser = reqparse.RequestParser()
+    login_parser.add_argument('id', required=True, location='json',type=str, help='아이디')
+    login_parser.add_argument('password', required=True, location='json',type=str, help="비밀번호")
     @api.expect(login_parser)
     @api.response(200, 'Success')
     @api.response(400, 'Bad Request')
@@ -155,6 +147,7 @@ class login(Resource):
 
 @api.route('/logout')
 class logout(Resource):
+    logout_parser= reqparse.RequestParser()
     @api.expect(logout_parser)
     @api.response(200, 'Success')
     @api.response(400, 'Bad Request')
@@ -168,6 +161,8 @@ class logout(Resource):
 
 @api.route('/quizupload')
 class Image(Resource):
+    image_parser = reqparse.RequestParser()
+    image_parser.add_argument('image', required=True, location='files', help="문제 이미지")
     @api.expect(image_parser)
     @api.response(200, 'Success')
     @api.response(400, 'Bad Request')
@@ -212,6 +207,7 @@ class Image(Resource):
 
 @api.route('/showquiz')
 class Showquiz(Resource):
+    quiz_parser = reqparse.RequestParser()
     @api.expect(quiz_parser)
     @api.response(200, 'Success')
     @api.response(400, 'Bad Request')
@@ -247,6 +243,13 @@ class Showquiz(Resource):
 
 @api.route('/quizmodify')
 class Quizmodify(Resource):
+    qmodify_parser = reqparse.RequestParser()
+    qmodify_parser.add_argument('_id', required=True, location='json',type=str, help="quiz 아이디")
+    qmodify_parser.add_argument('title', required=True, location='json',type=str, help="title")
+    qmodify_parser.add_argument('choices', required=True, location='json',type=list, help="choices")
+    qmodify_parser.add_argument('answer', required=True, location='json',type=int, help="answer")
+    qmodify_parser.add_argument('script', required=True, location='json',type=str, help="script")
+    qmodify_parser.add_argument('image', required=True, location='json',type=str, help="image") # 추후에 file type으로 변경 가능성 있음
     @api.expect(qmodify_parser)
     @api.response(200, 'Success')
     @api.response(400, 'Bad Request')
