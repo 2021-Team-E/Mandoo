@@ -99,9 +99,7 @@ const SignUp = () => {
             <div>
             <BlankTop DesktopMargin='3' TabletMargin='3' MobileMargin='1'/>
             <Header/>
-
             </div>
-
             <Wrapper>
                 <BlankTop DesktopMargin='3' TabletMargin='3' MobileMargin='1'/>
                 <LargeP>회원가입</LargeP>
