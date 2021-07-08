@@ -34,6 +34,16 @@ image_parser.add_argument('image', required=True, location='files', help="문제
 
 quiz_parser = reqparse.RequestParser()
 
+qmodify_parser = reqparse.RequestParser()
+qmodify_parser.add_argument('_id', required=True, location='json',type=str, help="quiz 아이디")
+qmodify_parser.add_argument('title', required=True, location='json',type=str, help="title")
+qmodify_parser.add_argument('choices', required=True, location='json',type=list, help="choices")
+qmodify_parser.add_argument('answer', required=True, location='json',type=int, help="answer")
+qmodify_parser.add_argument('script', required=True, location='json',type=str, help="script")
+qmodify_parser.add_argument('image', required=True, location='json',type=str, help="image") # 추후에 file type으로 변경 가능성 있음
+
+
+
 mongo = MongoClient('localhost', 27017) # 나중에 localhost를 mongo_db 로 바꾸기
 #mongo = MongoClient('localhost', 27017)
 
@@ -234,6 +244,46 @@ class Showquiz(Resource):
                 "quiz_list": quiz_list
             }
         })
+
+@api.route('/quizmodify')
+class Quizmodify(Resource):
+    @api.expect(qmodify_parser)
+    @api.response(200, 'Success')
+    @api.response(400, 'Bad Request')
+    @api.response(401, '로그인 필요')
+    def post(self):
+        
+        id = request.cookies.get('jwt')
+      
+        if id is None:
+            return jsonify({
+                "status": 401,
+                "success": False,
+                "message": "로그인 필요"
+            })
+
+        args = qmodify_parser.parse_args()
+        print(args)
+        quiz_id = args['_id']   #str 타입으로 req 요청된 상태
+        title = args['title']
+        choices = args['choices']
+        answer = args['answer']
+        script = args['script']
+        image = args['image']
+
+        quiz.update(
+            { "_id" : quiz_id },
+            { "$set" : { "title" : title, "choices" : choices ,"answer" : answer,"script" : script,"image" : image}}
+        )
+
+     
+        return jsonify({
+            "status": 200,
+            "success": True,
+            "message": "퀴즈 수정 성공"
+            
+        })
+
 
 
 #app.run(host='0.0.0.0',debug=True)
