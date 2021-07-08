@@ -6,7 +6,6 @@ import {useState} from 'react';
 import axios from 'axios';
 import { USER_SERVER } from '../config';
 
-
 // 테두리 만드는 css
 const divBorder = {
     marginTop: "100px",
@@ -37,7 +36,7 @@ const MainPage = (props) => {
         formData.append("image", fileImg)
         console.log(formData);
         try {
-            const request = axios.post(`${USER_SERVER}/quizupload`, formData)
+            const request = axios.post(`${USER_SERVER}/quizupload`, formData, {withCredentials:true})
             .then(function (response) {
                 console.log(response);
             })
