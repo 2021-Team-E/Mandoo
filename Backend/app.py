@@ -14,7 +14,7 @@ app = Flask(__name__)
 api = Api(app)  # Flask 객체에 Api 객체 등록
 
 app.secret_key=SECRET_KEY
-CORS(app)
+CORS(app, supports_credentials=True)
 
 parser = reqparse.RequestParser()
 signup_parser = reqparse.RequestParser()
@@ -101,7 +101,6 @@ class login(Resource):
         password = login_user['password']
 
         result = user.find_one({ "id" : id })   #user table에서 일치하는 아이디 검색
-        print(result)
         if result is None:  #일치하는 아이디가 없음
             return jsonify({
                 "status": 401,
@@ -130,7 +129,6 @@ class login(Resource):
             })
             out.set_cookie('jwt', token)
             #session['jwt'] = token
-            print("login"+token)
 
             return out
 
@@ -165,7 +163,6 @@ class Image(Resource):
         args = image_parser.parse_args()
         id = request.cookies.get('jwt')
         #id = session.get('jwt')
-        print(id)
         if id is None:
             return jsonify({
                 "status": 401,
