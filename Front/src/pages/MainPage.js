@@ -37,7 +37,7 @@ const MainPage = (props) => {
             {
                 accessor: "qid",
                 Header: "문항번호",
-                backgroundColor: 'white',
+               
             },
             {
                 accessor: "title",
