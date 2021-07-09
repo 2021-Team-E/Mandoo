@@ -12,7 +12,8 @@ import addImg from './imgIcon.png';
 
 // 테두리 만드는 css
 const divBorder = {
-    marginBottom: "40px"
+    marginBottom: "40px",
+    position: "relative"
 };
 
 const MainPage = (props) => {
@@ -146,11 +147,16 @@ const MainPage = (props) => {
                 <Header/>
             </div>
             <div className="content">
-                <img src={addImg} alt="imgadd" onClick={openModal} style={{"marginTop":"120px", "width":"100px", "height":"100px", "cursor":"pointer", "marginLeft":"30px", "padding":"0"}} />
+                <img src={addImg} alt="imgadd" onClick={openModal} style={{"marginTop":"100px", "width":"100px", "height":"100px", "cursor":"pointer", "marginLeft":"20px", "padding":"0", "float":"left"}} />
                 <Modal open={modalOpen} close={closeModal}>
                     <div style={divBorder}>
-                        <img style={{"objectFit": "fill", "width": "150px", "height": "200px", "border":"solid 1px black"}} 
-                            src={fileUrl} alt={fileUrl} />
+                        <div>
+                            <img style={{"objectFit": "fill", "width": "150px", "height": "200px", "border":"solid 1px black", "backgroundColor":"#f1f1f1"}} 
+                            src={fileUrl} alt={fileUrl}/>
+                        </div>
+                        <div style={{"position":"absolute", "top":"50%", "left":"50%", "textAlign":"center"}}>
+                            <p>이미지 미리보기입니다</p>
+                        </div>    
                     </div>
                     <div>
                         <input type='file'
@@ -158,19 +164,21 @@ const MainPage = (props) => {
                             name='question_img'
                             onChange={processImage}>
                         </input>
-                        <button onClick={sendImage}>전송</button>
+                        <button onClick={sendImage} style={{"outline":"solid 1px black"}}>전송</button>
                     </div>
                 </Modal>
             </div>
-            <div className="table" align="center" style={{"marginRight":"auto","width": "80vw", "height": "70vh", "overflow":"auto", "border":"solid 2px black", "marginLeft":"auto"}} >
+            <div className="table" align="center" style={{"marginRight":"auto","width": "85vw", "height": "70vh", "overflow":"auto", "border":"solid 2px black", "marginLeft":"auto", "float":"left", "marginTop":"100px"}} >
                 <Table columns ={columns} data={data}/>
             </div>
-            <div className="confirm" style={{"clear":"both"}}>
+            <div className="confirm" style={{"clear":"both", "marginBottom":"30px", "marginLeft":"auto", "marginRight":"auto"}}>
                     <button>확정</button>
                     <button>수정</button>
             </div>
+            <footer style={{"backgroundColor":"black", "color":"white", "height":"30px", "position":"absolute", "width":"100%", "bottom":"0"}}>
+                <div>아이콘 제작자: <a style={{"text-decoration": "none", "color":"white"}} href="https://www.flaticon.com/kr/authors/pixel-perfect" title="Pixel perfect">Pixel perfect</a> from <a style={{"text-decoration": "none", "color":"white"}} href="https://www.flaticon.com/kr/" title="Flaticon">www.flaticon.com</a></div>
+            </footer>
         </div>
-        
     );
 }
 
