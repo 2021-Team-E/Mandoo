@@ -7,6 +7,7 @@ import {useState} from 'react';
 import axios from 'axios';
 import { USER_SERVER } from '../config';
 import Modal from '../components/Modals/Modal.js';
+import "./table.css";
 
 // 테두리 만드는 css
 const divBorder = {
@@ -130,7 +131,7 @@ const MainPage = (props) => {
             <div className="nav">
                 <Header/>
             </div>
-            <div className="content" style={{"float":"left"}}>
+            <div className="content">
                 <button onClick={openModal} style={{"marginTop":"100px"}}>모달창</button>
                 <Modal open={modalOpen} close={closeModal}>
                     <div style={divBorder}>
@@ -147,7 +148,7 @@ const MainPage = (props) => {
                     </div>
                 </Modal>
             </div>
-            <div className="table" align="right" style={{"float":"right", "marginRight":"100px","marginTop":"100px","width": "1100px", "height": "600px", "overflow":"auto"}} >
+            <div className="table" align="center" style={{"marginRight":"auto","marginTop":"30px","width": "80vw", "height": "70vh", "overflow":"auto", "border":"solid 2px black", "marginLeft":"auto"}} >
                 <Table columns ={columns} data={data}/>
             </div>
             <div className="confirm" style={{"clear":"both"}}>

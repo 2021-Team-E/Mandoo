@@ -1,6 +1,7 @@
 import React from 'react';
 import { useTable } from "react-table";
 
+
 function Table({columns, data}) {
     const {
         getTableProps,
