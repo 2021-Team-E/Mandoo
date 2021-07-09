@@ -7,7 +7,6 @@ import {useState} from 'react';
 import axios from 'axios';
 import { USER_SERVER } from '../config';
 import Modal from '../components/Modals/Modal.js';
-import "./table.css";
 
 // 테두리 만드는 css
 const divBorder = {
@@ -37,6 +36,7 @@ const MainPage = (props) => {
             {
                 accessor: "qid",
                 Header: "문항번호",
+                backgroundColor: 'white',
             },
             {
                 accessor: "title",
@@ -159,7 +159,6 @@ const MainPage = (props) => {
         
     );
 }
-
 
 
 export default MainPage
