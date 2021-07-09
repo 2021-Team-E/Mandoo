@@ -2,7 +2,7 @@ import React from "react";
 import Header from "../components/Header";
 //import BlankTop from '../components/BlankTop';
 //import {useHistory} from 'react-router-dom';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { USER_SERVER } from "../config";
 
@@ -13,6 +13,18 @@ const divBorder = {
 };
 
 const MainPage = (props) => {
+  const [quizzes, setQuizzes] = useState([]);
+
+  useEffect(() => {
+    if (window.localStorage.getItem("isAuth") === "true") getQuiz();
+  }, []);
+
+  const getQuiz = async () => {
+    const response = await axios.get(`${USER_SERVER}/api/showquiz`);
+    setQuizzes(response.data.data.quiz_list);
+    console.log(response.data.data.quiz_list);
+  };
+
   if (window.localStorage.getItem("isAuth") === null) {
     window.localStorage.setItem("isAuth", "false");
   }
