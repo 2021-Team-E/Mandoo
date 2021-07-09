@@ -303,10 +303,12 @@ class Quizdelete(Resource):
     @api.response(201, '퀴즈 삭제 성공')
     @api.response(400, 'Bad Request')
     @api.response(401, '로그인 필요')
+    @api.response(403, '해당 퀴즈가 퀴즈 테이블에 없습니다\n퀴즈를 소유하고 있지 않습니다')
     def delete(self):
         
         id = request.cookies.get('jwt')
         session_check = session.get('id')
+
         if id is None or session_check is None:
             return jsonify({
                 "status": 401,
@@ -315,37 +317,48 @@ class Quizdelete(Resource):
             })
 
         args = qdelete_parser.parse_args()
-        print(args)
         quiz_id = args['quiz_id']   #str 타입으로 req 요청된 상태
-        
+        del_quiz = quiz.find_one({"_id":quiz_id}) # 삭제하고자하는 퀴즈가 quiz 테이블에 있는지 확인
+
+        if del_quiz is None:
+            return jsonify({
+                "status": 403,
+                "success": False,
+                "message": "해당 퀴즈가 퀴즈 테이블에 없습니다"
+            })
+
         user_id = session.get('id')
-        author = user.find_one({"id":user_id})
-        quiz.delete_one({'_id':quiz_id})
-
-        # for own_quiz in author['quizzes']:
-        #     if quiz_id == own_quiz:
-        #         print(quiz_id)
-
-        # quiz_set.append(ObjectId(processed_quiz["_id"])) # user 테이블에서는 quiz의 _id를 ObjectId 형태로 insert (str 도 가능하나 혹시 몰라서 ObjectId로 둠)
-        # user.update(
-        #     {"id":user_id},
-        #     {"$set" : {"quizzes":quiz_set}}
-        # )
+        author = user.find_one({"id":user_id})  #quiz 삭제를 요청한 사용자의 아이디 author로 얻음
+        check_quiz_id = 0
         
-        # quiz.update(
-        #     { "_id" : quiz_id },
-        #     { "$set" : { "title" : title, "choices" : choices ,"answer" : answer,"script" : script,"image" : image}}
-        # )
-
+        for owned_quiz in author['quizzes']:    # 삭제하기 전, quiz 삭제를 요청한 유저가 해당 quiz를 소유하고 있는지 확인하는 과정
+            if ObjectId(quiz_id) == owned_quiz:
+                check_quiz_id = 1  
+        
+        if check_quiz_id == 1:               # 유저가 해당 quiz를 소유하고 있다면
+            quiz.delete_one({'_id':quiz_id}) # quiz 테이블에서 quiz 삭제
+            author['quizzes'].remove(ObjectId(quiz_id)) # user 의 quizzes list 에서 quiz 삭제
+            quiz_set = author['quizzes']     # 삭제가 반영된 quiz_set을 다시 user의 quizzes에 업데이트하기 위한 과정
+            user.update(
+                {"id":user_id},
+                {"$set" : {"quizzes":quiz_set}}
+            )
      
-        return jsonify({
-            "status": 201,
-            "success": True,
-            "message": "퀴즈 삭제 성공"
-            
-        })
+            return jsonify({
+                "status": 201,
+                "success": True,
+                "message": "퀴즈 삭제 성공"
+                
+            })
 
+        if check_quiz_id == 0:              # 유저가 해당 quiz를 소유하고 있지 않다면
 
+            return jsonify({
+                "status": 403,
+                "success": False,
+                "message": "퀴즈를 소유하고 있지 않습니다"
+                
+            })
 
 #app.run(host='0.0.0.0',debug=True)
 if __name__ =="__main__":
