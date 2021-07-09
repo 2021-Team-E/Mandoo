@@ -7,6 +7,7 @@ import {useState} from 'react';
 import axios from 'axios';
 import { USER_SERVER } from '../config';
 import Modal from '../components/Modals/Modal.js';
+import addImg from './imgIcon.png';
 
 // 테두리 만드는 css
 const divBorder = {
@@ -132,7 +133,7 @@ const MainPage = (props) => {
                 <Header/>
             </div>
             <div className="content">
-                <button onClick={openModal} style={{"marginTop":"100px"}}>모달창</button>
+                <img src={addImg} alt="imgadd" onClick={openModal} style={{"marginTop":"120px", "width":"100px", "height":"100px", "cursor":"pointer", "marginLeft":"30px", "padding":"0"}} />
                 <Modal open={modalOpen} close={closeModal}>
                     <div style={divBorder}>
                         <img style={{"objectFit": "fill", "width": "150px", "height": "200px", "border":"solid 1px black"}} 
@@ -148,7 +149,7 @@ const MainPage = (props) => {
                     </div>
                 </Modal>
             </div>
-            <div className="table" align="center" style={{"marginRight":"auto","marginTop":"30px","width": "80vw", "height": "70vh", "overflow":"auto", "border":"solid 2px black", "marginLeft":"auto"}} >
+            <div className="table" align="center" style={{"marginRight":"auto","width": "80vw", "height": "70vh", "overflow":"auto", "border":"solid 2px black", "marginLeft":"auto"}} >
                 <Table columns ={columns} data={data}/>
             </div>
             <div className="confirm" style={{"clear":"both"}}>
