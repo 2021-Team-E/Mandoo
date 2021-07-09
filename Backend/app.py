@@ -25,6 +25,7 @@ logout_parser= reqparse.RequestParser()
 image_parser = reqparse.RequestParser()
 quiz_parser = reqparse.RequestParser()
 qmodify_parser = reqparse.RequestParser()
+qdelete_parser = reqparse.RequestParser()
 
 mongo = MongoClient('localhost', 27017) # 나중에 localhost를 mongo_db 로 바꾸기
 #mongo = MongoClient('localhost', 27017)
@@ -289,6 +290,58 @@ class Quizmodify(Resource):
             "status": 201,
             "success": True,
             "message": "퀴즈 수정 성공"
+            
+        })
+
+
+@api.route('/api/quizdelete')
+class Quizdelete(Resource):
+
+    qdelete_parser.add_argument('quiz_id', required=True, location='json',type=str, help="quiz 아이디")
+
+    @api.expect(qdelete_parser)
+    @api.response(201, '퀴즈 삭제 성공')
+    @api.response(400, 'Bad Request')
+    @api.response(401, '로그인 필요')
+    def delete(self):
+        
+        id = request.cookies.get('jwt')
+        session_check = session.get('id')
+        if id is None or session_check is None:
+            return jsonify({
+                "status": 401,
+                "success": False,
+                "message": "로그인 필요"
+            })
+
+        args = qdelete_parser.parse_args()
+        print(args)
+        quiz_id = args['quiz_id']   #str 타입으로 req 요청된 상태
+        
+        user_id = session.get('id')
+        author = user.find_one({"id":user_id})
+        quiz.delete_one({'_id':quiz_id})
+
+        # for own_quiz in author['quizzes']:
+        #     if quiz_id == own_quiz:
+        #         print(quiz_id)
+
+        # quiz_set.append(ObjectId(processed_quiz["_id"])) # user 테이블에서는 quiz의 _id를 ObjectId 형태로 insert (str 도 가능하나 혹시 몰라서 ObjectId로 둠)
+        # user.update(
+        #     {"id":user_id},
+        #     {"$set" : {"quizzes":quiz_set}}
+        # )
+        
+        # quiz.update(
+        #     { "_id" : quiz_id },
+        #     { "$set" : { "title" : title, "choices" : choices ,"answer" : answer,"script" : script,"image" : image}}
+        # )
+
+     
+        return jsonify({
+            "status": 201,
+            "success": True,
+            "message": "퀴즈 삭제 성공"
             
         })
 
