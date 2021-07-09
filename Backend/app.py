@@ -1,12 +1,12 @@
-from flask import Flask, jsonify, request, session
+from flask import Flask, jsonify, request, session, Response
 from flask.helpers import make_response
 from pymongo import MongoClient
 from development import SECRET_KEY, ALGORITHM
-from bson.json_util import dumps
+from bson.json_util import dumps, json
 from bson import json_util, ObjectId
 import jwt
 import bcrypt
-from flask_restx import Resource, Api, Namespace, fields, reqparse
+from flask_restx import Resource, Api, fields, reqparse, marshal
 from flask_cors import CORS
 from detection import get_img
 
@@ -17,8 +17,19 @@ api = Api(app)  # Flask 객체에 Api 객체 등록
 app.secret_key=SECRET_KEY
 CORS(app, supports_credentials=True)
 
-parser = reqparse.RequestParser()
+nested_fields = {}
+nested_fields["_id"]= fields.String()
+nested_fields['title'] = fields.String()
+nested_fields["choices"] = fields.List(fields.String)
+nested_fields["answer"] = fields.Integer
+nested_fields["script"] = fields.String()
+nested_fields["image"] = fields.String()
+quizList_fields = {'quiz_list': fields.List(fields.Nested(api.model('nested', nested_fields)))}
+showquiz_fields = api.model('ShowQuiz',{
+  'data' : fields.List(fields.Nested(api.model('quizlist',quizList_fields)))
+})
 
+parser = reqparse.RequestParser()
 signup_parser = reqparse.RequestParser()
 login_parser = reqparse.RequestParser()
 logout_parser= reqparse.RequestParser()
@@ -34,6 +45,7 @@ user = db.user   #user table
 quiz = db.quiz   #quiz table
 
 
+
 @api.route('/hello')
 class HelloWorld(Resource):
     @api.expect(parser)
@@ -43,9 +55,8 @@ class HelloWorld(Resource):
         return "hello"
 
 
-@api.route('/signup')
+@api.route('/api/signup')
 class Signup(Resource):
-
     signup_parser.add_argument('id', required=True, location='json',type=str, help='아이디')
     signup_parser.add_argument('name', required= True, location='json',type=str, help='사용자명')
     signup_parser.add_argument('password', required=True, location='json',type=str, help="비밀번호")
@@ -89,7 +100,7 @@ class Signup(Resource):
         })
 
 
-@api.route('/login')
+@api.route('/api/login')
 class login(Resource):
 
     login_parser.add_argument('id', required=True, location='json',type=str, help='아이디')
@@ -145,14 +156,14 @@ class login(Resource):
             })
 
 
-@api.route('/logout')
+@api.route('/api/logout')
 class logout(Resource):
 
     @api.expect(logout_parser)
     @api.response(200, 'Success')
     @api.response(400, 'Bad Request')
 
-    def post(self):  
+    def get(self):  
         session.pop('id',None)
         return jsonify({
                 "status": 200,
@@ -160,7 +171,7 @@ class logout(Resource):
                 "message": "로그아웃 성공"
         })
 
-@api.route('/quizupload')
+@api.route('/api/imageupload')
 class Image(Resource):
     
     image_parser.add_argument('image', required=True, location='files', help="문제 이미지")
@@ -208,11 +219,11 @@ class Image(Resource):
 
 
 
-@api.route('/showquiz')
+@api.route('/api/showquiz')
 class Showquiz(Resource):
 
     @api.expect(quiz_parser)
-    @api.response(200, 'Success')
+    @api.response(200, 'Success', showquiz_fields)
     @api.response(400, 'Bad Request')
     @api.response(401, '로그인 필요')
 
@@ -245,7 +256,7 @@ class Showquiz(Resource):
             }
         })
 
-@api.route('/quizmodify')
+@api.route('/api/quizmodify')
 class Quizmodify(Resource):
 
     qmodify_parser.add_argument('_id', required=True, location='json',type=str, help="quiz 아이디")
