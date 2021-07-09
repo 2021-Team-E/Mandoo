@@ -160,7 +160,7 @@ class logout(Resource):
                 "message": "로그아웃 성공"
         })
 
-@api.route('/quizupload')
+@api.route('/imageupload')
 class Image(Resource):
     
     image_parser.add_argument('image', required=True, location='files', help="문제 이미지")
