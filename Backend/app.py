@@ -43,7 +43,7 @@ class HelloWorld(Resource):
         return "hello"
 
 
-@api.route('/signup')
+@api.route('/api/signup')
 class Signup(Resource):
 
     signup_parser.add_argument('id', required=True, location='json',type=str, help='아이디')
@@ -51,9 +51,9 @@ class Signup(Resource):
     signup_parser.add_argument('password', required=True, location='json',type=str, help="비밀번호")
 
     @api.expect(signup_parser)
-    @api.response(200, 'Success')
+    @api.response(201, '회원가입 성공')
     @api.response(400, 'Bad Request')
-    @api.response(403, "아이디가 이미 있습니다.")
+    @api.response(403, "아이디가 이미 있습니다")
 
     def post(self):
         
@@ -65,7 +65,7 @@ class Signup(Resource):
             return jsonify({
                 "status": 403,
                 "success": False,
-                "message": "아이디가 이미 있습니다."
+                "message": "아이디가 이미 있습니다"
             }) 
 
         new_user['password'] = bcrypt.hashpw(new_user['password'].encode('utf-8'), bcrypt.gensalt()) # 비밀번호 해싱
@@ -79,7 +79,7 @@ class Signup(Resource):
         user_id = user.insert_one(user_info).inserted_id
 
         return jsonify({
-            "status": 200,
+            "status": 201,
             "success": True,
             "message" : "회원가입 성공",
             "data" : { 
@@ -89,16 +89,16 @@ class Signup(Resource):
         })
 
 
-@api.route('/login')
+@api.route('/api/login')
 class login(Resource):
 
     login_parser.add_argument('id', required=True, location='json',type=str, help='아이디')
     login_parser.add_argument('password', required=True, location='json',type=str, help="비밀번호")
 
     @api.expect(login_parser)
-    @api.response(200, 'Success')
+    @api.response(201, '로그인 성공')
     @api.response(400, 'Bad Request')
-    @api.response(403, "해당 아이디가 없습니다.\n 비밀번호가 틀렸습니다.")
+    @api.response(403, "해당 아이디가 없습니다\n 비밀번호가 틀렸습니다")
  
     def post(self):  
         login_user = request.json
@@ -124,7 +124,7 @@ class login(Resource):
             session['id'] = login_user['id']
            
             out = jsonify({
-                "status": 200,
+                "status": 201,
                 "success": True,
                 "message" : "로그인 성공",
                 "data" : { 
@@ -141,15 +141,15 @@ class login(Resource):
             return jsonify({
                 "status": 403,
                 "success": False,
-                "message": "비밀번호가 틀렸습니다."
+                "message": "비밀번호가 틀렸습니다"
             })
 
 
-@api.route('/logout')
+@api.route('/api/logout')
 class logout(Resource):
 
     @api.expect(logout_parser)
-    @api.response(200, 'Success')
+    @api.response(200, '로그아웃 성공')
     @api.response(400, 'Bad Request')
 
     def post(self):  
@@ -160,13 +160,13 @@ class logout(Resource):
                 "message": "로그아웃 성공"
         })
 
-@api.route('/imageupload')
+@api.route('/api/imageupload')
 class Image(Resource):
     
     image_parser.add_argument('image', required=True, location='files', help="문제 이미지")
 
     @api.expect(image_parser)
-    @api.response(200, 'Success')
+    @api.response(201, '이미지 등록 성공')
     @api.response(400, 'Bad Request')
     @api.response(401, '로그인 필요')
 
@@ -201,18 +201,18 @@ class Image(Resource):
             {"$set" : {"quizzes":quiz_set}}
         )
         return jsonify({
-            "status": 200,
+            "status": 201,
             "success": True,
-            "message": "퀴즈 등록 성공."
+            "message": "이미지 등록 성공"
         })
 
 
 
-@api.route('/showquiz')
+@api.route('/api/showquiz')
 class Showquiz(Resource):
 
     @api.expect(quiz_parser)
-    @api.response(200, 'Success')
+    @api.response(200, '퀴즈 리스트를 모두 가져옴')
     @api.response(400, 'Bad Request')
     @api.response(401, '로그인 필요')
 
@@ -245,7 +245,7 @@ class Showquiz(Resource):
             }
         })
 
-@api.route('/quizmodify')
+@api.route('/api/quizmodify')
 class Quizmodify(Resource):
 
     qmodify_parser.add_argument('_id', required=True, location='json',type=str, help="quiz 아이디")
@@ -256,7 +256,7 @@ class Quizmodify(Resource):
     qmodify_parser.add_argument('image', required=True, location='json',type=str, help="image") # 추후에 file type으로 변경 가능성 있음
 
     @api.expect(qmodify_parser)
-    @api.response(200, 'Success')
+    @api.response(201, '퀴즈 수정 성공')
     @api.response(400, 'Bad Request')
     @api.response(401, '로그인 필요')
     def post(self):
@@ -286,7 +286,7 @@ class Quizmodify(Resource):
 
      
         return jsonify({
-            "status": 200,
+            "status": 201,
             "success": True,
             "message": "퀴즈 수정 성공"
             
