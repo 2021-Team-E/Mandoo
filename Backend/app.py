@@ -1,12 +1,12 @@
-from flask import Flask, jsonify, request, session
+from flask import Flask, jsonify, request, session, Response
 from flask.helpers import make_response
 from pymongo import MongoClient
 from development import SECRET_KEY, ALGORITHM
-from bson.json_util import dumps
+from bson.json_util import dumps, json
 from bson import json_util, ObjectId
 import jwt
 import bcrypt
-from flask_restx import Resource, Api, Namespace, fields, reqparse
+from flask_restx import Resource, Api, fields, reqparse, marshal
 from flask_cors import CORS
 from detection import get_img
 
@@ -17,14 +17,26 @@ api = Api(app)  # Flask 객체에 Api 객체 등록
 app.secret_key=SECRET_KEY
 CORS(app, supports_credentials=True)
 
-parser = reqparse.RequestParser()
+nested_fields = {}
+nested_fields["_id"]= fields.String()
+nested_fields['title'] = fields.String()
+nested_fields["choices"] = fields.List(fields.String)
+nested_fields["answer"] = fields.Integer
+nested_fields["script"] = fields.String()
+nested_fields["image"] = fields.String()
+quizList_fields = {'quiz_list': fields.List(fields.Nested(api.model('nested', nested_fields)))}
+showquiz_fields = api.model('ShowQuiz',{
+  'data' : fields.List(fields.Nested(api.model('quizlist',quizList_fields)))
+})
 
+parser = reqparse.RequestParser()
 signup_parser = reqparse.RequestParser()
 login_parser = reqparse.RequestParser()
 logout_parser= reqparse.RequestParser()
 image_parser = reqparse.RequestParser()
-quiz_parser = reqparse.RequestParser()
+qshow_parser = reqparse.RequestParser()
 qmodify_parser = reqparse.RequestParser()
+qdelete_parser = reqparse.RequestParser()
 
 mongo = MongoClient('localhost', 27017) # 나중에 localhost를 mongo_db 로 바꾸기
 #mongo = MongoClient('localhost', 27017)
@@ -32,6 +44,7 @@ mongo = MongoClient('localhost', 27017) # 나중에 localhost를 mongo_db 로 �
 db = mongo.Mandoo #Mandoo database
 user = db.user   #user table
 quiz = db.quiz   #quiz table
+
 
 
 @api.route('/hello')
@@ -43,17 +56,16 @@ class HelloWorld(Resource):
         return "hello"
 
 
-@api.route('/signup')
+@api.route('/api/signup')
 class Signup(Resource):
-
     signup_parser.add_argument('id', required=True, location='json',type=str, help='아이디')
     signup_parser.add_argument('name', required= True, location='json',type=str, help='사용자명')
     signup_parser.add_argument('password', required=True, location='json',type=str, help="비밀번호")
 
     @api.expect(signup_parser)
-    @api.response(200, 'Success')
+    @api.response(201, '회원가입 성공')
     @api.response(400, 'Bad Request')
-    @api.response(403, "아이디가 이미 있습니다.")
+    @api.response(403, "아이디가 이미 있습니다")
 
     def post(self):
         
@@ -65,7 +77,7 @@ class Signup(Resource):
             return jsonify({
                 "status": 403,
                 "success": False,
-                "message": "아이디가 이미 있습니다."
+                "message": "아이디가 이미 있습니다"
             }) 
 
         new_user['password'] = bcrypt.hashpw(new_user['password'].encode('utf-8'), bcrypt.gensalt()) # 비밀번호 해싱
@@ -79,7 +91,7 @@ class Signup(Resource):
         user_id = user.insert_one(user_info).inserted_id
 
         return jsonify({
-            "status": 200,
+            "status": 201,
             "success": True,
             "message" : "회원가입 성공",
             "data" : { 
@@ -89,16 +101,16 @@ class Signup(Resource):
         })
 
 
-@api.route('/login')
+@api.route('/api/login')
 class login(Resource):
 
     login_parser.add_argument('id', required=True, location='json',type=str, help='아이디')
     login_parser.add_argument('password', required=True, location='json',type=str, help="비밀번호")
 
     @api.expect(login_parser)
-    @api.response(200, 'Success')
+    @api.response(201, '로그인 성공')
     @api.response(400, 'Bad Request')
-    @api.response(403, "해당 아이디가 없습니다.\n 비밀번호가 틀렸습니다.")
+    @api.response(403, "해당 아이디가 없습니다\n 비밀번호가 틀렸습니다")
  
     def post(self):  
         login_user = request.json
@@ -124,7 +136,7 @@ class login(Resource):
             session['id'] = login_user['id']
            
             out = jsonify({
-                "status": 200,
+                "status": 201,
                 "success": True,
                 "message" : "로그인 성공",
                 "data" : { 
@@ -141,18 +153,18 @@ class login(Resource):
             return jsonify({
                 "status": 403,
                 "success": False,
-                "message": "비밀번호가 틀렸습니다."
+                "message": "비밀번호가 틀렸습니다"
             })
 
 
-@api.route('/logout')
+@api.route('/api/logout')
 class logout(Resource):
 
     @api.expect(logout_parser)
-    @api.response(200, 'Success')
+    @api.response(200, '로그아웃 성공')
     @api.response(400, 'Bad Request')
 
-    def post(self):  
+    def get(self):  
         session.pop('id',None)
         return jsonify({
                 "status": 200,
@@ -160,13 +172,13 @@ class logout(Resource):
                 "message": "로그아웃 성공"
         })
 
-@api.route('/quizupload')
+@api.route('/api/imageupload')
 class Image(Resource):
     
     image_parser.add_argument('image', required=True, location='files', help="문제 이미지")
 
     @api.expect(image_parser)
-    @api.response(200, 'Success')
+    @api.response(201, '이미지 등록 성공')
     @api.response(400, 'Bad Request')
     @api.response(401, '로그인 필요')
 
@@ -174,7 +186,8 @@ class Image(Resource):
         args = image_parser.parse_args()
         id = request.cookies.get('jwt')
         #id = session.get('jwt')
-        if id is None:
+        session_check = session.get('id')
+        if id is None or session_check is None:
             return jsonify({
                 "status": 401,
                 "success": False,
@@ -201,26 +214,25 @@ class Image(Resource):
             {"$set" : {"quizzes":quiz_set}}
         )
         return jsonify({
-            "status": 200,
+            "status": 201,
             "success": True,
-            "message": "퀴즈 등록 성공."
+            "message": "이미지 등록 성공"
         })
 
 
 
-@api.route('/showquiz')
+@api.route('/api/showquiz')
 class Showquiz(Resource):
-
-    @api.expect(quiz_parser)
-    @api.response(200, 'Success')
+    @api.expect(qshow_parser)
+    @api.response(200, '퀴즈 리스트를 모두 가져옴', showquiz_fields)
     @api.response(400, 'Bad Request')
     @api.response(401, '로그인 필요')
 
     def get(self):
         
         id = request.cookies.get('jwt')
-      
-        if id is None:
+        session_check = session.get('id')
+        if id is None or session_check is None:
             return jsonify({
                 "status": 401,
                 "success": False,
@@ -245,7 +257,7 @@ class Showquiz(Resource):
             }
         })
 
-@api.route('/quizmodify')
+@api.route('/api/quizmodify')
 class Quizmodify(Resource):
 
     qmodify_parser.add_argument('_id', required=True, location='json',type=str, help="quiz 아이디")
@@ -256,14 +268,14 @@ class Quizmodify(Resource):
     qmodify_parser.add_argument('image', required=True, location='json',type=str, help="image") # 추후에 file type으로 변경 가능성 있음
 
     @api.expect(qmodify_parser)
-    @api.response(200, 'Success')
+    @api.response(201, '퀴즈 수정 성공')
     @api.response(400, 'Bad Request')
     @api.response(401, '로그인 필요')
     def post(self):
         
         id = request.cookies.get('jwt')
-      
-        if id is None:
+        session_check = session.get('id')
+        if id is None or session_check is None:
             return jsonify({
                 "status": 401,
                 "success": False,
@@ -286,13 +298,78 @@ class Quizmodify(Resource):
 
      
         return jsonify({
-            "status": 200,
+            "status": 201,
             "success": True,
             "message": "퀴즈 수정 성공"
             
         })
 
 
+@api.route('/api/quizdelete')
+class Quizdelete(Resource):
+
+    qdelete_parser.add_argument('quiz_id', required=True, location='json',type=str, help="quiz 아이디")
+
+    @api.expect(qdelete_parser)
+    @api.response(201, '퀴즈 삭제 성공')
+    @api.response(400, 'Bad Request')
+    @api.response(401, '로그인 필요')
+    @api.response(403, '해당 퀴즈가 퀴즈 테이블에 없습니다\n퀴즈를 소유하고 있지 않습니다')
+    def delete(self):
+        
+        id = request.cookies.get('jwt')
+        session_check = session.get('id')
+
+        if id is None or session_check is None:
+            return jsonify({
+                "status": 401,
+                "success": False,
+                "message": "로그인 필요"
+            })
+
+        args = qdelete_parser.parse_args()
+        quiz_id = args['quiz_id']   #str 타입으로 req 요청된 상태
+        del_quiz = quiz.find_one({"_id":quiz_id}) # 삭제하고자하는 퀴즈가 quiz 테이블에 있는지 확인
+
+        if del_quiz is None:
+            return jsonify({
+                "status": 403,
+                "success": False,
+                "message": "해당 퀴즈가 퀴즈 테이블에 없습니다"
+            })
+
+        user_id = session.get('id')
+        author = user.find_one({"id":user_id})  #quiz 삭제를 요청한 사용자의 아이디 author로 얻음
+        check_quiz_id = 0
+        
+        for owned_quiz in author['quizzes']:    # 삭제하기 전, quiz 삭제를 요청한 유저가 해당 quiz를 소유하고 있는지 확인하는 과정
+            if ObjectId(quiz_id) == owned_quiz:
+                check_quiz_id = 1  
+        
+        if check_quiz_id == 1:               # 유저가 해당 quiz를 소유하고 있다면
+            quiz.delete_one({'_id':quiz_id}) # quiz 테이블에서 quiz 삭제
+            author['quizzes'].remove(ObjectId(quiz_id)) # user 의 quizzes list 에서 quiz 삭제
+            quiz_set = author['quizzes']     # 삭제가 반영된 quiz_set을 다시 user의 quizzes에 업데이트하기 위한 과정
+            user.update(
+                {"id":user_id},
+                {"$set" : {"quizzes":quiz_set}}
+            )
+     
+            return jsonify({
+                "status": 201,
+                "success": True,
+                "message": "퀴즈 삭제 성공"
+                
+            })
+
+        if check_quiz_id == 0:              # 유저가 해당 quiz를 소유하고 있지 않다면
+
+            return jsonify({
+                "status": 403,
+                "success": False,
+                "message": "퀴즈를 소유하고 있지 않습니다"
+                
+            })
 
 #app.run(host='0.0.0.0',debug=True)
 if __name__ =="__main__":

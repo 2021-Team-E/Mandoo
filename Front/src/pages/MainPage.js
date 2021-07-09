@@ -1,9 +1,10 @@
+
 import React, { useMemo } from 'react';
 import Header from '../components/Header'
 import Table from '../components/Table'
 //import BlankTop from '../components/BlankTop';
 //import {useHistory} from 'react-router-dom';
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import axios from 'axios';
 import { USER_SERVER } from '../config';
 import Modal from '../components/Modals/Modal.js';
@@ -15,13 +16,34 @@ const divBorder = {
 };
 
 const MainPage = (props) => {
-    if(window.localStorage.getItem("isAuth")===null) {
-        window.localStorage.setItem("isAuth", 'false');
+    const [quizzes, setQuizzes] = useState([]);
+
+    useEffect(() => {
+        if (window.localStorage.getItem("isAuth") === "true") getQuiz();
+    }, []);
+    
+    const getQuiz = async () => {
+        const response = await axios.get(`${USER_SERVER}/api/showquiz`);
+        setQuizzes(response.data.data.quiz_list);
+        console.log(response.data.data.quiz_list);
+    };
+
+    if(window.localStorage.getItem("isAuth") === null) {
+        window.localStorage.setItem("isAuth", "false");
     }
+
     //const history = useHistory();
     const [fileUrl, setFileUrl] = useState(null);
     const [fileImg, setFileImg] = useState(null);
     const [modalOpen, setModalOpen] = useState(false);
+
+    // 이미지 업로드 버튼 이벤트. 미리보기
+    function processImage(event) {
+        const imageFile = event.target.files[0];
+        const imageUrl = URL.createObjectURL(imageFile);
+        setFileUrl(imageUrl);
+        setFileImg(imageFile);
+    }
 
     const openModal = () => {
         setModalOpen(true);
@@ -99,34 +121,25 @@ const MainPage = (props) => {
         []
     );
 
-
-    // 이미지 업로드 버튼 이벤트. 미리보기 
-    function processImage(event) {
-        const imageFile = event.target.files[0];
-        const imageUrl = URL.createObjectURL(imageFile);
-        
-        setFileUrl(imageUrl)
-        setFileImg(imageFile)
-    }
-
-
     // 전송 버튼 클릭 이벤트
     const sendImage = () => {
-        const formData = new FormData()
-        formData.append("image", fileImg)
+        const formData = new FormData();
+        formData.append("image", fileImg);
         console.log(formData);
         try {
-            const request = axios.post(`${USER_SERVER}/imageupload`, formData, {withCredentials:true})
+            const request = axios
+            .post(`${USER_SERVER}/imageupload`, formData, {
+                withCredentials:true,
+            })
             .then(function (response) {
                 console.log(response);
-            })
+            });
         }
         catch(e){
             console.log("error");
         }
-    
-    }
- //<BlankTop DesktopMargin='100' TabletMargin='3' MobileMargin='1'/>
+    };
+    //<BlankTop DesktopMargin='100' TabletMargin='3' MobileMargin='1'/>
     return(
         <div style={{"backgroundColor":"#f0f8ff", "width":"100vw", "height":"100vh"}}>
             <div className="nav">
@@ -161,5 +174,5 @@ const MainPage = (props) => {
     );
 }
 
+export default MainPage;
 
-export default MainPage
