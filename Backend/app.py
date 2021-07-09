@@ -151,8 +151,7 @@ class logout(Resource):
     @api.expect(logout_parser)
     @api.response(200, '로그아웃 성공')
     @api.response(400, 'Bad Request')
-
-    def post(self):  
+    def get(self):  
         session.pop('id',None)
         return jsonify({
                 "status": 200,
