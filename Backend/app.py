@@ -173,7 +173,8 @@ class Image(Resource):
         args = image_parser.parse_args()
         id = request.cookies.get('jwt')
         #id = session.get('jwt')
-        if id is None:
+        session_check = session.get('id')
+        if id is None or session_check is None:
             return jsonify({
                 "status": 401,
                 "success": False,
@@ -218,8 +219,8 @@ class Showquiz(Resource):
     def get(self):
         
         id = request.cookies.get('jwt')
-      
-        if id is None:
+        session_check = session.get('id')
+        if id is None or session_check is None:
             return jsonify({
                 "status": 401,
                 "success": False,
@@ -261,8 +262,8 @@ class Quizmodify(Resource):
     def post(self):
         
         id = request.cookies.get('jwt')
-      
-        if id is None:
+        session_check = session.get('id')
+        if id is None or session_check is None:
             return jsonify({
                 "status": 401,
                 "success": False,
