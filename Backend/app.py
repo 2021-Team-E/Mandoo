@@ -140,12 +140,12 @@ class login(Resource):
             })
 
 
-@api.route('/logout')
+@api.route('/api/logout')
 class logout(Resource):
     @api.expect(logout_parser)
     @api.response(200, 'Success')
     @api.response(400, 'Bad Request')
-    def post(self):  
+    def get(self):  
         session.pop('id',None)
         return jsonify({
                 "status": 200,
@@ -162,7 +162,8 @@ class Image(Resource):
     def post(self):
         args = image_parser.parse_args()
         id = request.cookies.get('jwt')
-        if id is None:
+        
+        if id is None :
             return jsonify({
                 "status": 401,
                 "success": False,
