@@ -12,7 +12,7 @@ function Table({columns, data}) {
       } = useTable({ columns, data });
 
     return (
-    <table {...getTableProps()} border ="1" align="center">
+    <table {...getTableProps()} border ="1" align="center" style={{"backgroundColor":"white"}}>
         <thead>
         {headerGroups.map((headerGroup) => (
           <tr {...headerGroup.getHeaderGroupProps()}>
