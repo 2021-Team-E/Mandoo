@@ -5,10 +5,10 @@ import Header from '../components/Header'
 import {useState} from 'react';
 import axios from 'axios';
 import { USER_SERVER } from '../config';
+import Modal from '../components/Modals/Modal.js';
 
 // 테두리 만드는 css
 const divBorder = {
-    marginTop: "100px",
     marginBottom: "40px"
 };
 
@@ -19,6 +19,15 @@ const MainPage = (props) => {
     //const history = useHistory();
     const [fileUrl, setFileUrl] = useState(null);
     const [fileImg, setFileImg] = useState(null);
+    const [modalOpen, setModalOpen] = useState(false);
+
+    const openModal = () => {
+        setModalOpen(true);
+    }
+
+    const closeModal = () => {
+        setModalOpen(false);
+    }
 
     // 이미지 업로드 버튼 이벤트. 미리보기 
     function processImage(event) {
@@ -28,6 +37,7 @@ const MainPage = (props) => {
         setFileUrl(imageUrl)
         setFileImg(imageFile)
     }
+
 
     // 전송 버튼 클릭 이벤트
     const sendImage = () => {
@@ -47,23 +57,26 @@ const MainPage = (props) => {
     }
  //<BlankTop DesktopMargin='100' TabletMargin='3' MobileMargin='1'/>
     return(
-        <div>
+        <div style={{"backgroundColor":"#f0f8ff", "width":"100vw", "height":"100vh"}}>
             <div className="nav">
                 <Header/>
             </div>
             <div className="content" style={{"float":"left"}}>
-                <div style={divBorder}>
-                    <img style={{"objectFit": "fill", "width": "150px", "height": "200px", "border":"solid 1px black"}} 
-                        src={fileUrl} alt={fileUrl} />
-                </div>
-                <div>
-                    <input type='file'
-                        accept='image/*'
-                        name='question_img'
-                        onChange={processImage}>
-                    </input>
-                    <button onClick={sendImage}>전송</button>
-                </div>
+                <button onClick={openModal} style={{"marginTop":"100px"}}>모달창</button>
+                <Modal open={modalOpen} close={closeModal}>
+                    <div style={divBorder}>
+                        <img style={{"objectFit": "fill", "width": "150px", "height": "200px", "border":"solid 1px black"}} 
+                            src={fileUrl} alt={fileUrl} />
+                    </div>
+                    <div>
+                        <input type='file'
+                            accept='image/*'
+                            name='question_img'
+                            onChange={processImage}>
+                        </input>
+                        <button onClick={sendImage}>전송</button>
+                    </div>
+                </Modal>
             </div>
             <div className="table" align="right" style={{"float":"right", "marginRight":"100px","marginTop":"100px"}} >
                 <table border ="1"  width="1000" height="500" align="center">
