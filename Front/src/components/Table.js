@@ -13,7 +13,7 @@ function Table({columns, data}) {
 
     return (
     <table {...getTableProps()} border ="1" align="center" style={{"backgroundColor":"white"}}>
-        <thead>
+        <thead style={{"backgroundColor":"#D9D9D9"}}>
         {headerGroups.map((headerGroup) => (
           <tr {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map((column) => (
