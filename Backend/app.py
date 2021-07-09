@@ -32,7 +32,7 @@ logout_parser= reqparse.RequestParser()
 image_parser = reqparse.RequestParser()
 image_parser.add_argument('image', required=True, location='files', help="문제 이미지")
 
-quiz_parser = reqparse.RequestParser()
+qshow_parser = reqparse.RequestParser()
 
 mongo = MongoClient('localhost', 27017) # 나중에 localhost를 mongo_db 로 바꾸기
 #mongo = MongoClient('localhost', 27017)
@@ -202,7 +202,7 @@ class Image(Resource):
 
 @api.route('/showquiz')
 class Showquiz(Resource):
-    @api.expect(quiz_parser)
+    @api.expect(qshow_parser)
     @api.response(200, 'Success')
     @api.response(400, 'Bad Request')
     @api.response(401, '로그인 필요')
