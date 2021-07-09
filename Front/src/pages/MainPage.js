@@ -16,6 +16,18 @@ const divBorder = {
     position: "relative"
 };
 
+// 버튼관련 css
+const btn = {
+    marginTop:"20px",
+    width:"70px", 
+    height:"34px",
+    marginRight:"20px",
+    marginLeft: "20px",
+    backgroundColor:"white",
+    color:"#369",
+    fontWeight:"bold"
+}
+
 const MainPage = (props) => {
     const [quizzes, setQuizzes] = useState([]);
 
@@ -168,12 +180,12 @@ const MainPage = (props) => {
                     </div>
                 </Modal>
             </div>
-            <div className="table" align="center" style={{"marginRight":"auto","width": "85vw", "height": "70vh", "overflow":"auto", "border":"solid 2px black", "marginLeft":"auto", "float":"left", "marginTop":"100px"}} >
+            <div className="table" align="center" style={{"marginRight":"auto","width": "85vw", "height": "70vh", "overflow":"auto", "border":"solid 2px black","marginLeft":"auto", "float":"left", "marginTop":"100px"}} >
                 <Table columns ={columns} data={data}/>
             </div>
-            <div className="confirm" style={{"clear":"both", "marginBottom":"30px", "marginLeft":"auto", "marginRight":"auto"}}>
-                    <button>확정</button>
-                    <button>수정</button>
+            <div className="confirm" style={{"clear":"both", "textAlign":"center"}}>
+                    <button style={btn} >확정</button>
+                    <button style={btn}>수정</button>
             </div>
             <footer style={{"backgroundColor":"black", "color":"white", "height":"30px", "position":"absolute", "width":"100%", "bottom":"0"}}>
                 <div>아이콘 제작자: <a style={{"text-decoration": "none", "color":"white"}} href="https://www.flaticon.com/kr/authors/pixel-perfect" title="Pixel perfect">Pixel perfect</a> from <a style={{"text-decoration": "none", "color":"white"}} href="https://www.flaticon.com/kr/" title="Flaticon">www.flaticon.com</a></div>
