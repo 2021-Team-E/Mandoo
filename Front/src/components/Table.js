@@ -12,8 +12,8 @@ function Table({columns, data}) {
       } = useTable({ columns, data });
 
     return (
-    <table {...getTableProps()} border ="1" align="center" style={{"backgroundColor":"white"}}>
-        <thead style={{"backgroundColor":"#D9D9D9"}}>
+    <table {...getTableProps()} border ="1" align="center" style={{"backgroundColor":"white", "borderCollapse":"collapse"}}>
+        <thead style={{"borderBottom":"2px solid #036", "color":"#369"}}>
         {headerGroups.map((headerGroup) => (
           <tr {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map((column) => (
