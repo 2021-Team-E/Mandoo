@@ -4,4 +4,3 @@ venv/
 .DS_Store
 *.pem
 .vscode/
-node_modules/
