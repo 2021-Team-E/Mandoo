@@ -13,7 +13,6 @@ ENV PATH /app/node_modules/.bin:$PATH
 
 # Copy package files and install app dependencies
 COPY ./Front/package.json /app/package.json
-COPY ./Front/package-lock.json /app/package-lock.json
 RUN npm install
 RUN npm install react-scripts --save
 # RUN npm install react-scripts -g
