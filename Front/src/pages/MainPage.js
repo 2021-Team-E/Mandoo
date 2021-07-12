@@ -42,8 +42,9 @@ const MainPage = (props) => {
   const getQuiz = async () => {
     const response = await axios.get(`${USER_SERVER}/api/showquiz`);
     console.log(response);
-    if (response.data.success) setQuizzes(response.data.data.quiz_list);
-    else {
+    if (response.data.success) {
+      setQuizzes(response.data.data.quiz_list);
+    } else {
       alert("로그인이 필요합니다.");
       window.localStorage.setItem("isAuth", "false");
     }
@@ -111,7 +112,7 @@ const MainPage = (props) => {
         Header: "참고내용",
       },
       {
-        accessor: "choice1",
+        accessor: `choice1`,
         Header: "선택01",
       },
       {
@@ -141,30 +142,24 @@ const MainPage = (props) => {
     ],
     []
   );
-  const data = useMemo(
-    () =>
-      Array(31)
-        .fill()
-        .map(() => ({
-          //여기에 db랑 연결하는 코드 각각 작성
-          qid: "0001",
-          title: "다음 중 가장 적절한 것은?",
-          choice1: "1번. 여인을 슬프고 우울해 보이게 그린 것을 보니~",
-          choice2: "2번. 해바라기를 강조한 화면 구성을 보니~~",
-          choice3:
-            "3번. 해바라기의 노란색과 윤각의 빨간색을 대비한 것을 보니~~",
-          choice4:
-            "4번. 해바라기, 꽃병, 배경 등을 화려한 흰 색으로 그린 것을 보니~~",
-          choice5:
-            "5번. 해바라기 꽃병과 여인을 원근법에 어긋나게 그린 것을 보니~~",
-          answer: 1,
-          script: "독일 표현주의 화가인 키르히너의 <해바라기와 여인의 얼굴>은",
-          image:
-            "https://s3.ap-northeast-2.amazonaws.com/event-localnaeil/FileData/Article/202004/56c1b8c3-43e6-466b-8d66-6e56a770206c.jpg",
-          score: "3점",
-        })),
-    []
-  );
+  const data = useMemo(() => {
+    const showed_data = quizzes?.map((quiz) => {
+      //여기에 db랑 연결하는 코드 각각 작성
+      let data_return = {
+        qid: "0001",
+        title: quiz.title,
+        answer: quiz.answer,
+        script: quiz.script,
+        image: quiz.image,
+        score: "3점",
+      };
+      quiz.choices.map((choice, i) => {
+        data_return[`choice${i + 1}`] = choice;
+      });
+      return data_return;
+    });
+    return showed_data;
+  }, [quizzes]);
 
   // 전송 버튼 클릭 이벤트
   const sendImage = () => {
@@ -182,6 +177,8 @@ const MainPage = (props) => {
     } catch (e) {
       console.log("error");
     }
+    closeModal();
+    window.location.replace("/");
   };
   //<BlankTop DesktopMargin='100' TabletMargin='3' MobileMargin='1'/>
   return (
