@@ -190,8 +190,9 @@ class Image(Resource):
                 "success": False,
                 "message": "로그인 필요"
             })
+
         img = args['image']
-        if img is None:
+        if img.filename =='':
 
             return jsonify({
             "status": 403,
@@ -201,10 +202,9 @@ class Image(Resource):
         })
         
         
-        print(img.filename)
-        imagefilename = id + ".png"
+        imagefilename = id + ".png" # 서버 디렉토리에 저장하는 과정 (혹시 몰라서 추가)
         img.save('./upload/{0}'.format(secure_filename(imagefilename)))
-        print(img)
+       
 
         title, choices, answer, script, image = get_img(img)
         user_id = session.get('id')
