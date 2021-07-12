@@ -13,6 +13,7 @@ import { useHistory } from "react-router-dom";
 // 테두리 만드는 css
 const divBorder = {
   marginBottom: "40px",
+  position: "relation",
 };
 
 // 버튼관련 css
@@ -203,12 +204,13 @@ const MainPage = (props) => {
               alt="imgadd"
               onClick={openModal}
               style={{
-                marginTop: "120px",
+                marginTop: "80px",
                 width: "100px",
                 height: "100px",
                 cursor: "pointer",
-                marginLeft: "30px",
+                marginLeft: "25px",
                 padding: "0",
+                float: "left",
               }}
             />
             <Modal open={modalOpen} close={closeModal}>
@@ -240,11 +242,13 @@ const MainPage = (props) => {
             align="center"
             style={{
               marginRight: "auto",
-              width: "80vw",
+              width: "85vw",
               height: "70vh",
               overflow: "auto",
               border: "solid 2px black",
               marginLeft: "auto",
+              float: "left",
+              marginTop: "110px",
             }}
           >
             <Table columns={columns} data={data} />
@@ -265,8 +269,8 @@ const MainPage = (props) => {
               backgroundColor: "black",
               color: "white",
               height: "30px",
-              position: "absolute",
               width: "100%",
+              position: "fixed",
               bottom: "0",
             }}
           >
