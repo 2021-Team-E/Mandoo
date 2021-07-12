@@ -4,15 +4,18 @@ import { Link } from "react-router-dom";
 import "./Header.css";
 import axios from "axios";
 import { USER_SERVER } from "../config";
+import { useHistory } from "react-router";
 
 const Header = () => {
   const [isAuth, setIsAuth] = useState(window.localStorage.getItem("isAuth"));
+  const history = useHistory();
   useEffect(() => {}, [isAuth]);
   const logout = async () => {
     const response = await axios.get(`${USER_SERVER}/api/logout`);
     console.log(response);
     window.localStorage.setItem("isAuth", "false");
     setIsAuth(false);
+    history.push("/");
   };
   return (
     <div className="nav">
