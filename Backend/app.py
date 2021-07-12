@@ -38,7 +38,7 @@ qshow_parser = reqparse.RequestParser()
 qmodify_parser = reqparse.RequestParser()
 qdelete_parser = reqparse.RequestParser()
 
-mongo = MongoClient('localhost', 27017) # 나중에 localhost를 mongo_db 로 바꾸기
+mongo = MongoClient('mongo_db', 27017) # 나중에 localhost를 mongo_db 로 바꾸기
 #mongo = MongoClient('localhost', 27017)
 
 db = mongo.Mandoo #Mandoo database
@@ -166,11 +166,14 @@ class logout(Resource):
 
     def get(self):  
         session.pop('id',None)
-        return jsonify({
-                "status": 200,
-                "success": True,
-                "message": "로그아웃 성공"
-        })
+        if request.cookies.get("jwt"):
+          out = jsonify({
+            "status": 200,
+            "success": True,
+            "message": "로그아웃 성공"
+          })
+          out.set_cookie("jwt", '', expires=0)
+          return out
 
 @api.route('/api/imageupload')
 class Image(Resource):
