@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, request, session
 from flask.helpers import make_response
+from werkzeug.utils import secure_filename
 from pymongo import MongoClient
 from development import SECRET_KEY, ALGORITHM
 from bson.json_util import dumps
@@ -9,6 +10,10 @@ import bcrypt
 from flask_restx import Resource, Api, Namespace, fields, reqparse
 from flask_cors import CORS
 from detection import get_img
+import os
+from os.path import exists, join, basename, splitext
+from werkzeug.datastructures import FileStorage
+from werkzeug.utils import secure_filename
 
 
 app = Flask(__name__)
@@ -26,6 +31,8 @@ image_parser = reqparse.RequestParser()
 quiz_parser = reqparse.RequestParser()
 qmodify_parser = reqparse.RequestParser()
 qdelete_parser = reqparse.RequestParser()
+
+
 
 mongo = MongoClient('localhost', 27017) # 나중에 localhost를 mongo_db 로 바꾸기
 #mongo = MongoClient('localhost', 27017)
@@ -104,6 +111,7 @@ class login(Resource):
     def post(self):  
         login_user = request.json
         id = login_user['id']
+       
         password = login_user['password']
 
         result = user.find_one({ "id" : id })   #user table에서 일치하는 아이디 검색
@@ -163,12 +171,13 @@ class logout(Resource):
 @api.route('/api/imageupload')
 class Image(Resource):
     
-    image_parser.add_argument('image', required=True, location='files', help="문제 이미지")
+    image_parser.add_argument('image', type=FileStorage, required=True, location='files', help="문제 이미지")
 
     @api.expect(image_parser)
     @api.response(201, '이미지 등록 성공')
     @api.response(400, 'Bad Request')
     @api.response(401, '로그인 필요')
+    @api.response(403, '이미지가 선택되지 않았습니다')
 
     def post(self):
         args = image_parser.parse_args()
@@ -182,6 +191,21 @@ class Image(Resource):
                 "message": "로그인 필요"
             })
         img = args['image']
+        if img is None:
+
+            return jsonify({
+            "status": 403,
+            "success": True,
+            "message": "이미지가 선택되지 않았습니다"
+
+        })
+        
+        
+        print(img.filename)
+        imagefilename = id + ".png"
+        img.save('./upload/{0}'.format(secure_filename(imagefilename)))
+        print(img)
+
         title, choices, answer, script, image = get_img(img)
         user_id = session.get('id')
         
