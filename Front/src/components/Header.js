@@ -28,7 +28,7 @@ const Header = () => {
         <Link to="/" className="nav-item">
           Main{" "}
         </Link>
-        {window.localStorage.getItem("isAuth") == "true" ? (
+        {window.localStorage.getItem("isAuth") === "true" ? (
           <Link to="/" className="nav-item" onClick={logout}>
             Logout
           </Link>
@@ -48,4 +48,3 @@ const Header = () => {
   );
 };
 export default Header;
-
