@@ -58,12 +58,38 @@ const MainPage = (props) => {
         setFileImg(imageFile);
     }
 
+    // 모달 여는 함수
     const openModal = () => {
-        setModalOpen(true);
+        if (window.localStorage.getItem('isAuth')==='true') {
+            setModalOpen(true);
+        } else {
+            alert("로그인을 먼저 해주세요!");
+            setModalOpen(false);
+        }
+        
     }
 
+    // 모달 닫는 함수
     const closeModal = () => {
         setModalOpen(false);
+    }
+
+    // 확정 버튼 onClick 함수
+    const decideData = () => {
+        if (window.localStorage.getItem('isAuth')==='true') {
+            alert("확정버튼 누름");
+        } else {
+            alert("로그인 먼저 해주세요!");
+        }
+    }
+
+    // 수정 버튼 onClick 함수
+    const changeData = () => {
+        if (window.localStorage.getItem('isAuth')==='true') {
+            alert("수정버튼 누름");
+        } else {
+            alert("로그인 먼저 해주세요!");
+        }
     }
 
     //input data
@@ -184,11 +210,11 @@ const MainPage = (props) => {
                 <Table columns ={columns} data={data}/>
             </div>
             <div className="confirm" style={{"clear":"both", "textAlign":"center"}}>
-                    <button style={btn} >확정</button>
-                    <button style={btn}>수정</button>
+                    <button style={btn} onClick={decideData}>확정</button>
+                    <button style={btn} onClick={changeData}>수정</button>
             </div>
             <footer style={{"backgroundColor":"black", "color":"white", "height":"30px", "position":"absolute", "width":"100%", "bottom":"0"}}>
-                <div>아이콘 제작자: <a style={{"text-decoration": "none", "color":"white"}} href="https://www.flaticon.com/kr/authors/pixel-perfect" title="Pixel perfect">Pixel perfect</a> from <a style={{"text-decoration": "none", "color":"white"}} href="https://www.flaticon.com/kr/" title="Flaticon">www.flaticon.com</a></div>
+                <div>아이콘 제작자: <a style={{"textDecoration": "none", "color":"white"}} href="https://www.flaticon.com/kr/authors/pixel-perfect" title="Pixel perfect">Pixel perfect</a> from <a style={{"text-decoration": "none", "color":"white"}} href="https://www.flaticon.com/kr/" title="Flaticon">www.flaticon.com</a></div>
             </footer>
         </div>
     );

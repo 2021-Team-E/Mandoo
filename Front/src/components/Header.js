@@ -20,7 +20,7 @@ const Header = () => {
             <div className="nav-items">
                 <Link to="/" className="nav-item">Main </Link>
                 {window.localStorage.getItem('isAuth')=='true' ? 
-                <Link to="/" className="nav-item" onClick = {logout}>로그아웃</Link> : 
+                <Link to="/" className="nav-item" onClick = {logout}>Logout</Link> : 
                 <>
                 <Link to="/signup" className="nav-item">Signup </Link>
                 <Link to="/login" className="nav-item">Login </Link></>}
