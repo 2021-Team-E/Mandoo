@@ -11,3 +11,5 @@ bcrypt
 PyJWT
 flask_cors
 flask_restx
+werkzeug.datastructures
+werkzeug.utils
