@@ -10,8 +10,6 @@ import bcrypt
 from flask_restx import Resource, Api, fields, reqparse, marshal
 from flask_cors import CORS
 from detection import get_img
-import os
-from os.path import exists, join, basename, splitext
 from werkzeug.datastructures import FileStorage
 from werkzeug.utils import secure_filename
 
@@ -43,7 +41,7 @@ qshow_parser = reqparse.RequestParser()
 qmodify_parser = reqparse.RequestParser()
 qdelete_parser = reqparse.RequestParser()
 
-mongo = MongoClient('mongo_db', 27017) # 나중에 localhost를 mongo_db 로 바꾸기
+mongo = MongoClient('localhost', 27017) # 나중에 localhost를 mongo_db 로 바꾸기
 #mongo = MongoClient('localhost', 27017)
 
 db = mongo.Mandoo #Mandoo database
@@ -203,8 +201,9 @@ class Image(Resource):
                 "success": False,
                 "message": "로그인 필요"
             })
+
         img = args['image']
-        if img is None:
+        if img.filename =='':
 
             return jsonify({
             "status": 403,
@@ -214,10 +213,9 @@ class Image(Resource):
         })
         
         
-        print(img.filename)
-        imagefilename = id + ".png"
+        imagefilename = id + ".png" # 서버 디렉토리에 저장하는 과정 (혹시 몰라서 추가)
         img.save('./upload/{0}'.format(secure_filename(imagefilename)))
-        print(img)
+       
 
         title, choices, answer, script, image = get_img(img)
         user_id = session.get('id')

@@ -5,9 +5,10 @@ pymongo
 flask-mysql
 jsonify
 requests
-cryptography
 gunicorn
 bcrypt
 PyJWT
 flask_cors
 flask_restx
+werkzeug
+
