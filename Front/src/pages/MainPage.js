@@ -204,7 +204,6 @@ const MainPage = (props) => {
               alt="imgadd"
               onClick={openModal}
               style={{
-                marginTop: "80px",
                 width: "100px",
                 height: "100px",
                 cursor: "pointer",
@@ -248,7 +247,7 @@ const MainPage = (props) => {
               border: "solid 2px black",
               marginLeft: "auto",
               float: "left",
-              marginTop: "110px",
+              marginTop: "30px",
             }}
           >
             <Table columns={columns} data={data} />
@@ -285,7 +284,7 @@ const MainPage = (props) => {
               </a>{" "}
               from{" "}
               <a
-                style={{ "text-decoration": "none", color: "white" }}
+                style={{ textDecoration: "none", color: "white" }}
                 href="https://www.flaticon.com/kr/"
                 title="Flaticon"
               >
