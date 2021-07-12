@@ -5,7 +5,6 @@ pymongo
 flask-mysql
 jsonify
 requests
-cryptography
 gunicorn
 bcrypt
 PyJWT
