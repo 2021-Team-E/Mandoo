@@ -1,24 +1,19 @@
 # Pull latest official node image
 FROM node:10
 
-# Expose ports
-EXPOSE 3000
-EXPOSE 35729
-
 # Set working directory
-WORKDIR /app
+WORKDIR /usr/src/app/Front
 
 # add `/app/node_modules/.bin` to environment variables
 ENV PATH /app/node_modules/.bin:$PATH
 
 # Copy package files and install app dependencies
-COPY ./Front/package.json /app/package.json
-RUN npm install
-RUN npm install react-scripts --save
-# RUN npm install react-scripts -g
+COPY package.json ./
 
-# Add React app to working directory
-ADD . /app
+RUN npm install
+
+# Expose ports
+EXPOSE 3000
 
 # Start the React app
 CMD ["npm", "start"]
