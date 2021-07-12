@@ -17,19 +17,15 @@ services:
 
   react:
     build:
-      context: .
-      dockerfile: ./Front/Dockerfile
+      context: ./Front
+    container_name: react
     ports:
       - 3000:3000
-    # expose:
-    #   - 3000
-    # working_dir: /app
     volumes:
-      - "./Front:/app"
-      - "/app/node_modules"
+      - "./Front:/usr/src/app/Front"
+      - "/usr/src/app/Front/node_modules"
     stdin_open: true # react-script 3.4.1 부터 필요
     tty: true
-    # entrypoint: ["npm", "start"]
     networks:
       - app-tier
     restart: always
