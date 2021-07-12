@@ -1,5 +1,5 @@
 # Pull latest official node image
-FROM node:latest
+FROM node:10
 
 # Expose ports
 EXPOSE 3000
