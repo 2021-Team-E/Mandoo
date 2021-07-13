@@ -3,12 +3,13 @@ import Header from "../components/Header";
 import Table from "../components/Table";
 //import BlankTop from '../components/BlankTop';
 //import {useHistory} from 'react-router-dom';
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { USER_SERVER } from "../config";
 import Modal from "../components/Modals/Modal.js";
 import addImg from "./imgIcon.png";
 import { useHistory } from "react-router-dom";
+import { EditText,EditTextarea } from "react-edit-text";
 
 // 테두리 만드는 css
 const divBorder = {
@@ -28,6 +29,7 @@ const btn = {
   fontWeight: "bold",
 };
 
+
 const MainPage = (props) => {
   const [quizzes, setQuizzes] = useState([]);
   const history = useHistory();
@@ -37,6 +39,7 @@ const MainPage = (props) => {
       window.localStorage.setItem("isAuth", "false");
     }
     if (window.localStorage.getItem("isAuth") === "true") getQuiz();
+   
   }, []);
 
   const getQuiz = async () => {
@@ -54,6 +57,7 @@ const MainPage = (props) => {
   const [fileUrl, setFileUrl] = useState(null);
   const [fileImg, setFileImg] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
+  const [text, setText] = useState(null);
 
   // 이미지 업로드 버튼 이벤트. 미리보기
   function processImage(event) {
@@ -96,7 +100,9 @@ const MainPage = (props) => {
       alert("로그인 먼저 해주세요!");
     }
   };
-
+  const changeText = (e) => {
+    alert(e.target.value);
+  };
   //input data
   const columns = useMemo(
     () => [
@@ -107,38 +113,65 @@ const MainPage = (props) => {
       {
         accessor: "title",
         Header: "문항내용",
+        Cell: ({cell: {value}}) => (
+          <EditText defaultValue={value}/>
+        ),  
       },
       {
         accessor: "script",
         Header: "참고내용",
+        Cell: ({cell: {value}}) => (
+          <EditText defaultValue={value}/>
+        ),  
       },
       {
         accessor: `choice1`,
         Header: "선택01",
+        Cell: ({cell: {value}}) => (
+          <EditText defaultValue={value}/>
+        ),  
       },
       {
         accessor: "choice2",
         Header: "선택02",
+        Cell: ({cell: {value}}) => (
+          <EditText defaultValue={value}/>
+        ),  
       },
       {
         accessor: "choice3",
         Header: "선택03",
+        Cell: ({cell: {value}}) => (
+          <EditText defaultValue={value}/>
+        ),  
       },
       {
         accessor: "choice4",
         Header: "선택04",
+        Cell: ({cell: {value}}) => (
+          <EditText defaultValue={value}/>
+        ),  
       },
       {
         accessor: "choice5",
         Header: "선택05",
+        Cell: ({cell: {value}}) => (
+          <EditText defaultValue={value}/>
+        ),  
       },
       {
         accessor: "answer",
         Header: "정답",
+        Cell: ({cell: {value}}) => (
+          <EditText defaultValue={value}/>
+        ),  
       },
       {
         accessor: "score",
         Header: "점수",
+        Cell: ({cell: {value}}) => (
+          <EditText value={value} />
+        ),  
       },
       {
         Header: "Delete",
@@ -216,7 +249,7 @@ const MainPage = (props) => {
       style={{
         backgroundColor: "#f0f8ff",
         width: "100vw",
-        height: "100vh",
+        height: "88vh",
         marginTop: "80px",
       }}
     >
@@ -294,7 +327,7 @@ const MainPage = (props) => {
             style={{
               backgroundColor: "black",
               color: "white",
-              height: "30px",
+              height: "3vh",
               width: "100%",
               position: "fixed",
               bottom: "0",
