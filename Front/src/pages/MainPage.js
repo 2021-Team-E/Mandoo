@@ -55,12 +55,16 @@ const MainPage = (props) => {
   const [fileImg, setFileImg] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
 
-  // 이미지 업로드 버튼 이벤트. 미리보기
-  function processImage(event) {
-    const imageFile = event.target.files[0];
-    const imageUrl = URL.createObjectURL(imageFile);
+  const stateUpdate = (imageUrl, imageFile) => {
     setFileUrl(imageUrl);
     setFileImg(imageFile);
+  };
+
+  // 이미지 업로드 버튼 이벤트. 미리보기
+  async function processImage(event) {
+    const imageFile = event.target.files[0];
+    const imageUrl = URL.createObjectURL(imageFile);
+    await stateUpdate(imageUrl, imageFile);
   }
 
   // 모달 여는 함수
@@ -139,13 +143,33 @@ const MainPage = (props) => {
         accessor: "score",
         Header: "점수",
       },
+      {
+        Header: "Delete",
+        id: "delete",
+        accessor: (str) => "delete",
+
+        Cell: (tableProps) => {
+          return (
+            <span
+              style={{
+                cursor: "pointer",
+                color: "blue",
+                textDecoration: "underline",
+              }}
+              onClick={() => deleteQuiz(tableProps.row.original._id)}
+            >
+              Delete
+            </span>
+          );
+        },
+      },
     ],
-    []
+    [quizzes]
   );
   const data = useMemo(() => {
     const showed_data = quizzes?.map((quiz) => {
-      //여기에 db랑 연결하는 코드 각각 작성
       let data_return = {
+        _id: quiz._id,
         qid: "0001",
         title: quiz.title,
         answer: quiz.answer,
@@ -153,9 +177,11 @@ const MainPage = (props) => {
         image: quiz.image,
         score: "3점",
       };
+      /*
       quiz.choices.map((choice, i) => {
         data_return[`choice${i + 1}`] = choice;
       });
+      */
       return data_return;
     });
     return showed_data;
@@ -173,13 +199,26 @@ const MainPage = (props) => {
         })
         .then(function (response) {
           console.log(response);
+          closeModal();
+          window.location.replace("/");
         });
     } catch (e) {
       console.log("error");
     }
-    closeModal();
-    window.location.replace("/");
   };
+
+  // 삭제 버튼 클릭 이벤트
+  const deleteQuiz = async (quiz_id) => {
+    const deletedquiz = { quiz_id: quiz_id };
+    try {
+      const request = await axios
+        .delete(`${USER_SERVER}/api/quizdelete`, { data: deletedquiz })
+        .then((response) => window.location.replace("/"));
+    } catch {
+      console.log("error");
+    }
+  };
+
   //<BlankTop DesktopMargin='100' TabletMargin='3' MobileMargin='1'/>
   return (
     <div
