@@ -1,4 +1,4 @@
-from imageai.Detection.Custom import CustomObjectDetection
+#from imageai.Detection.Custom import CustomObjectDetection
 
 def get_img(image):
 

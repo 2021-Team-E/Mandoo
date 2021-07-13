@@ -12,6 +12,10 @@ PyJWT
 flask_cors
 flask_restx
 werkzeug
+<<<<<<< HEAD
+=======
+
+>>>>>>> 860b4618188ba5c26c41aedd0eea5284448af17f
 tensorflow==2.2
 keras==2.4.3 
 numpy==1.19.3 
@@ -22,3 +26,8 @@ matplotlib==3.3.2
 opencv-python 
 keras-resnet==0.2.0
 imageai 
+<<<<<<< HEAD
+boto3
+=======
+
+>>>>>>> 860b4618188ba5c26c41aedd0eea5284448af17f
