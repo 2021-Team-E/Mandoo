@@ -67,6 +67,7 @@ const MainPage = (props) => {
   const openModal = () => {
     if (window.localStorage.getItem("isAuth") === "true") {
       setModalOpen(true);
+      setFileUrl(null);
     } else {
       alert("로그인을 먼저 해주세요!");
       setModalOpen(false);
@@ -163,6 +164,9 @@ const MainPage = (props) => {
 
   // 전송 버튼 클릭 이벤트
   const sendImage = () => {
+    if(fileUrl==null) {
+      alert("이미지를 업로드해주세요.");
+    } else{
     const formData = new FormData();
     formData.append("image", fileImg);
     console.log(formData);
@@ -179,6 +183,7 @@ const MainPage = (props) => {
     }
     closeModal();
     window.location.replace("/");
+    }
   };
   //<BlankTop DesktopMargin='100' TabletMargin='3' MobileMargin='1'/>
   return (
