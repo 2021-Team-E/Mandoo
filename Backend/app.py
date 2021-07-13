@@ -12,6 +12,7 @@ from flask_cors import CORS
 from detection import get_img
 from werkzeug.datastructures import FileStorage
 from werkzeug.utils import secure_filename
+import boto3
 
 
 app = Flask(__name__)
@@ -48,7 +49,7 @@ db = mongo.Mandoo #Mandoo database
 user = db.user   #user table
 quiz = db.quiz   #quiz table
 
-
+s3 = boto3.client('s3', aws_access_key_id = 'AKIAQ3ENSDXJRP5WKES4',aws_secret_access_key = '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')
 
 @api.route('/hello')
 class HelloWorld(Resource):
@@ -212,10 +213,10 @@ class Image(Resource):
 
         })
         
-        
         imagefilename = id + ".png" # 서버 디렉토리에 저장하는 과정 (혹시 몰라서 추가)
         img.save('./upload/{0}'.format(secure_filename(imagefilename)))
-       
+    
+        #s3.put_object(Body=img, Bucket="mandoo", Key=str(imagefilename))
 
         title, choices, answer, script, image = get_img(img)
         user_id = session.get('id')
@@ -226,7 +227,7 @@ class Image(Resource):
             "choices": choices,
             "answer": answer,
             "script" : script,
-            "image" : image
+            "image" : imagefilename
         }
         quiz_id = quiz.insert_one(processed_quiz)
         author = user.find_one({"id":user_id})
