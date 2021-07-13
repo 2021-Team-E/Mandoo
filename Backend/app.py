@@ -308,7 +308,7 @@ class Quizmodify(Resource):
     @api.response(201, '퀴즈 수정 성공')
     @api.response(400, 'Bad Request')
     @api.response(401, '로그인 필요')
-    def post(self):
+    def put(self):
         
         id = request.cookies.get('jwt')
         session_check = session.get('id')
