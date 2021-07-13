@@ -3,13 +3,13 @@ import Header from "../components/Header";
 import Table from "../components/Table";
 //import BlankTop from '../components/BlankTop';
 //import {useHistory} from 'react-router-dom';
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect} from "react";
 import axios from "axios";
 import { USER_SERVER } from "../config";
 import Modal from "../components/Modals/Modal.js";
 import addImg from "./imgIcon.png";
 import { useHistory } from "react-router-dom";
-import { EditText,EditTextarea } from "react-edit-text";
+import { EditText} from "react-edit-text";
 
 // 테두리 만드는 css
 const divBorder = {
@@ -61,6 +61,15 @@ const MainPage = (props) => {
   const [fileUrl, setFileUrl] = useState(null);
   const [fileImg, setFileImg] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
+  const [resultVal, setValue] = useState(null);
+  const [resultJson, setJson] = useState({
+    quiz_id: "",
+    title: "",
+    answer: "",
+    script: "",
+    image: "",
+    score: "",
+  });
 
   const stateUpdate = (imageUrl, imageFile) => {
     setFileUrl(imageUrl);
@@ -107,6 +116,7 @@ const MainPage = (props) => {
       alert("로그인 먼저 해주세요!");
     }
   };
+  
   /*
   const changeText = (e) => {
     this.setState({
@@ -116,9 +126,50 @@ const MainPage = (props) => {
   };
   */
   
-  const handleSave = ({name, value, prevalue}) => {
-    alert(name + ' saved as ' + value + ' (prev: ' + prevalue + ')');
-  }
+  /*
+  // 바뀌는 value값 저장
+  // input 태그 안에 onChange 없으면 오류나서 의미없는 함수 만듦
+  const handleSave = ({value, name, className}) => {
+    setValue(value);
+    //alert(value);
+    //alert(name);
+    //alert(className);
+    //console.log(className);
+    //alert(resultJson.title);
+  }*/
+
+  // 바뀌는 값의 json 저장 -> 이값은 나중에 확정 버튼 누르면 서버로 가게.
+  const changeQuiz = async(quiz) => {
+    let q_choices = [];
+    q_choices.push(quiz.choice1, quiz.choice2, quiz.choice3, quiz.choice4, quiz.choice5);
+
+    const changedquiz = {
+      _id: quiz._id,
+      title: quiz.title,
+      answer: Number(quiz.answer),
+      script: quiz.script,
+      image: quiz.image,
+     // score: quiz.score,
+      choices: q_choices,
+    };
+    
+    // quiz.choices.map((choice, i) => {
+    //   changedquiz[`choice${i + 1}`] = choice;
+    // });
+    setJson(changedquiz); // 혹시 몰라서 상태 저장
+    console.log(quiz);
+    console.log(typeof(q_choices));
+    console.log(changedquiz);
+    try {
+      const request = await axios
+        .post(`${USER_SERVER}/api/quizmodify`, { data: changedquiz })
+        .then((response) => window.location.replace("/"));
+    } catch {
+      console.log("error");
+    }
+  };
+
+
 
   //input data
   const columns = useMemo(
@@ -130,8 +181,8 @@ const MainPage = (props) => {
       {
         accessor: "title",
         Header: "문항내용",
-        Cell: ({cell: {value}}) => (
-          <EditText onSave={handleSave} defaultValue={value}/>
+        Cell: (tableProps) => (
+          <EditText name="title"  onSave={() => changeQuiz(tableProps.row.original)}  defaultValue={tableProps.cell.value}/>
         ),  
       },
       {
