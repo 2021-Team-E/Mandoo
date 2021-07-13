@@ -11,4 +11,5 @@ PyJWT
 flask_cors
 flask_restx
 werkzeug
-
+boto
+awscli
