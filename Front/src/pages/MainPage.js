@@ -50,10 +50,10 @@ const MainPage = (props) => {
         setQuizzes(response.data.quiz_list);
       }
     }catch(error) {
-      if(error.response.status===401){
-        alert(error.response.data.message);
-        window.localStorage.setItem("isAuth", "false");
-      }
+      //if(error.response.status===401){
+      //  alert(error.response.data.message);
+      //  window.localStorage.setItem("isAuth", "false");
+      //}
     }
   };
 
@@ -61,7 +61,6 @@ const MainPage = (props) => {
   const [fileUrl, setFileUrl] = useState(null);
   const [fileImg, setFileImg] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
-  const [text, setText] = useState(null);
 
   const stateUpdate = (imageUrl, imageFile) => {
     setFileUrl(imageUrl);
