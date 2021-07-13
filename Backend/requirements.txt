@@ -1,11 +1,10 @@
-flask
+flask == 1.1.2
 redis
 pymysql
 pymongo
 flask-mysql
 jsonify
 requests
-cryptography
 gunicorn
 bcrypt
 PyJWT
