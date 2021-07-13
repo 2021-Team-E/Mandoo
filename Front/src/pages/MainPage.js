@@ -164,11 +164,10 @@ const MainPage = (props) => {
         ),
       },
     ],
-    []
+    [quizzes]
   );
   const data = useMemo(() => {
     const showed_data = quizzes?.map((quiz) => {
-      //여기에 db랑 연결하는 코드 각각 작성
       let data_return = {
         qid: "0001",
         title: quiz.title,
@@ -177,9 +176,11 @@ const MainPage = (props) => {
         image: quiz.image,
         score: "3점",
       };
+      /*
       quiz.choices.map((choice, i) => {
         data_return[`choice${i + 1}`] = choice;
       });
+      */
       return data_return;
     });
     return showed_data;
