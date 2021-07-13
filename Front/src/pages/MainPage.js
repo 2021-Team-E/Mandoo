@@ -144,24 +144,20 @@ const MainPage = (props) => {
         id: "delete",
         accessor: (str) => "delete",
 
-        Cell: (tableProps) => (
-          <span
-            style={{
-              cursor: "pointer",
-              color: "blue",
-              textDecoration: "underline",
-            }}
-            onClick={() => {
-              // ES6 Syntax use the rvalue if your data is an array.
-              const dataCopy = [...quizzes];
-              // It should not matter what you name tableProps. It made the most sense to me.
-              dataCopy.splice(tableProps.row.index, 1);
-              setQuizzes(dataCopy);
-            }}
-          >
-            Delete
-          </span>
-        ),
+        Cell: (tableProps) => {
+          return (
+            <span
+              style={{
+                cursor: "pointer",
+                color: "blue",
+                textDecoration: "underline",
+              }}
+              onClick={() => deleteQuiz(tableProps.row.original._id)}
+            >
+              Delete
+            </span>
+          );
+        },
       },
     ],
     [quizzes]
@@ -177,11 +173,11 @@ const MainPage = (props) => {
         image: quiz.image,
         score: "3점",
       };
-      /*
+
       quiz.choices.map((choice, i) => {
         data_return[`choice${i + 1}`] = choice;
       });
-      */
+
       return data_return;
     });
     return showed_data;
