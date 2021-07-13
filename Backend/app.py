@@ -49,7 +49,8 @@ db = mongo.Mandoo #Mandoo database
 user = db.user   #user table
 quiz = db.quiz   #quiz table
 
-s3 = boto3.client('s3', aws_access_key_id = 'AKIAQ3ENSDXJRP5WKES4',aws_secret_access_key = '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')
+s3 = boto3.client('s3', aws_access_key_id = 'AKIAQDQUD3DYY3NSXDEL',aws_secret_access_key = '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')
+#s3 = boto3.resource('s3')
 
 @api.route('/hello')
 class HelloWorld(Resource):
@@ -215,8 +216,10 @@ class Image(Resource):
         
         imagefilename = id + ".png" # 서버 디렉토리에 저장하는 과정 (혹시 몰라서 추가)
         img.save('./upload/{0}'.format(secure_filename(imagefilename)))
-    
-        #s3.put_object(Body=img, Bucket="mandoo", Key=str(imagefilename))
+
+        #s3.Bucket('summer-program').put_object(Body=img, Bucket="summer-program", Key=str(imagefilename))
+        s3.put_object(Body='./upload/{0}'.format(secure_filename(imagefilename)), Bucket="summer-program", Key=imagefilename)
+        img_url = "https://summer-program.s3.ap-northeast-2.amazonaws.com/"+imagefilename
 
         title, choices, answer, script, image = get_img(img)
         user_id = session.get('id')
@@ -226,8 +229,8 @@ class Image(Resource):
             "title":title,
             "choices": choices,
             "answer": answer,
-            "script" : script,
-            "image" : imagefilename
+            "script" : img_url,
+            "image" : img_url,
         }
         quiz_id = quiz.insert_one(processed_quiz)
         author = user.find_one({"id":user_id})
