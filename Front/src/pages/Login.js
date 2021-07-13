@@ -77,12 +77,11 @@ const Login = () => {
       if (response.data.success) {
         window.localStorage.setItem("isAuth", "true");
         history.push(`/`);
-      } else {
-        alert("로그인 중 오류 발생!");
-      }
-    } catch {
-      alert("로그인 중 오류 발생!");
+      } 
+    } catch(error) {
+        alert(error.response.data.message);
     }
+      
   };
 
   useEffect(() => {}, [info]);

@@ -89,9 +89,13 @@ const SignUp = () => {
       const response = await axios.post(`${USER_SERVER}/api/signup`, data);
       console.log(response);
       if (response.data.success) history.push(`/`);
-      else alert("회원가입이 완료되지 않았습니다!");
-    } catch {
-      console.log("error");
+      
+    } catch(error) {
+        if(error.response.status===403){
+          alert(error.response.data.message);
+          
+        }
+        
     }
   };
 
