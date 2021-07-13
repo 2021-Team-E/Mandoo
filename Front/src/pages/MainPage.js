@@ -140,12 +140,35 @@ const MainPage = (props) => {
         accessor: "score",
         Header: "점수",
       },
+      {
+        Header: "Delete",
+        id: "delete",
+        accessor: (str) => "delete",
+
+        Cell: (tableProps) => (
+          <span
+            style={{
+              cursor: "pointer",
+              color: "blue",
+              textDecoration: "underline",
+            }}
+            onClick={() => {
+              // ES6 Syntax use the rvalue if your data is an array.
+              const dataCopy = [...quizzes];
+              // It should not matter what you name tableProps. It made the most sense to me.
+              dataCopy.splice(tableProps.row.index, 1);
+              setQuizzes(dataCopy);
+            }}
+          >
+            Delete
+          </span>
+        ),
+      },
     ],
-    []
+    [quizzes]
   );
   const data = useMemo(() => {
     const showed_data = quizzes?.map((quiz) => {
-      //여기에 db랑 연결하는 코드 각각 작성
       let data_return = {
         qid: "0001",
         title: quiz.title,
@@ -154,9 +177,11 @@ const MainPage = (props) => {
         image: quiz.image,
         score: "3점",
       };
+      /*
       quiz.choices.map((choice, i) => {
         data_return[`choice${i + 1}`] = choice;
       });
+      */
       return data_return;
     });
     return showed_data;
