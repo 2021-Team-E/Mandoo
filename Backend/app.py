@@ -215,10 +215,9 @@ class Image(Resource):
         
         imagefilename = id + ".png" # 서버 디렉토리에 저장하는 과정 (혹시 몰라서 추가)
         img.save('./upload/{0}'.format(secure_filename(imagefilename)))
-    
-        #s3.put_object(Body=img, Bucket="mandoo", Key=str(imagefilename))
 
-        title, choices, answer, script, image = get_img(img)
+
+        title, choices, answer, script, image = get_img(imagefilename)
         user_id = session.get('id')
         
         processed_quiz = {
