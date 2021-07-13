@@ -55,12 +55,16 @@ const MainPage = (props) => {
   const [fileImg, setFileImg] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
 
-  // 이미지 업로드 버튼 이벤트. 미리보기
-  function processImage(event) {
-    const imageFile = event.target.files[0];
-    const imageUrl = URL.createObjectURL(imageFile);
+  const stateUpdate = (imageUrl, imageFile) => {
     setFileUrl(imageUrl);
     setFileImg(imageFile);
+  };
+
+  // 이미지 업로드 버튼 이벤트. 미리보기
+  async function processImage(event) {
+    const imageFile = event.target.files[0];
+    const imageUrl = URL.createObjectURL(imageFile);
+    await stateUpdate(imageUrl, imageFile);
   }
 
   // 모달 여는 함수
@@ -195,12 +199,12 @@ const MainPage = (props) => {
         })
         .then(function (response) {
           console.log(response);
+          closeModal();
+          window.location.replace("/");
         });
     } catch (e) {
       console.log("error");
     }
-    closeModal();
-    window.location.replace("/");
   };
 
   // 삭제 버튼 클릭 이벤트
