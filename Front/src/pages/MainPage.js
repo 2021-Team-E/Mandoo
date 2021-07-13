@@ -43,7 +43,7 @@ const MainPage = (props) => {
     const response = await axios.get(`${USER_SERVER}/api/showquiz`);
     console.log(response);
     if (response.data.success) {
-      setQuizzes(response.data.data.quiz_list);
+      setQuizzes(response.data.quiz_list);
     } else {
       alert("로그인이 필요합니다.");
       window.localStorage.setItem("isAuth", "false");
