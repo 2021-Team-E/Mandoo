@@ -173,12 +173,13 @@ const MainPage = (props) => {
         })
         .then(function (response) {
           console.log(response);
+          window.location.replace("/");
         });
     } catch (e) {
       console.log("error");
     }
     closeModal();
-    window.location.replace("/");
+    //window.location.replace("/");
   };
   //<BlankTop DesktopMargin='100' TabletMargin='3' MobileMargin='1'/>
   return (
