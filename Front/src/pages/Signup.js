@@ -89,14 +89,12 @@ const SignUp = () => {
       const response = await axios.post(`${USER_SERVER}/api/signup`, data);
       console.log(response);
       if (response.data.success) history.push(`/`);
-      // else if (response.status === 403) {
-      //   alert("error");
-      // }
+      
     } catch(error) {
-      if(error.response.status===403){
-        alert(error.response.data.message);
-        
-      }
+        if(error.response.status===403){
+          alert(error.response.data.message);
+          
+        }
         
     }
   };

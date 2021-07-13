@@ -40,13 +40,17 @@ const MainPage = (props) => {
   }, []);
 
   const getQuiz = async () => {
-    const response = await axios.get(`${USER_SERVER}/api/showquiz`);
-    console.log(response);
-    if (response.data.success) {
-      setQuizzes(response.data.quiz_list);
-    } else {
-      alert("로그인이 필요합니다.");
-      window.localStorage.setItem("isAuth", "false");
+    try{
+      const response = await axios.get(`${USER_SERVER}/api/showquiz`);
+      console.log(response);
+      if (response.data.success) {
+        setQuizzes(response.data.quiz_list);
+      }
+    }catch(error) {
+      if(error.response.status===401){
+        alert(error.response.data.message);
+        window.localStorage.setItem("isAuth", "false");
+      }
     }
   };
 
@@ -166,20 +170,27 @@ const MainPage = (props) => {
     const formData = new FormData();
     formData.append("image", fileImg);
     console.log(formData);
-    try {
-      const request = axios
-        .post(`${USER_SERVER}/api/imageupload`, formData, {
-          withCredentials: true,
-        })
-        .then(function (response) {
-          console.log(response);
-          window.location.replace("/");
-        });
-    } catch (e) {
-      console.log("error");
+    if(fileImg===null){ //이미지 선택 안하고 업로드 버튼 눌렀을 때 버그 수정
+      alert("이미지가 선택되지 않았습니다");
+    }
+    else{
+      try {
+        const request = axios
+          .post(`${USER_SERVER}/api/imageupload`, formData, {
+            withCredentials: true,
+          })
+          .then(function (response) {
+            if (response.data.success) {  //성공적으로 이미지 업로드 시 replace
+              console.log(response);
+              window.location.replace("/");
+            } 
+          });
+      }catch(error) {
+        alert(error.response.data.message);
+      }
     }
     closeModal();
-    //window.location.replace("/");
+   
   };
   //<BlankTop DesktopMargin='100' TabletMargin='3' MobileMargin='1'/>
   return (

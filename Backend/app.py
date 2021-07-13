@@ -82,7 +82,7 @@ class Signup(Resource):
                 "message": "아이디가 이미 있습니다",
                 }
             response = jsonify(data)
-            response.status_code = 403 # or 400 or whatever
+            response.status_code = 403 
             return response 
 
         new_user['password'] = bcrypt.hashpw(new_user['password'].encode('utf-8'), bcrypt.gensalt()) # 비밀번호 해싱
@@ -96,23 +96,16 @@ class Signup(Resource):
         user_id = user.insert_one(user_info).inserted_id
 
         data = {
+            "success": True,
             "message" : "회원가입 성공",
             "id" : new_user["id"],
             "name" : new_user["name"]
             }
         response = jsonify(data)
-        response.status_code = 201 # or 400 or whatever
+        response.status_code = 201 
         return response 
 
-        # return jsonify({
-        #     "status": 201,
-        #     "success": True,
-        #     "message" : "회원가입 성공",
-        #     "data" : { 
-        #         "id" : new_user["id"],
-        #         "name" : new_user["name"]
-        #     }
-        # })
+       
 
 
 @api.route('/api/login')
@@ -134,11 +127,13 @@ class login(Resource):
 
         result = user.find_one({ "id" : id })   #user table에서 일치하는 아이디 검색
         if result is None:  #일치하는 아이디가 없음
-            return jsonify({
-                "status": 403,
-                "success": False,
-                "message": "해당 아이디가 없습니다"
-            }) 
+            data = {
+                "message" : "해당 아이디가 없습니다",
+            }
+            response = jsonify(data)
+            response.status_code = 403 
+            return response 
+        
 
         if result and bcrypt.checkpw(password.encode('utf-8'), result['password'].decode("utf8").encode('utf-8')):
             id = result['id']
@@ -147,46 +142,28 @@ class login(Resource):
             }
             token = jwt.encode(payload, SECRET_KEY, ALGORITHM)  #토큰 생성(인코딩)
             token = jwt.decode(token, SECRET_KEY, ALGORITHM)   #토큰 디코팅
-            print(token)
+    
             session['id'] = login_user['id']
 
             data = {
+                "success": True,
                 "message" : "로그인 성공",
                 "accessToken": token['id'],
-                "user_id" : login_user['id'],
-                "success": True
+                "user_id" : login_user['id']
                 }
             response = jsonify(data)
-            response.status_code = 201 # or 400 or whatever
+            response.status_code = 201 
             response.set_cookie('jwt', token['id'])
             return response 
-
-            # out = jsonify({
-            #     "status": 201,
-            #     "success": True,
-            #     "message" : "로그인 성공",
-            #     "data" : { 
-            #         "accessToken": token['id'],
-            #         "user_id" : login_user['id']
-            #         }
-            # })
-            # out.set_cookie('jwt', token['id'])
-            # #session['jwt'] = token
-
-            # return out
 
         else:
             data = {
                 "message" : "비밀번호가 틀렸습니다",
             }
             response = jsonify(data)
-            response.status_code = 403 # or 400 or whatever
+            response.status_code = 403
             return response 
-            # return jsonify({
-            #     "status": 403,
-            #     "success": False,
-            #     "message": "비밀번호가 틀렸습니다"
-            # })
+            
 
 
 @api.route('/api/logout')
@@ -204,7 +181,7 @@ class logout(Resource):
                 "success": True
                 }
             response = jsonify(data)
-            response.status_code = 200 # or 400 or whatever
+            response.status_code = 200 
             response.set_cookie("jwt", '', expires=0)
             return response 
 
@@ -218,7 +195,6 @@ class Image(Resource):
     @api.response(201, '이미지 등록 성공')
     @api.response(400, 'Bad Request')
     @api.response(401, '로그인 필요')
-    @api.response(403, '이미지가 선택되지 않았습니다')
 
     def post(self):
         args = image_parser.parse_args()
@@ -228,28 +204,14 @@ class Image(Resource):
         result = user.find_one({ "id" : id })   #user table에서 일치하는 아이디 검색
     
         if result is None:  #일치하는 아이디가 없음
-            data = {"error": "로그인 필요"}
-            response = jsonify(data)
-            response.status_code = 401 # or 400 or whatever
-            return response
-
-        
-        img = args['image']
-        if img.filename =='':
             data = {
-                "message" : "이미지가 선택되지 않았습니다",
+                "message": "로그인 필요"
             }
             response = jsonify(data)
-            response.status_code = 403 # or 400 or whatever
+            response.status_code = 401 
             return response
 
-            # return jsonify({
-            # "status": 403,
-            # "success": True,
-            # "message": "이미지가 선택되지 않았습니다"
-
-            # })
-        
+        img = args['image']
         
         imagefilename = id + ".png" # 서버 디렉토리에 저장하는 과정 (혹시 몰라서 추가)
         img.save('./upload/{0}'.format(secure_filename(imagefilename)))
@@ -278,14 +240,9 @@ class Image(Resource):
             "message" : "이미지 등록 성공",
         }
         response = jsonify(data)
-        response.status_code = 201 # or 400 or whatever
+        response.status_code = 201 
         return response
-        # return jsonify({
-        #     "status": 201,
-        #     "success": True,
-        #     "message": "이미지 등록 성공"
-        # })
-
+        
 
 
 @api.route('/api/showquiz')
@@ -303,9 +260,11 @@ class Showquiz(Resource):
         result = user.find_one({ "id" : id })   #user table에서 일치하는 아이디 검색
     
         if result is None or session_check is None:  #일치하는 아이디가 없음
-            data = {"message": "로그인 필요"}
+            data = {
+                "message": "로그인 필요"
+            }
             response = jsonify(data)
-            response.status_code = 401 # or 400 or whatever
+            response.status_code = 401
             return response
 
 
@@ -324,17 +283,10 @@ class Showquiz(Resource):
             "quiz_list": quiz_list
             }
         response = jsonify(data)
-        response.status_code = 200 # or 400 or whatever
+        response.status_code = 200 
         return response
 
-        # return jsonify({
-        #     "status": 200,
-        #     "success": True,
-        #     "message": "퀴즈 리스트를 모두 가져옴",
-        #     "data" : {
-        #         "quiz_list": quiz_list
-        #     }
-        # })
+
 
 @api.route('/api/quizmodify')
 class Quizmodify(Resource):
@@ -358,9 +310,11 @@ class Quizmodify(Resource):
         result = user.find_one({ "id" : id })   #user table에서 일치하는 아이디 검색
     
         if result is None or session_check is None:  #일치하는 아이디가 없음
-            data = {"error": "로그인 필요"}
+            data = {
+                "message": "로그인 필요"
+            }
             response = jsonify(data)
-            response.status_code = 401 # or 400 or whatever
+            response.status_code = 401
             return response
         
         args = qmodify_parser.parse_args()
@@ -382,15 +336,9 @@ class Quizmodify(Resource):
             "message": "퀴즈 수정 성공"
         }
         response = jsonify(data)
-        response.status_code = 201 # or 400 or whatever
+        response.status_code = 201 
         return response
-        # return jsonify({
-        #     "status": 201,
-        #     "success": True,
-        #     "message": "퀴즈 수정 성공"
-            
-        # })
-
+        
 
 @api.route('/api/quizdelete')
 class Quizdelete(Resource):
@@ -410,9 +358,11 @@ class Quizdelete(Resource):
         result = user.find_one({ "id" : id })   #user table에서 일치하는 아이디 검색
     
         if result is None or session_check is None:  #일치하는 아이디가 없음
-            data = {"error": "로그인 필요"}
+            data = {
+                "message": "로그인 필요"
+            }
             response = jsonify(data)
-            response.status_code = 401 # or 400 or whatever
+            response.status_code = 401 
             return response
 
         
@@ -421,17 +371,14 @@ class Quizdelete(Resource):
         del_quiz = quiz.find_one({"_id":quiz_id}) # 삭제하고자하는 퀴즈가 quiz 테이블에 있는지 확인
 
         if del_quiz is None:
-            data = {"message": "해당 퀴즈가 퀴즈 테이블에 없습니다"}
+            data = {
+                "message": "해당 퀴즈가 퀴즈 테이블에 없습니다"
+            }
             response = jsonify(data)
-            response.status_code = 403 # or 400 or whatever
+            response.status_code = 403 
             return response
 
-            # return jsonify({
-            #     "status": 403,
-            #     "success": False,
-            #     "message": "해당 퀴즈가 퀴즈 테이블에 없습니다"
-            # })
-
+            
         user_id = session.get('id')
         author = user.find_one({"id":user_id})  #quiz 삭제를 요청한 사용자의 아이디 author로 얻음
         check_quiz_id = 0
@@ -454,15 +401,9 @@ class Quizdelete(Resource):
                 "message": "퀴즈 삭제 성공"
             }
             response = jsonify(data)
-            response.status_code = 201 # or 400 or whatever
+            response.status_code = 201
             return response
 
-            # return jsonify({
-            #     "status": 201,
-            #     "success": True,
-            #     "message": "퀴즈 삭제 성공"
-                
-            # })
 
         if check_quiz_id == 0:              # 유저가 해당 quiz를 소유하고 있지 않다면
 
@@ -470,15 +411,10 @@ class Quizdelete(Resource):
                 "message": "퀴즈를 소유하고 있지 않습니다"
             }
             response = jsonify(data)
-            response.status_code = 403 # or 400 or whatever
+            response.status_code = 403 
             return response
 
-            # return jsonify({
-            #     "status": 403,
-            #     "success": False,
-            #     "message": "퀴즈를 소유하고 있지 않습니다"
-                
-            # })
+           
 
 #app.run(host='0.0.0.0',debug=True)
 if __name__ =="__main__":
