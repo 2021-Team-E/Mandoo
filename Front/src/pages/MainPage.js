@@ -43,13 +43,17 @@ const MainPage = (props) => {
   }, []);
 
   const getQuiz = async () => {
-    const response = await axios.get(`${USER_SERVER}/api/showquiz`);
-    console.log(response);
-    if (response.data.success) {
-      setQuizzes(response.data.data.quiz_list);
-    } else {
-      alert("로그인이 필요합니다.");
-      window.localStorage.setItem("isAuth", "false");
+    try{
+      const response = await axios.get(`${USER_SERVER}/api/showquiz`);
+      console.log(response);
+      if (response.data.success) {
+        setQuizzes(response.data.quiz_list);
+      }
+    }catch(error) {
+      if(error.response.status===401){
+        alert(error.response.data.message);
+        window.localStorage.setItem("isAuth", "false");
+      }
     }
   };
 
@@ -59,12 +63,16 @@ const MainPage = (props) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [text, setText] = useState(null);
 
-  // 이미지 업로드 버튼 이벤트. 미리보기
-  function processImage(event) {
-    const imageFile = event.target.files[0];
-    const imageUrl = URL.createObjectURL(imageFile);
+  const stateUpdate = (imageUrl, imageFile) => {
     setFileUrl(imageUrl);
     setFileImg(imageFile);
+  };
+
+  // 이미지 업로드 버튼 이벤트. 미리보기
+  async function processImage(event) {
+    const imageFile = event.target.files[0];
+    const imageUrl = URL.createObjectURL(imageFile);
+    await stateUpdate(imageUrl, imageFile);
   }
 
   // 모달 여는 함수
@@ -188,24 +196,20 @@ const MainPage = (props) => {
         id: "delete",
         accessor: (str) => "delete",
 
-        Cell: (tableProps) => (
-          <span
-            style={{
-              cursor: "pointer",
-              color: "blue",
-              textDecoration: "underline",
-            }}
-            onClick={() => {
-              // ES6 Syntax use the rvalue if your data is an array.
-              const dataCopy = [...quizzes];
-              // It should not matter what you name tableProps. It made the most sense to me.
-              dataCopy.splice(tableProps.row.index, 1);
-              setQuizzes(dataCopy);
-            }}
-          >
-            Delete
-          </span>
-        ),
+        Cell: (tableProps) => {
+          return (
+            <span
+              style={{
+                cursor: "pointer",
+                color: "blue",
+                textDecoration: "underline",
+              }}
+              onClick={() => deleteQuiz(tableProps.row.original._id)}
+            >
+              Delete
+            </span>
+          );
+        },
       },
     ],
     [quizzes]
@@ -213,6 +217,7 @@ const MainPage = (props) => {
   const data = useMemo(() => {
     const showed_data = quizzes?.map((quiz) => {
       let data_return = {
+        _id: quiz._id,
         qid: "0001",
         title: quiz.title,
         answer: quiz.answer,
@@ -220,11 +225,11 @@ const MainPage = (props) => {
         image: quiz.image,
         score: "3점",
       };
-      /*
+
       quiz.choices.map((choice, i) => {
         data_return[`choice${i + 1}`] = choice;
       });
-      */
+
       return data_return;
     });
     return showed_data;
@@ -232,27 +237,43 @@ const MainPage = (props) => {
 
   // 전송 버튼 클릭 이벤트
   const sendImage = () => {
-    if(fileUrl==null) {
-      alert("이미지를 업로드해주세요.");
-    } else{
     const formData = new FormData();
     formData.append("image", fileImg);
     console.log(formData);
-    try {
-      const request = axios
-        .post(`${USER_SERVER}/api/imageupload`, formData, {
-          withCredentials: true,
-        })
-        .then(function (response) {
-          console.log(response);
-        });
-    } catch (e) {
-      console.log("error");
+    if(fileImg===null){ //이미지 선택 안하고 업로드 버튼 눌렀을 때 버그 수정
+      alert("이미지가 선택되지 않았습니다");
+    }
+    else{
+      try {
+        const request = axios
+          .post(`${USER_SERVER}/api/imageupload`, formData, {
+            withCredentials: true,
+          })
+          .then(function (response) {
+            if (response.data.success) {  //성공적으로 이미지 업로드 시 replace
+              console.log(response);
+              window.location.replace("/");
+            } 
+          });
+      }catch(error) {
+        alert(error.response.data.message);
+      }
     }
     closeModal();
-    window.location.replace("/");
+  };
+
+  // 삭제 버튼 클릭 이벤트
+  const deleteQuiz = async (quiz_id) => {
+    const deletedquiz = { quiz_id: quiz_id };
+    try {
+      const request = await axios
+        .delete(`${USER_SERVER}/api/quizdelete`, { data: deletedquiz })
+        .then((response) => window.location.replace("/"));
+    } catch {
+      console.log("error");
     }
   };
+
   //<BlankTop DesktopMargin='100' TabletMargin='3' MobileMargin='1'/>
   return (
     <div

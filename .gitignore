@@ -5,3 +5,4 @@ venv/
 *.pem
 .vscode/
 upload
+s3.py
