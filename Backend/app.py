@@ -1,15 +1,19 @@
-from flask import Flask, jsonify, request, session
+from flask import Flask, jsonify, request, session, Response
 from flask.helpers import make_response
+from werkzeug.utils import secure_filename
 from pymongo import MongoClient
 from development import SECRET_KEY, ALGORITHM
-from bson.json_util import dumps
+from bson.json_util import dumps, json
 from bson import json_util, ObjectId
 import jwt
 import bcrypt
-from flask_restx import Resource, Api, Namespace, fields, reqparse
+from flask_restx import Resource, Api, fields, reqparse, marshal
 from flask_cors import CORS
 from detection import get_img
-
+from werkzeug.datastructures import FileStorage
+from werkzeug.utils import secure_filename
+import boto3
+from s3 import AWS_SECRET_KEY, AWS_ACCESS_KEY, BUCKET_NAME
 
 app = Flask(__name__)
 api = Api(app)  # Flask 객체에 Api 객체 등록
@@ -33,6 +37,8 @@ db = mongo.Mandoo #Mandoo database
 user = db.user   #user table
 quiz = db.quiz   #quiz table
 
+s3 = boto3.client('s3', aws_access_key_id = AWS_ACCESS_KEY, aws_secret_access_key = AWS_SECRET_KEY)
+#s3 = boto3.resource('s3')
 
 @api.route('/hello')
 class HelloWorld(Resource):
@@ -259,17 +265,21 @@ class Quizmodify(Resource):
     @api.response(201, '퀴즈 수정 성공')
     @api.response(400, 'Bad Request')
     @api.response(401, '로그인 필요')
-    def post(self):
+    def put(self):
         
         id = request.cookies.get('jwt')
-      
-        if id is None:
-            return jsonify({
-                "status": 401,
-                "success": False,
-                "message": "로그인 필요"
-            })
+        session_check = session.get('id')
 
+        result = user.find_one({ "id" : id })   #user table에서 일치하는 아이디 검색
+    
+        if result is None or session_check is None:  #일치하는 아이디가 없음
+            data = {
+                "message": "로그인 필요"
+            }
+            response = jsonify(data)
+            response.status_code = 401
+            return response
+        
         args = qmodify_parser.parse_args()
         print(args)
         quiz_id = args['_id']   #str 타입으로 req 요청된 상태
@@ -284,15 +294,13 @@ class Quizmodify(Resource):
             { "$set" : { "title" : title, "choices" : choices ,"answer" : answer,"script" : script,"image" : image}}
         )
 
-     
-        return jsonify({
-            "status": 201,
+        data = {
             "success": True,
             "message": "퀴즈 수정 성공"
-            
-        })
-
-
+        }
+        response = jsonify(data)
+        response.status_code = 201 
+        return response
 
 #app.run(host='0.0.0.0',debug=True)
 if __name__ =="__main__":
