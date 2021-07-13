@@ -135,8 +135,8 @@ class login(Resource):
                 'id' : id
             }
             token = jwt.encode(payload, SECRET_KEY, ALGORITHM)  #토큰 생성(인코딩)
-            #token = jwt.decode(token, SECRET_KEY, ALGORITHM)   #토큰 디코팅
-
+            token = jwt.decode(token, SECRET_KEY, ALGORITHM)   #토큰 디코팅
+            print(token)
             session['id'] = login_user['id']
            
             out = jsonify({
@@ -144,11 +144,11 @@ class login(Resource):
                 "success": True,
                 "message" : "로그인 성공",
                 "data" : { 
-                    "accessToken": token,
+                    "accessToken": token['id'],
                     "user_id" : login_user['id']
                     }
             })
-            out.set_cookie('jwt', token)
+            out.set_cookie('jwt', token['id'])
             #session['jwt'] = token
 
             return out
@@ -193,14 +193,16 @@ class Image(Resource):
     def post(self):
         args = image_parser.parse_args()
         id = request.cookies.get('jwt')
-        #id = session.get('jwt')
-        session_check = session.get('id')
-        if id is None or session_check is None:
-            return jsonify({
-                "status": 401,
-                "success": False,
-                "message": "로그인 필요"
-            })
+        
+        
+        result = user.find_one({ "id" : id })   #user table에서 일치하는 아이디 검색
+    
+        if result is None:  #일치하는 아이디가 없음
+            data = {"error": "로그인 필요"}
+            response = jsonify(data)
+            response.status_code = 401 # or 400 or whatever
+            return response
+
 
         img = args['image']
         if img.filename =='':
@@ -254,12 +256,15 @@ class Showquiz(Resource):
         
         id = request.cookies.get('jwt')
         session_check = session.get('id')
-        if id is None or session_check is None:
-            return jsonify({
-                "status": 401,
-                "success": False,
-                "message": "로그인 필요"
-            })
+
+        result = user.find_one({ "id" : id })   #user table에서 일치하는 아이디 검색
+    
+        if result is None or session_check is None:  #일치하는 아이디가 없음
+            data = {"error": "로그인 필요"}
+            response = jsonify(data)
+            response.status_code = 401 # or 400 or whatever
+            return response
+
 
         user_id = session.get('id')
         author = user.find_one({"id":user_id}) # user테이블에서 퀴즈 가져오고자하는 사용자 찾음
@@ -297,13 +302,15 @@ class Quizmodify(Resource):
         
         id = request.cookies.get('jwt')
         session_check = session.get('id')
-        if id is None or session_check is None:
-            return jsonify({
-                "status": 401,
-                "success": False,
-                "message": "로그인 필요"
-            })
 
+        result = user.find_one({ "id" : id })   #user table에서 일치하는 아이디 검색
+    
+        if result is None or session_check is None:  #일치하는 아이디가 없음
+            data = {"error": "로그인 필요"}
+            response = jsonify(data)
+            response.status_code = 401 # or 400 or whatever
+            return response
+        
         args = qmodify_parser.parse_args()
         print(args)
         quiz_id = args['_id']   #str 타입으로 req 요청된 상태
@@ -342,13 +349,15 @@ class Quizdelete(Resource):
         id = request.cookies.get('jwt')
         session_check = session.get('id')
 
-        if id is None or session_check is None:
-            return jsonify({
-                "status": 401,
-                "success": False,
-                "message": "로그인 필요"
-            })
+        result = user.find_one({ "id" : id })   #user table에서 일치하는 아이디 검색
+    
+        if result is None or session_check is None:  #일치하는 아이디가 없음
+            data = {"error": "로그인 필요"}
+            response = jsonify(data)
+            response.status_code = 401 # or 400 or whatever
+            return response
 
+        
         args = qdelete_parser.parse_args()
         quiz_id = args['quiz_id']   #str 타입으로 req 요청된 상태
         del_quiz = quiz.find_one({"_id":quiz_id}) # 삭제하고자하는 퀴즈가 quiz 테이블에 있는지 확인
