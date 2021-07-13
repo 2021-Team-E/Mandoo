@@ -100,9 +100,19 @@ const MainPage = (props) => {
       alert("로그인 먼저 해주세요!");
     }
   };
+  /*
   const changeText = (e) => {
+    this.setState({
+      [e.target.name] : e.target.value,
+    });
     alert(e.target.value);
   };
+  */
+  
+  const handleSave = ({name, value, prevalue}) => {
+    alert(name + ' saved as ' + value + ' (prev: ' + prevalue + ')');
+  }
+
   //input data
   const columns = useMemo(
     () => [
@@ -114,7 +124,7 @@ const MainPage = (props) => {
         accessor: "title",
         Header: "문항내용",
         Cell: ({cell: {value}}) => (
-          <EditText defaultValue={value}/>
+          <EditText onSave={handleSave} defaultValue={value}/>
         ),  
       },
       {
