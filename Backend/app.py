@@ -220,6 +220,7 @@ class Image(Resource):
         s3.put_object(Body='./upload/{0}'.format(secure_filename(imagefilename)), Bucket=BUCKET_NAME, Key=imagefilename)
         img_url = "https://summer-program.s3.ap-northeast-2.amazonaws.com/"+imagefilename
 
+
         title, choices, answer, script, image = get_img(imagefilename)
         user_id = session.get('id')
         

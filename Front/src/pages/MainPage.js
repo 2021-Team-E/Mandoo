@@ -177,11 +177,11 @@ const MainPage = (props) => {
         image: quiz.image,
         score: "3점",
       };
-      /*
+
       quiz.choices.map((choice, i) => {
         data_return[`choice${i + 1}`] = choice;
       });
-      */
+
       return data_return;
     });
     return showed_data;
