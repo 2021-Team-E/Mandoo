@@ -4,11 +4,11 @@ import { useTable } from "react-table";
 
 function Table({columns, data}) {
     const {
-        getTableProps,
-        getTableBodyProps,
-        headerGroups,
-        rows,
-        prepareRow,
+        getTableProps,  //<Table>에 적용할 prop
+        getTableBodyProps,  // <tbody>에 적용할 prop
+        headerGroups, // <thead> 에서 렌더링할 데이터
+        rows, // <tbody>에서 랜더링할 데이터
+        prepareRow, 
       } = useTable({ columns, data });
 
     return (
@@ -28,7 +28,7 @@ function Table({columns, data}) {
           return (
             <tr {...row.getRowProps()}>
               {row.cells.map((cell) => (
-                <td {...cell.getCellProps()}><input type="text" value={cell.render("Cell")}/></td>
+                <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
               ))}
             </tr>
           );
