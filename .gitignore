@@ -4,6 +4,12 @@ venv/
 .DS_Store
 *.pem
 .vscode/
+<<<<<<< HEAD
 
 upload/
 s3.py
+=======
+upload/
+s3.py
+*.h5
+>>>>>>> b8ebafd42a2f18b783fd4695c604671b78ec8dc0
