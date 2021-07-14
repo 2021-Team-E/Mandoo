@@ -3,6 +3,7 @@ import BlankTop from "../components/BlankTop";
 import Button from "../components/Button";
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import { USER_SERVER } from "../config";
 import Header from "../components/Header";
@@ -15,15 +16,17 @@ const Fix = styled.div`
 
 const Wrapper = styled.div`
   width: 50%;
-  height: 100%;
-  padding: 30px;
+
+  padding: 50px;
   display: inline-block;
   flex-direction: column;
   margin-top: 10;
+  margin-left: auto;
+  margin-right: auto;
 `;
 
 const LargeP = styled.div`
-  font-size: 40px;
+  font-size: 30px;
   color: "black";
   font-family: "NanumSquare";
   margin-left: auto;
@@ -32,9 +35,9 @@ const LargeP = styled.div`
 
 const GrayCard = styled.div`
   width: 610px;
-  background-color: #dadbdb;
-  margin-top: 50px;
-  margin-bottom: 50px;
+  background-color: #f0f8ff;
+  margin-top: 30px;
+  margin-bottom: 30px;
   margin-left: auto;
   margin-right: auto;
   font-family: "NanumSquare";
@@ -43,9 +46,9 @@ const GrayCard = styled.div`
 `;
 const Input = styled.input`
   width: 480px;
-  height: 50px;
-  background-color: #eaeaea;
-  margin-top: 30px;
+  height: 40px;
+  background-color: #ffffff;
+  margin-top: 20px;
   font-family: "NanumSquare";
   font-size: 20px;
 `;
@@ -89,20 +92,18 @@ const SignUp = () => {
       const response = await axios.post(`${USER_SERVER}/api/signup`, data);
       console.log(response);
       if (response.data.success) history.push(`/`);
-      
-    } catch(error) {
-        if(error.response.status===403){
-          alert(error.response.data.message);
-          
-        }
-        
+    } catch (error) {
+      if (error.response.status === 403) {
+        alert(error.response.data.message);
+      }
     }
   };
 
   return (
     <Fix>
       <div>
-        <BlankTop DesktopMargin="3" TabletMargin="3" MobileMargin="1" />
+        {/*<BlankTop DesktopMargin="3" TabletMargin="3" MobileMargin="1" />
+         */}
         <Header />
       </div>
 
@@ -128,17 +129,30 @@ const SignUp = () => {
               onChange={onInputChange}
             />
           </form>
-          <Button
-            width="210"
-            font="20"
-            background="#3B8686"
-            color="#FAECEC"
-            marginTop="30"
-            marginRight="20"
-            onClick={pwdCheck}
-          >
-            확인
-          </Button>
+          <div style={{ clear: "both", textAlign: "center" }}>
+            <Button
+              width="100"
+              font="20"
+              background="#6495ED"
+              color="#ffffff"
+              marginTop="30"
+              marginRight="20"
+              onClick={pwdCheck}
+            >
+              확인
+            </Button>
+            <Button
+              width="100"
+              font="20"
+              background="#6495ED"
+              color="#ffffff"
+              marginTop="30"
+              marginRight="20"
+              onClick={() => history.push(`/`)}
+            >
+              취소
+            </Button>
+          </div>
         </GrayCard>
       </Wrapper>
     </Fix>

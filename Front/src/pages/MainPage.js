@@ -446,7 +446,7 @@ const MainPage = (props) => {
               border: "solid 2px black",
               marginLeft: "auto",
               float: "left",
-              marginTop: "60px"         
+              marginTop: "60px",
             }}
           >
             <Table columns={columns} data={data} />
@@ -454,8 +454,7 @@ const MainPage = (props) => {
           <div
             className="confirm"
             style={{ clear: "both", textAlign: "center" }}
-          >
-          </div>
+          ></div>
           <footer
             style={{
               backgroundColor: "black",
@@ -488,14 +487,20 @@ const MainPage = (props) => {
         </div>
       ) : (
         <div>
-          <img src={noLoginImg} alt="noLogin state" onClick={() => {alert("로그인을 해주세요")}}
-          style={{
-                width: "90vw",
-                marginLeft: "auto",
-                marginRight: "auto",
-                paddingLeft: "50px",
-                marginTop: "20px"
-              }} />
+          <img
+            src={noLoginImg}
+            alt="noLogin state"
+            onClick={() => {
+              alert("로그인을 해주세요");
+            }}
+            style={{
+              width: "90vw",
+              marginLeft: "auto",
+              marginRight: "auto",
+              paddingLeft: "50px",
+              marginTop: "20px",
+            }}
+          />
           <footer
             style={{
               backgroundColor: "black",
