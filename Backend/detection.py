@@ -79,7 +79,7 @@ def get_img(image):
             print(text)
             dict[this_labelname].append(text)
         if predictions[0] == "image":
-            print(text)
+         
             dict[this_labelname].append("imageurl")
         print("\n\n")
 
