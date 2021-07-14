@@ -6,6 +6,8 @@ from PIL import ImageEnhance, ImageFilter, Image
 import os
 import boto3
 from s3 import BUCKET_NAME
+import shutil
+
 pytesseract.pytesseract.tesseract_cmd="C:\\Program Files\\Tesseract-OCR\\tesseract.exe"
 resource = boto3.resource('s3')
 buckets = resource.Bucket(name=BUCKET_NAME)
@@ -67,13 +69,14 @@ def get_img(image):
         #The below is just to check the likelihood
         for eachPrediction, eachProbability in zip(predictions, probabilities):
             print(eachPrediction , " : " , eachProbability)
-        
 
-    
+    #shutil.rmtree('./result/') # 결과 확인 필요 없을 때 써주기 (result/ 폴더 삭제해주는 기능)
+
     title=["test"]
     choices=["1122","2222","3232","4224","5225"]
     answer="1"
     script=["script",'url']
     image="image"
     score = "2"
+    
     return title, choices, answer, script, image, score
