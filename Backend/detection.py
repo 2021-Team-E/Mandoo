@@ -1,8 +1,8 @@
-#from imageai.Detection.Custom import CustomObjectDetection
-#from imageai.Classification.Custom import CustomImageClassification
-#import os
-#import pytesseract 
-#from PIL import ImageEnhance, ImageFilter, Image
+from imageai.Detection.Custom import CustomObjectDetection
+from imageai.Classification.Custom import CustomImageClassification
+
+import pytesseract 
+from PIL import ImageEnhance, ImageFilter, Image
 
 def get_img(image):
 
