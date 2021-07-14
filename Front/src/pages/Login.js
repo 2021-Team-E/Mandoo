@@ -3,10 +3,11 @@ import BlankTop from "../components/BlankTop";
 import Button from "../components/Button";
 import React, { useState } from "react";
 import { useEffect } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import axios from "axios";
 import { USER_SERVER } from "../config";
 import Header from "../components/Header";
+import logo from "./loginLogo.PNG";
 
 const Fix = styled.div`
   min-height: 100vh;
@@ -20,32 +21,26 @@ const Wrapper = styled.div`
   padding: 30px;
   display: inline-block;
   flex-direction: column;
-  margin-top: 10;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 60px;
 `;
 
-const LargeP = styled.div`
-  font-size: 40px;
-  color: "black";
-  font-family: "NanumSquare";
-  margin-left: auto;
-  margin-right: auto;
-`;
 const GrayCard = styled.div`
   width: 610px;
-  margin-top: 50px;
-  margin-bottom: 50px;
   margin-left: auto;
   margin-right: auto;
   font-family: "NanumSquare";
-  padding: 2vw 2vw 1vw 2vw;
+  padding: 2vw 2vw 2vw 2vw;
   text-align: center;
 `;
 
 const Input = styled.input`
-  width: 480px;
-  height: 80px;
-  background-color: #eaeaea;
-  margin-top: 50px;
+  width: 450px;
+  height: 50px;
+  background-color: #ffffff;
+  margin-top: 20px;
+  margin-bottom: 20px;
   font-family: "NanumSquare";
   font-size: 20px;
 `;
@@ -91,15 +86,11 @@ const Login = () => {
       <Header />
       <Wrapper>
         <BlankTop DesktopMargin="3" TabletMargin="3" MobileMargin="1" />
-        <LargeP>로그인</LargeP>
+        <img style={{width: "460px", marginLeft: "auto", marginRight: "auto"}} src={logo} alt="로고" />
         <GrayCard>
-          <LargeP style={{ color: "#3B8686", display: "inline-block" }}>
-            아이디
-          </LargeP>
-          <LargeP style={{ display: "inline-block" }}>를 통한 로그인</LargeP>
           <form>
             <Input
-              placeholder="   아이디"
+              placeholder="  아이디"
               name="id"
               value={info.id}
               onChange={onInputChange}
@@ -107,43 +98,43 @@ const Login = () => {
             <Input
               style={{ fontFamily: "Roboto" }}
               type="password"
-              placeholder="   비밀번호"
+              placeholder="  비밀번호"
               name="password"
               value={info.password}
               onChange={onInputChange}
             />
             <Button
-              width="210"
+              width="460"
+              height="55"
               font="20"
-              background="#3B8686"
-              color="#FAECEC"
-              marginRight="20"
-              type="submit"
+              background="#B7DDFF"
+              color="#000000"
+              marginLeft="auto"
+              marginRight="auto"
+              marginTop="20"
               onClick={formSubmit}
             >
               로그인
             </Button>
             <Button
-              width="210"
+              width="460"
+              height="55"
               font="20"
-              background="#042525"
-              color="#FAECEC"
-              marginRight="0"
-              onClick={clear}
+              background="#80B2E0"
+              color="#ffffff"
+              marginLeft="auto"
+              marginRight="auto"
+              marginTop="20"
+              onClick={formSubmit}
             >
-              취소
+              로그인
             </Button>
-            <Button
-              width="210"
-              font="20"
-              background="#DADBDB"
-              color="#000000"
-              marginTop="10"
-              marginRight="0"
-              onClick={() => history.push(`/signup`)}
+            <br/><br/><br/><br/><br/>
+            <Link to="/signup"
+            style={{fontSize: "20px", color: "#000000", marginTop: "40px"}}
             >
               회원가입
-            </Button>
+            </Link>
           </form>
         </GrayCard>
       </Wrapper>
