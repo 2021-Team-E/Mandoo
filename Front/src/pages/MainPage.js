@@ -129,12 +129,11 @@ const MainPage = (props) => {
   
   
   // 바뀌는 value값 저장
-  const handleSave = (e,{value}) => {
-    e.target.defaultValue = value;
-    setValue(e.target.defaultValue);
-    e.target.onSave();
-    setName(e.target.name);
-    console.log("value:" + e.target.defaultValue);
+  const handleSave = ({value}) => {
+    setValue(value);
+
+    console.log("value:" + value);
+    console.log("setValue:" + resultVal);
     //alert(name);
     //console.log(e.tableProps);
     //alert(value);
@@ -268,7 +267,7 @@ const MainPage = (props) => {
         accessor: "score",
         Header: "점수",
         Cell: (tableProps) => (
-          <EditText  onSave={() => changeQuiz(tableProps.row.original)}  defaultValue={tableProps.cell.value}/>
+          <EditText  onSave={handleSave}  defaultValue={tableProps.cell.value}/>
         ),  
       },
       {
