@@ -1,7 +1,8 @@
 from imageai.Detection.Custom import CustomObjectDetection
 from imageai.Classification.Custom import CustomImageClassification
 import os
-
+import pytesseract 
+from PIL import ImageEnhance, ImageFilter, Image
 
 def get_img(image):
 
@@ -26,10 +27,21 @@ def get_img(image):
     #prediction.setModelPath(os.path.join(execution_path,"가중치 모델"))
     #prediction.setJsonPath(os.path.join(execution_path, "./model_class.json"))
     #prediction.loadModel(num_objects=2)
+    #imageTrial_path = "사진주소"
     #
-    #predictions, probabilities = prediction.classifyImage(os.path.join(execution_path, "사진 주소"), result_count=2)
-    #for eachPrediction, eachProbability in zip(predictions, probabilities):
+    #predictions, probabilities = prediction.classifyImage(os.path.join(execution_path, imageTrial_path), result_count=2)
+    #text = pytesseract.image_to_string(Image.open(imageTrial_path), lang='kor+eng')
+
+    #if probabilities[0] > probabilities[1]:
+        #print("This is a(n) " + predictions[0])
+    #else:
+        #print("This is a(n) " + predictions[1])
+    #if predictions[0] == "text":
+        #print(text)
+    # The below is just to check the likelihood
+    # for eachPrediction, eachProbability in zip(predictions, probabilities):
         #print(eachPrediction , " : " , eachProbability)
+    
 
     title="test"
     choices=[1122,2222,3232,4224,5225]
