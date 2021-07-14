@@ -3,13 +3,15 @@ import Header from "../components/Header";
 import Table from "../components/Table";
 //import BlankTop from '../components/BlankTop';
 //import {useHistory} from 'react-router-dom';
-import { useState, useEffect} from "react";
+import { useState, useEffect } from "react";
+
 import axios from "axios";
 import { USER_SERVER } from "../config";
 import Modal from "../components/Modals/Modal.js";
 import addImg from "./imgIcon.png";
 import { useHistory } from "react-router-dom";
 import { EditText} from "react-edit-text";
+
 
 // 테두리 만드는 css
 const divBorder = {
@@ -29,7 +31,6 @@ const btn = {
   fontWeight: "bold",
 };
 
-
 const MainPage = (props) => {
   const [quizzes, setQuizzes] = useState([]);
   const history = useHistory();
@@ -39,7 +40,6 @@ const MainPage = (props) => {
       window.localStorage.setItem("isAuth", "false");
     }
     if (window.localStorage.getItem("isAuth") === "true") getQuiz();
-   
   }, []);
 
   const getQuiz = async () => {
@@ -50,10 +50,10 @@ const MainPage = (props) => {
         setQuizzes(response.data.quiz_list);
       }
     }catch(error) {
-      //if(error.response.status===401){
-      //  alert(error.response.data.message);
-      //  window.localStorage.setItem("isAuth", "false");
-      //}
+      if(error.response.status===401){
+        alert(error.response.data.message);
+        window.localStorage.setItem("isAuth", "false");
+      }
     }
   };
 
