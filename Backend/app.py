@@ -12,7 +12,8 @@ from flask_cors import CORS
 from detection import get_img
 from werkzeug.datastructures import FileStorage
 from werkzeug.utils import secure_filename
-
+import boto3
+from s3 import AWS_SECRET_KEY, AWS_ACCESS_KEY, BUCKET_NAME
 
 app = Flask(__name__)
 api = Api(app)  # Flask 객체에 Api 객체 등록
@@ -22,11 +23,12 @@ CORS(app, supports_credentials=True)
 
 nested_fields = {}
 nested_fields["_id"]= fields.String()
-nested_fields['title'] = fields.String()
-nested_fields["choices"] = fields.List(fields.String)
-nested_fields["answer"] = fields.Integer
-nested_fields["script"] = fields.String()
+nested_fields['title'] = fields.List(fields.String())
+nested_fields["choices"] = fields.List(fields.String())
+nested_fields["answer"] = fields.String()
+nested_fields["script"] = fields.List(fields.String())
 nested_fields["image"] = fields.String()
+nested_fields["score"] = fields.String()
 quizList_fields = {'quiz_list': fields.List(fields.Nested(api.model('nested', nested_fields)))}
 showquiz_fields = api.model('ShowQuiz',{
   'data' : fields.List(fields.Nested(api.model('quizlist',quizList_fields)))
@@ -48,7 +50,8 @@ db = mongo.Mandoo #Mandoo database
 user = db.user   #user table
 quiz = db.quiz   #quiz table
 
-
+s3 = boto3.client('s3', aws_access_key_id = AWS_ACCESS_KEY, aws_secret_access_key = AWS_SECRET_KEY)
+#s3 = boto3.resource('s3')
 
 @api.route('/hello')
 class HelloWorld(Resource):
@@ -77,11 +80,13 @@ class Signup(Resource):
         result = user.find_one({ "id" : new_user["id"] })   #user table에서 일치하는 아이디 검색
     
         if result :  #일치하는 아이디가 있음
-            return jsonify({
-                "status": 403,
-                "success": False,
-                "message": "아이디가 이미 있습니다"
-            }) 
+            
+            data = {
+                "message": "아이디가 이미 있습니다",
+                }
+            response = jsonify(data)
+            response.status_code = 403 
+            return response 
 
         new_user['password'] = bcrypt.hashpw(new_user['password'].encode('utf-8'), bcrypt.gensalt()) # 비밀번호 해싱
         
@@ -93,15 +98,17 @@ class Signup(Resource):
         }
         user_id = user.insert_one(user_info).inserted_id
 
-        return jsonify({
-            "status": 201,
+        data = {
             "success": True,
             "message" : "회원가입 성공",
-            "data" : { 
-                "id" : new_user["id"],
-                "name" : new_user["name"]
+            "id" : new_user["id"],
+            "name" : new_user["name"]
             }
-        })
+        response = jsonify(data)
+        response.status_code = 201 
+        return response 
+
+       
 
 
 @api.route('/api/login')
@@ -123,11 +130,13 @@ class login(Resource):
 
         result = user.find_one({ "id" : id })   #user table에서 일치하는 아이디 검색
         if result is None:  #일치하는 아이디가 없음
-            return jsonify({
-                "status": 403,
-                "success": False,
-                "message": "해당 아이디가 없습니다"
-            }) 
+            data = {
+                "message" : "해당 아이디가 없습니다",
+            }
+            response = jsonify(data)
+            response.status_code = 403 
+            return response 
+        
 
         if result and bcrypt.checkpw(password.encode('utf-8'), result['password'].decode("utf8").encode('utf-8')):
             id = result['id']
@@ -135,30 +144,29 @@ class login(Resource):
                 'id' : id
             }
             token = jwt.encode(payload, SECRET_KEY, ALGORITHM)  #토큰 생성(인코딩)
-            #token = jwt.decode(token, SECRET_KEY, ALGORITHM)   #토큰 디코팅
-
+            token = jwt.decode(token, SECRET_KEY, ALGORITHM)   #토큰 디코팅
+    
             session['id'] = login_user['id']
-           
-            out = jsonify({
-                "status": 201,
+
+            data = {
                 "success": True,
                 "message" : "로그인 성공",
-                "data" : { 
-                    "accessToken": token,
-                    "user_id" : login_user['id']
-                    }
-            })
-            out.set_cookie('jwt', token)
-            #session['jwt'] = token
-
-            return out
+                "accessToken": token['id'],
+                "user_id" : login_user['id']
+                }
+            response = jsonify(data)
+            response.status_code = 201 
+            response.set_cookie('jwt', token['id'])
+            return response 
 
         else:
-            return jsonify({
-                "status": 403,
-                "success": False,
-                "message": "비밀번호가 틀렸습니다"
-            })
+            data = {
+                "message" : "비밀번호가 틀렸습니다",
+            }
+            response = jsonify(data)
+            response.status_code = 403
+            return response 
+            
 
 
 @api.route('/api/logout')
@@ -171,13 +179,15 @@ class logout(Resource):
     def get(self):  
         session.pop('id',None)
         if request.cookies.get("jwt"):
-          out = jsonify({
-            "status": 200,
-            "success": True,
-            "message": "로그아웃 성공"
-          })
-          out.set_cookie("jwt", '', expires=0)
-          return out
+            data = {
+                "message" : "로그아웃 성공",
+                "success": True
+                }
+            response = jsonify(data)
+            response.status_code = 200 
+            response.set_cookie("jwt", '', expires=0)
+            return response 
+
 
 @api.route('/api/imageupload')
 class Image(Resource):
@@ -188,36 +198,32 @@ class Image(Resource):
     @api.response(201, '이미지 등록 성공')
     @api.response(400, 'Bad Request')
     @api.response(401, '로그인 필요')
-    @api.response(403, '이미지가 선택되지 않았습니다')
 
     def post(self):
         args = image_parser.parse_args()
         id = request.cookies.get('jwt')
-        #id = session.get('jwt')
-        session_check = session.get('id')
-        if id is None or session_check is None:
-            return jsonify({
-                "status": 401,
-                "success": False,
+        
+        
+        result = user.find_one({ "id" : id })   #user table에서 일치하는 아이디 검색
+    
+        if result is None:  #일치하는 아이디가 없음
+            data = {
                 "message": "로그인 필요"
-            })
+            }
+            response = jsonify(data)
+            response.status_code = 401 
+            return response
 
         img = args['image']
-        if img.filename =='':
-
-            return jsonify({
-            "status": 403,
-            "success": True,
-            "message": "이미지가 선택되지 않았습니다"
-
-        })
-        
         
         imagefilename = id + ".png" # 서버 디렉토리에 저장하는 과정 (혹시 몰라서 추가)
         img.save('./upload/{0}'.format(secure_filename(imagefilename)))
-       
 
-        title, choices, answer, script, image = get_img(img)
+        s3.put_object(Body='./upload/{0}'.format(secure_filename(imagefilename)), Bucket=BUCKET_NAME, Key=imagefilename)
+        img_url = "https://summer-program.s3.ap-northeast-2.amazonaws.com/"+imagefilename
+
+
+        title, choices, answer, script, image, score = get_img(imagefilename)
         user_id = session.get('id')
         
         processed_quiz = {
@@ -226,7 +232,8 @@ class Image(Resource):
             "choices": choices,
             "answer": answer,
             "script" : script,
-            "image" : image
+            "image" : image,
+            "score" : score
         }
         quiz_id = quiz.insert_one(processed_quiz)
         author = user.find_one({"id":user_id})
@@ -236,12 +243,14 @@ class Image(Resource):
             {"id":user_id},
             {"$set" : {"quizzes":quiz_set}}
         )
-        return jsonify({
-            "status": 201,
+        data = {
             "success": True,
-            "message": "이미지 등록 성공"
-        })
-
+            "message" : "이미지 등록 성공",
+        }
+        response = jsonify(data)
+        response.status_code = 201 
+        return response
+        
 
 
 @api.route('/api/showquiz')
@@ -255,12 +264,17 @@ class Showquiz(Resource):
         
         id = request.cookies.get('jwt')
         session_check = session.get('id')
-        if id is None or session_check is None:
-            return jsonify({
-                "status": 401,
-                "success": False,
+
+        result = user.find_one({ "id" : id })   #user table에서 일치하는 아이디 검색
+    
+        if result is None or session_check is None:  #일치하는 아이디가 없음
+            data = {
                 "message": "로그인 필요"
-            })
+            }
+            response = jsonify(data)
+            response.status_code = 401
+            return response
+
 
         user_id = session.get('id')
         author = user.find_one({"id":user_id}) # user테이블에서 퀴즈 가져오고자하는 사용자 찾음
@@ -270,15 +284,17 @@ class Showquiz(Resource):
         for quiz_id in quiz_set:
             quiz_info = quiz.find_one({"_id":str(quiz_id)}) # quiz 테이블에서 사용자의 퀴즈를 하나씩 quiz_info로 받음
             quiz_list.append(quiz_info)
-     
-        return jsonify({
-            "status": 200,
+
+        data = {
             "success": True,
             "message": "퀴즈 리스트를 모두 가져옴",
-            "data" : {
-                "quiz_list": quiz_list
+            "quiz_list": quiz_list
             }
-        })
+        response = jsonify(data)
+        response.status_code = 200 
+        return response
+
+
 
 @api.route('/api/quizmodify')
 class Quizmodify(Resource):
@@ -289,22 +305,27 @@ class Quizmodify(Resource):
     qmodify_parser.add_argument('answer', required=True, location='json',type=int, help="answer")
     qmodify_parser.add_argument('script', required=True, location='json',type=str, help="script")
     qmodify_parser.add_argument('image', required=True, location='json',type=str, help="image") # 추후에 file type으로 변경 가능성 있음
-
-    @api.expect(qmodify_parser)
+    
+    @api.expect(showquiz_fields)
     @api.response(201, '퀴즈 수정 성공')
     @api.response(400, 'Bad Request')
     @api.response(401, '로그인 필요')
-    def post(self):
+
+    def put(self):
         
         id = request.cookies.get('jwt')
         session_check = session.get('id')
-        if id is None or session_check is None:
-            return jsonify({
-                "status": 401,
-                "success": False,
-                "message": "로그인 필요"
-            })
 
+        result = user.find_one({ "id" : id })   #user table에서 일치하는 아이디 검색
+    
+        if result is None or session_check is None:  #일치하는 아이디가 없음
+            data = {
+                "message": "로그인 필요"
+            }
+            response = jsonify(data)
+            response.status_code = 401
+            return response
+        
         args = qmodify_parser.parse_args()
         print(args)
         quiz_id = args['_id']   #str 타입으로 req 요청된 상태
@@ -319,14 +340,14 @@ class Quizmodify(Resource):
             { "$set" : { "title" : title, "choices" : choices ,"answer" : answer,"script" : script,"image" : image}}
         )
 
-     
-        return jsonify({
-            "status": 201,
+        data = {
             "success": True,
             "message": "퀴즈 수정 성공"
-            
-        })
-
+        }
+        response = jsonify(data)
+        response.status_code = 201 
+        return response
+        
 
 @api.route('/api/quizdelete')
 class Quizdelete(Resource):
@@ -343,24 +364,30 @@ class Quizdelete(Resource):
         id = request.cookies.get('jwt')
         session_check = session.get('id')
 
-        if id is None or session_check is None:
-            return jsonify({
-                "status": 401,
-                "success": False,
+        result = user.find_one({ "id" : id })   #user table에서 일치하는 아이디 검색
+    
+        if result is None or session_check is None:  #일치하는 아이디가 없음
+            data = {
                 "message": "로그인 필요"
-            })
+            }
+            response = jsonify(data)
+            response.status_code = 401 
+            return response
 
+        
         args = qdelete_parser.parse_args()
         quiz_id = args['quiz_id']   #str 타입으로 req 요청된 상태
         del_quiz = quiz.find_one({"_id":quiz_id}) # 삭제하고자하는 퀴즈가 quiz 테이블에 있는지 확인
 
         if del_quiz is None:
-            return jsonify({
-                "status": 403,
-                "success": False,
+            data = {
                 "message": "해당 퀴즈가 퀴즈 테이블에 없습니다"
-            })
+            }
+            response = jsonify(data)
+            response.status_code = 403 
+            return response
 
+            
         user_id = session.get('id')
         author = user.find_one({"id":user_id})  #quiz 삭제를 요청한 사용자의 아이디 author로 얻음
         check_quiz_id = 0
@@ -377,22 +404,26 @@ class Quizdelete(Resource):
                 {"id":user_id},
                 {"$set" : {"quizzes":quiz_set}}
             )
-     
-            return jsonify({
-                "status": 201,
+
+            data = {
                 "success": True,
                 "message": "퀴즈 삭제 성공"
-                
-            })
+            }
+            response = jsonify(data)
+            response.status_code = 201
+            return response
+
 
         if check_quiz_id == 0:              # 유저가 해당 quiz를 소유하고 있지 않다면
 
-            return jsonify({
-                "status": 403,
-                "success": False,
+            data = {
                 "message": "퀴즈를 소유하고 있지 않습니다"
-                
-            })
+            }
+            response = jsonify(data)
+            response.status_code = 403 
+            return response
+
+           
 
 #app.run(host='0.0.0.0',debug=True)
 if __name__ =="__main__":
