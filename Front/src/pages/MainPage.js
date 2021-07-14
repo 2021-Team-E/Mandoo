@@ -493,7 +493,7 @@ const MainPage = (props) => {
         </div>
       ) : (
         <div>
-          <img src={noLoginImg} alt="noLogin state"
+          <img src={noLoginImg} alt="noLogin state" onClick={() => {alert("로그인을 해주세요")}}
           style={{
                 width: "91vw",
                 marginLeft: "auto",
