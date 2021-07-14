@@ -26,6 +26,7 @@ imageai
 awscli
 pytesseract 
 image
+os
 
 boto3
 

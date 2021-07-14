@@ -3,18 +3,20 @@ from imageai.Detection.Custom import CustomObjectDetection
 from imageai.Classification.Custom import CustomImageClassification
 import pytesseract 
 from PIL import ImageEnhance, ImageFilter, Image
-
+import os
 import boto3
 from s3 import BUCKET_NAME
 
 resource = boto3.resource('s3')
 buckets = resource.Bucket(name=BUCKET_NAME)
 
-def get_img(image):
-    # file_path = 'model_ex-024_acc-1.000000.h5'  # 이 폴더 하에 저장하는 것 (텍스트 추출 모델)
-    # key_name = "model_ex-024_acc-1.000000.h5"   # s3버킷 저장되어있는 이름
-    # buckets.download_file(key_name, file_path)
+file_path = 'model_ex-024_acc-1.000000.h5'  # 이 폴더 하에 저장하는 것 (텍스트 추출 모델)
+key_name = "model_ex-024_acc-1.000000.h5"   # s3버킷 저장되어있는 이름
+buckets.download_file(key_name, file_path)
 
+
+def get_img(image):
+    
     # detector = CustomObjectDetection()
     # detector.setModelTypeAsYOLOv3()
     # detector.setModelPath("./detection_model-ex-025--loss-0018.418.h5") # 가중치 모델 경로 (3구분 모델)
