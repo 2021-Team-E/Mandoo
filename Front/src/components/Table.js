@@ -2,15 +2,24 @@ import React from "react";
 import { useTable } from "react-table";
 
 function Table({ columns, data }) {
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    useTable({ columns, data });
+  const {
+    getTableProps, //<Table>에 적용할 prop
+    getTableBodyProps, // <tbody>에 적용할 prop
+    headerGroups, // <thead> 에서 렌더링할 데이터
+    rows, // <tbody>에서 랜더링할 데이터
+    prepareRow,
+  } = useTable({ columns, data });
 
   return (
     <table
       {...getTableProps()}
       border="1"
       align="center"
-      style={{ backgroundColor: "white", borderCollapse: "collapse" }}
+      style={{
+        backgroundColor: "white",
+        borderCollapse: "collapse",
+        width: "100%",
+      }}
     >
       <thead style={{ borderBottom: "2px solid #036", color: "#369" }}>
         {headerGroups.map((headerGroup) => (
@@ -26,9 +35,9 @@ function Table({ columns, data }) {
           prepareRow(row);
           return (
             <tr {...row.getRowProps()}>
-              {row.cells.map((cell) => {
-                return <td {...cell.getCellProps()}>{cell.render("Cell")}</td>;
-              })}
+              {row.cells.map((cell) => (
+                <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+              ))}
             </tr>
           );
         })}

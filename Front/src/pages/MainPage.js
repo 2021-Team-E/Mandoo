@@ -4,11 +4,14 @@ import Table from "../components/Table";
 //import BlankTop from '../components/BlankTop';
 //import {useHistory} from 'react-router-dom';
 import { useState, useEffect } from "react";
+
 import axios from "axios";
 import { USER_SERVER } from "../config";
 import Modal from "../components/Modals/Modal.js";
 import addImg from "./imgIcon.png";
+import noLoginImg from "./noLogin.PNG";
 import { useHistory } from "react-router-dom";
+import { EditText } from "react-edit-text";
 
 // 테두리 만드는 css
 const divBorder = {
@@ -40,14 +43,14 @@ const MainPage = (props) => {
   }, []);
 
   const getQuiz = async () => {
-    try{
+    try {
       const response = await axios.get(`${USER_SERVER}/api/showquiz`);
       console.log(response);
       if (response.data.success) {
         setQuizzes(response.data.quiz_list);
       }
-    }catch(error) {
-      if(error.response.status===401){
+    } catch (error) {
+      if (error.response.status === 401) {
         alert(error.response.data.message);
         window.localStorage.setItem("isAuth", "false");
       }
@@ -58,6 +61,16 @@ const MainPage = (props) => {
   const [fileUrl, setFileUrl] = useState(null);
   const [fileImg, setFileImg] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
+  const [resultVal, setValue] = useState("");
+  const [resultName, setName] = useState("");
+  const [resultJson, setJson] = useState({
+    quiz_id: "",
+    title: "",
+    answer: "",
+    script: "",
+    image: "",
+    score: "",
+  });
 
   const stateUpdate = (imageUrl, imageFile) => {
     setFileUrl(imageUrl);
@@ -75,6 +88,7 @@ const MainPage = (props) => {
   const openModal = () => {
     if (window.localStorage.getItem("isAuth") === "true") {
       setModalOpen(true);
+      setFileUrl(null);
     } else {
       alert("로그인을 먼저 해주세요!");
       setModalOpen(false);
@@ -104,48 +118,184 @@ const MainPage = (props) => {
     }
   };
 
+  /*
+  const changeText = (e) => {
+    this.setState({
+      [e.target.name] : e.target.value,
+    });
+    alert(e.target.value);
+  };
+  */
+
+  // 바뀌는 value값 저장
+  const handleSave = async (value, e) => {
+    console.log(e);
+    console.log(value);
+
+    const changedValue = await changeQuiz(e.name, e.value, value);
+    console.log(changedValue);
+  };
+
+  // 바뀌는 값의 json 저장 -> 이값은 나중에 확정 버튼 누르면 서버로 가게.
+  const changeQuiz = async (name, value, quiz) => {
+    /*let q_choices = [];
+    q_choices.push(
+      quiz.choice1,
+      quiz.choice2,
+      quiz.choice3,
+      quiz.choice4,
+      quiz.choice5
+    );*/
+    quiz = { ...quiz, [name]: value };
+    return quiz;
+
+    // quiz.choices.map((choice, i) => {
+    //   changedquiz[`choice${i + 1}`] = choice;
+    // });
+    /*setJson(changedquiz); // 혹시 몰라서 상태 저장
+    setJson({
+      ...resultJson,
+      [resultName]: resultVal,
+    });
+
+    try {
+      const request = await axios
+        .post(`${USER_SERVER}/api/quizmodify`, { data: resultJson })
+        .then((response) => window.location.replace("/"));
+    } catch {
+      console.log("error");
+    }*/
+  };
+
+  const test = async (quiz, name, value) => {
+    console.log(quiz);
+    console.log(name);
+    console.log(value);
+  };
+
+  const test2 = ({ value }) => {
+    alert(value);
+    setValue(value);
+    //setName(value);
+    //alert(resultName);
+    alert(resultVal);
+  };
+
   //input data
   const columns = useMemo(
     () => [
       {
         accessor: "qid",
         Header: "문항번호",
+        Cell: (tableProps) => (
+          <EditText
+            name="qid"
+            onSave={(e) => handleSave(tableProps.row.original, e)}
+            //onChange={changeQuiz(tableProps.row.original)}
+            defaultValue={tableProps.cell.value}
+          />
+        ),
       },
       {
         accessor: "title",
         Header: "문항내용",
+        Cell: (tableProps) => (
+          <EditText
+            name="title"
+            //onChange={handleSave}
+            onSave={(e) => handleSave(tableProps.row.original, e)}
+            defaultValue={tableProps.cell.value}
+          />
+        ),
       },
       {
         accessor: "script",
         Header: "참고내용",
+        Cell: (tableProps) => (
+          <EditText
+            name="script"
+            onSave={(e) => handleSave(tableProps.row.original, e)}
+            defaultValue={tableProps.cell.value}
+          />
+        ),
       },
       {
         accessor: `choice1`,
         Header: "선택01",
+        Cell: (tableProps) => (
+          <EditText
+            onSave={() =>
+              test(tableProps.row.original, "choice1", tableProps.cell.value)
+            }
+            defaultValue={tableProps.cell.value}
+          />
+        ),
       },
       {
         accessor: "choice2",
         Header: "선택02",
+        Cell: (tableProps) => (
+          <div>
+            <EditText
+              onChange={setName}
+              onSave={test2}
+              defaultValue={tableProps.cell.value}
+            />
+            <p>{resultName}</p>
+          </div>
+        ),
       },
       {
         accessor: "choice3",
         Header: "선택03",
+        Cell: (tableProps) => (
+          <EditText
+            onSave={() => changeQuiz(tableProps.row.original)}
+            defaultValue={tableProps.cell.value}
+          />
+        ),
       },
       {
         accessor: "choice4",
         Header: "선택04",
+        Cell: (tableProps) => (
+          <EditText
+            onSave={() => changeQuiz(tableProps.row.original)}
+            defaultValue={tableProps.cell.value}
+          />
+        ),
       },
       {
         accessor: "choice5",
         Header: "선택05",
+        Cell: (tableProps) => (
+          <EditText
+            onSave={() => changeQuiz(tableProps.row.original)}
+            defaultValue={tableProps.cell.value}
+          />
+        ),
       },
       {
         accessor: "answer",
         Header: "정답",
+        Cell: (tableProps) => (
+          <EditText
+            name="answer"
+            onSave={(e) => handleSave(tableProps.row.original, e)}
+            defaultValue={tableProps.cell.value}
+          />
+        ),
       },
       {
         accessor: "score",
         Header: "점수",
+        Cell: (tableProps) => (
+          <EditText
+            name="score"
+            onSave={(e) => handleSave(tableProps.row.original, e)}
+            defaultValue={tableProps.cell.value}
+          />
+        ),
       },
       {
         Header: "Delete",
@@ -196,27 +346,27 @@ const MainPage = (props) => {
     const formData = new FormData();
     formData.append("image", fileImg);
     console.log(formData);
-    if(fileImg===null){ //이미지 선택 안하고 업로드 버튼 눌렀을 때 버그 수정
+    if (fileImg === null) {
+      //이미지 선택 안하고 업로드 버튼 눌렀을 때 버그 수정
       alert("이미지가 선택되지 않았습니다");
-    }
-    else{
+    } else {
       try {
         const request = axios
           .post(`${USER_SERVER}/api/imageupload`, formData, {
             withCredentials: true,
           })
           .then(function (response) {
-            if (response.data.success) {  //성공적으로 이미지 업로드 시 replace
+            if (response.data.success) {
+              //성공적으로 이미지 업로드 시 replace
               console.log(response);
               window.location.replace("/");
-            } 
+            }
           });
-      }catch(error) {
+      } catch (error) {
         alert(error.response.data.message);
       }
     }
     closeModal();
-   
   };
 
   // 삭제 버튼 클릭 이벤트
@@ -237,7 +387,7 @@ const MainPage = (props) => {
       style={{
         backgroundColor: "#f0f8ff",
         width: "100vw",
-        height: "100vh",
+        height: "88vh",
         marginTop: "80px",
       }}
     >
@@ -287,6 +437,7 @@ const MainPage = (props) => {
           <div
             className="table"
             align="center"
+            title="표 안의 내용을 클릭해 수정하세요"
             style={{
               marginRight: "auto",
               width: "85vw",
@@ -295,7 +446,7 @@ const MainPage = (props) => {
               border: "solid 2px black",
               marginLeft: "auto",
               float: "left",
-              marginTop: "30px",
+              marginTop: "60px",
             }}
           >
             <Table columns={columns} data={data} />
@@ -303,19 +454,12 @@ const MainPage = (props) => {
           <div
             className="confirm"
             style={{ clear: "both", textAlign: "center" }}
-          >
-            <button style={btn} onClick={decideData}>
-              확정
-            </button>
-            <button style={btn} onClick={changeData}>
-              수정
-            </button>
-          </div>
+          ></div>
           <footer
             style={{
               backgroundColor: "black",
               color: "white",
-              height: "30px",
+              height: "3vh",
               width: "100%",
               position: "fixed",
               bottom: "0",
@@ -343,7 +487,49 @@ const MainPage = (props) => {
         </div>
       ) : (
         <div>
-          <p>로그인이 필요합니다.</p>
+          <img
+            src={noLoginImg}
+            alt="noLogin state"
+            onClick={() => {
+              alert("로그인을 해주세요");
+            }}
+            style={{
+              width: "90vw",
+              marginLeft: "auto",
+              marginRight: "auto",
+              paddingLeft: "50px",
+              marginTop: "20px",
+            }}
+          />
+          <footer
+            style={{
+              backgroundColor: "black",
+              color: "white",
+              height: "3vh",
+              width: "100%",
+              position: "fixed",
+              bottom: "0",
+            }}
+          >
+            <div>
+              아이콘 제작자:{" "}
+              <a
+                style={{ textDecoration: "none", color: "white" }}
+                href="https://www.flaticon.com/kr/authors/pixel-perfect"
+                title="Pixel perfect"
+              >
+                Pixel perfect
+              </a>{" "}
+              from{" "}
+              <a
+                style={{ textDecoration: "none", color: "white" }}
+                href="https://www.flaticon.com/kr/"
+                title="Flaticon"
+              >
+                www.flaticon.com
+              </a>
+            </div>
+          </footer>
         </div>
       )}
     </div>
