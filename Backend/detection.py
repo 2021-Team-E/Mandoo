@@ -33,14 +33,19 @@ def get_img(image):
 
     detections = detector.detectObjectsFromImage(input_image=image_path, output_image_path=result_path , extract_detected_objects=True,  minimum_percentage_probability=80)
     
+    label= []
+    dict = {"question": [], "content" :[], "answer" : []}
+    result_label = []
+
     for detection in detections:   
         print(detection)
         print("\n")
 
     for detection in detections[0]:  #eachObject
         print(detection["name"], " : ", detection["percentage_probability"], " : ", detection["box_points"])
-
-    distri_image = detections[1]
+        label.append(detection["name"])
+    print(label)
+    # distri_image = detections[1]
 
     #텍스트 추출 부분
     execution_path = os.getcwd()    
@@ -55,29 +60,39 @@ def get_img(image):
     
     #imageTrial_path = "./result/"+image+"-objects/answer-00001.jpg" #"구분된 사진주소"
     
-    for detection in detections[1]:
-        
+    for index,detection in enumerate(detections[1]): #index로 몇번째 인지 접근 가능
+        print(index, detection)
         predictions, probabilities = prediction.classifyImage(detection, result_count=2)
         text = pytesseract.image_to_string(Image.open(detection), lang='kor+eng')
+        
+        this_labelname=label[index]
+        print(this_labelname)
+        print(dict[this_labelname])
+        if probabilities[0] > probabilities[1]: # 텍스트인 경우인가요....?
+            print("This is a(n) 텍스트" + predictions[0])
 
-        if probabilities[0] > probabilities[1]: # 텍스트인 경우
-            print("This is a(n) " + predictions[0])
-
-        else:                                   # 이미지 포함한 경우
-            print("This is a(n) " + predictions[1])
+        else:                                   # 이미지 포함한 경우인 경우인가요....?
+            print("This is a(n) 이미지" + predictions[1])
+            # dict[this_labelname].append("imageurl")
 
         if predictions[0] == "text":
             print(text)
+            dict[this_labelname].append(text)
+        if predictions[0] == "image":
+            print(text)
+            dict[this_labelname].append("imageurl")
+        print("\n\n")
+
         #The below is just to check the likelihood
         for eachPrediction, eachProbability in zip(predictions, probabilities):
             print(eachPrediction , " : " , eachProbability)
 
     #shutil.rmtree('./result/') # 결과 확인 필요 없을 때 써주기 (result/ 폴더 삭제해주는 기능)
-
-    title=["test"]
-    choices=["1122","2222","3232","4224","5225"]
+    print(dict)
+    title=dict["question"]
+    choices=dict["answer"]
     answer="1"
-    script=["script",'url']
+    script=dict["content"]
     image="image"
     score = "2"
     
