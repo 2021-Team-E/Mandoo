@@ -19,22 +19,24 @@ key_name = 'detection_config.json'
 buckets.download_file(key_name, file_path)
 
 def get_img(image):
-    
+    image_png=image+".png"
     detector = CustomObjectDetection()
     detector.setModelTypeAsYOLOv3()
     detector.setModelPath("./detection_model-ex-025--loss-0018.418-85per.h5") # 가중치 모델 경로 (3구분 모델)
     detector.setJsonPath("./detection_config.json") # json 파일 경로
     detector.loadModel()
 
-    image_path="./upload/"+image #input 이미지 경로
-    result_path="./result/"+image #test output 이미지 경로 (크롭 x, 결과확인용)
+    image_path="./upload/"+image_png #input 이미지 경로
+    result_path="./result/"+image_png #test output 이미지 경로 (크롭 x, 결과확인용)
 
     detections = detector.detectObjectsFromImage(input_image=image_path, output_image_path=result_path , extract_detected_objects=True,  minimum_percentage_probability=80)
     
-    # for detection in detections:    #eachObject
-    #     print(detection["name"], " : ", detection["percentage_probability"], " : ", detection["box_points"])
+    # for detection in detections[0]:   
+    #     print(detection)
+    #     print("\n")
 
-
+    for detection in detections[0]:  #eachObject
+        print(detection["name"], " : ", detection["percentage_probability"], " : ", detection["box_points"])
     # #텍스트 추출 부분
     # execution_path = os.getcwd()    
     # print(execution_path)
@@ -45,7 +47,8 @@ def get_img(image):
     # prediction.setModelPath('./model_ex-024_acc-1.000000.h5') #"model_ex-024_acc-1.000000.h5"
     # prediction.setJsonPath("./model_class.json")
     # prediction.loadModel(num_objects=2)
-    # imageTrial_path = "사진주소"
+    
+    # imageTrial_path = "./result/"+image #"사진주소"
     
     # predictions, probabilities = prediction.classifyImage(os.path.join(execution_path, imageTrial_path), result_count=2)
     # text = pytesseract.image_to_string(Image.open(imageTrial_path), lang='kor+eng')
