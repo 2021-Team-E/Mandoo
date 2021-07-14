@@ -53,17 +53,19 @@ def get_img(image):
     prediction.setJsonPath("./model_class.json")
     prediction.loadModel(num_objects=2)
     
-    imageTrial_path = "./result/"+image+"-objects/answer-00001.jpg" #"구분된 사진주소"
+    #imageTrial_path = "./result/"+image+"-objects/answer-00001.jpg" #"구분된 사진주소"
     
     for detection in detections[1]:
-        print(detection)
+        
         predictions, probabilities = prediction.classifyImage(detection, result_count=2)
         text = pytesseract.image_to_string(Image.open(detection), lang='kor+eng')
 
-        if probabilities[0] > probabilities[1]:
+        if probabilities[0] > probabilities[1]: # 텍스트인 경우
             print("This is a(n) " + predictions[0])
-        else:
+
+        else:                                   # 이미지 포함한 경우
             print("This is a(n) " + predictions[1])
+
         if predictions[0] == "text":
             print(text)
         #The below is just to check the likelihood
