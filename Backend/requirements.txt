@@ -24,7 +24,9 @@ opencv-python
 keras-resnet==0.2.0
 imageai 
 awscli
-pytesseract 
+tesseract
+tesseract-ocr
+pytesseract
 image
 os
 
