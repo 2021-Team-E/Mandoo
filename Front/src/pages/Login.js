@@ -10,7 +10,7 @@ import Header from "../components/Header";
 
 const Fix = styled.div`
   min-height: 100vh;
-  background-color: #ffffff;
+  background-color: #f0f8ff;
   text-align: center;
 `;
 
@@ -32,7 +32,6 @@ const LargeP = styled.div`
 `;
 const GrayCard = styled.div`
   width: 610px;
-  background-color: #dadbdb;
   margin-top: 50px;
   margin-bottom: 50px;
   margin-left: auto;
