@@ -12,7 +12,6 @@ PyJWT
 flask_cors
 flask_restx
 werkzeug
-
 # tensorflow==2.2
 # keras==2.4.3 
 # numpy==1.19.3 
