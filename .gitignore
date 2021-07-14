@@ -6,3 +6,4 @@ venv/
 .vscode/
 upload/
 s3.py
+*.h5
