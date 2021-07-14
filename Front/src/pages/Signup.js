@@ -3,7 +3,6 @@ import BlankTop from "../components/BlankTop";
 import Button from "../components/Button";
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
-import { Link } from "react-router-dom";
 import axios from "axios";
 import { USER_SERVER } from "../config";
 import Header from "../components/Header";
