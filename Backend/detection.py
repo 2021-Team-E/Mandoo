@@ -53,20 +53,21 @@ def get_img(image):
     
     imageTrial_path = "./result/"+image+"-objects/answer-00001.jpg" #"구분된 사진주소"
     
-    # for detection in detections[0]:
-    predictions, probabilities = prediction.classifyImage(imageTrial_path, result_count=2)
-    text = pytesseract.image_to_string(Image.open(imageTrial_path), lang='kor+eng')
+    for detection in detections[1]:
+        print(detection)
+        predictions, probabilities = prediction.classifyImage(detection, result_count=2)
+        text = pytesseract.image_to_string(Image.open(detection), lang='kor+eng')
 
-    if probabilities[0] > probabilities[1]:
-        print("This is a(n) " + predictions[0])
-    else:
-        print("This is a(n) " + predictions[1])
-    if predictions[0] == "text":
-        print(text)
-    #The below is just to check the likelihood
-    for eachPrediction, eachProbability in zip(predictions, probabilities):
-        print(eachPrediction , " : " , eachProbability)
-    
+        if probabilities[0] > probabilities[1]:
+            print("This is a(n) " + predictions[0])
+        else:
+            print("This is a(n) " + predictions[1])
+        if predictions[0] == "text":
+            print(text)
+        #The below is just to check the likelihood
+        for eachPrediction, eachProbability in zip(predictions, probabilities):
+            print(eachPrediction , " : " , eachProbability)
+        
 
     
     title=["test"]
