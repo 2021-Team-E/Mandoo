@@ -10,7 +10,11 @@ function Table({ columns, data }) {
       {...getTableProps()}
       border="1"
       align="center"
-      style={{ backgroundColor: "white", borderCollapse: "collapse" }}
+      style={{
+        backgroundColor: "white",
+        borderCollapse: "collapse",
+        width: "100%",
+      }}
     >
       <thead style={{ borderBottom: "2px solid #036", color: "#369" }}>
         {headerGroups.map((headerGroup) => (
@@ -38,4 +42,3 @@ function Table({ columns, data }) {
 }
 
 export default Table;
-
