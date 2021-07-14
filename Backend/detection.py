@@ -14,6 +14,9 @@ file_path = 'model_ex-024_acc-1.000000.h5'  # 이 폴더 하에 저장하는 것
 key_name = "model_ex-024_acc-1.000000.h5"   # s3버킷 저장되어있는 이름
 buckets.download_file(key_name, file_path)
 
+file_path = 'detection_config.json'  # 이 폴더 하에 저장하는 것 (텍스트 추출 모델)
+key_name = 'detection_config.json'   # s3버킷 저장되어있는 이름
+buckets.download_file(key_name, file_path)
 
 def get_img(image):
     
