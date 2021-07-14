@@ -300,11 +300,12 @@ class Showquiz(Resource):
 class Quizmodify(Resource):
 
     qmodify_parser.add_argument('_id', required=True, location='json',type=str, help="quiz 아이디")
-    qmodify_parser.add_argument('title', required=True, location='json',type=str, help="title")
+    qmodify_parser.add_argument('title', required=True, location='json',type=list, help="title")
     qmodify_parser.add_argument('choices', required=True, location='json',type=list, help="choices")
-    qmodify_parser.add_argument('answer', required=True, location='json',type=int, help="answer")
-    qmodify_parser.add_argument('script', required=True, location='json',type=str, help="script")
+    qmodify_parser.add_argument('answer', required=True, location='json',type=str, help="answer")
+    qmodify_parser.add_argument('script', required=True, location='json',type=list, help="script")
     qmodify_parser.add_argument('image', required=True, location='json',type=str, help="image") # 추후에 file type으로 변경 가능성 있음
+    qmodify_parser.add_argument('score', required=True, location='json',type=str, help="image") 
     
     @api.expect(showquiz_fields)
     @api.response(201, '퀴즈 수정 성공')
@@ -328,16 +329,19 @@ class Quizmodify(Resource):
         
         args = qmodify_parser.parse_args()
         print(args)
+        
+
         quiz_id = args['_id']   #str 타입으로 req 요청된 상태
         title = args['title']
         choices = args['choices']
         answer = args['answer']
         script = args['script']
         image = args['image']
+        score = args['score']
 
         quiz.update(
             { "_id" : quiz_id },
-            { "$set" : { "title" : title, "choices" : choices ,"answer" : answer,"script" : script,"image" : image}}
+            { "$set" : { "title" : title, "choices" : choices ,"answer" : answer,"script" : script,"image" : image,"score" : score}}
         )
 
         data = {
