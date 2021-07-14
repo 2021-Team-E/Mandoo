@@ -3,13 +3,15 @@ import Header from "../components/Header";
 import Table from "../components/Table";
 //import BlankTop from '../components/BlankTop';
 //import {useHistory} from 'react-router-dom';
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
+
 import axios from "axios";
 import { USER_SERVER } from "../config";
 import Modal from "../components/Modals/Modal.js";
 import addImg from "./imgIcon.png";
 import { useHistory } from "react-router-dom";
-import { EditText,EditTextarea } from "react-edit-text";
+import { EditText} from "react-edit-text";
+
 
 // 테두리 만드는 css
 const divBorder = {
@@ -61,6 +63,16 @@ const MainPage = (props) => {
   const [fileUrl, setFileUrl] = useState(null);
   const [fileImg, setFileImg] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
+  const [resultVal, setValue] = useState('');
+  const [resultName, setName] = useState('');
+  const [resultJson, setJson] = useState({
+    quiz_id: "",
+    title: "",
+    answer: "",
+    script: "",
+    image: "",
+    score: "",
+  });
 
   const stateUpdate = (imageUrl, imageFile) => {
     setFileUrl(imageUrl);
@@ -107,6 +119,7 @@ const MainPage = (props) => {
       alert("로그인 먼저 해주세요!");
     }
   };
+  
   /*
   const changeText = (e) => {
     this.setState({
@@ -116,78 +129,147 @@ const MainPage = (props) => {
   };
   */
   
-  const handleSave = ({name, value, prevalue}) => {
-    alert(name + ' saved as ' + value + ' (prev: ' + prevalue + ')');
+  
+  // 바뀌는 value값 저장
+  const handleSave = ({value}) => {
+    setValue(value);
+
+    console.log("value:" + value);
+    console.log("setValue:" + resultVal);
+    //alert(name);
+    //console.log(e.tableProps);
+    //alert(value);
+    //alert(name);
+    //alert(className);
+    //console.log(className);
+    //alert(resultJson.title);
   }
 
+  // 바뀌는 값의 json 저장 -> 이값은 나중에 확정 버튼 누르면 서버로 가게.
+  const changeQuiz = async(quiz) => {
+
+    let q_choices = [];
+    q_choices.push(quiz.choice1, quiz.choice2, quiz.choice3, quiz.choice4, quiz.choice5);
+    const changedquiz = {
+      _id: quiz._id,
+      title: quiz.title,
+      answer: Number(quiz.answer),
+      script: quiz.script,
+      image: quiz.image,
+     // score: quiz.score,
+      choices: q_choices,
+    };
+    
+    // quiz.choices.map((choice, i) => {
+    //   changedquiz[`choice${i + 1}`] = choice;
+    // });
+    setJson(changedquiz); // 혹시 몰라서 상태 저장
+    setJson({
+      ...resultJson,
+      [resultName] : resultVal 
+    });
+
+    console.log(quiz);
+    console.log(resultVal);
+    try {
+      const request = await axios
+        .post(`${USER_SERVER}/api/quizmodify`, { data: resultJson })
+        .then((response) => window.location.replace("/"));
+    } catch {
+      console.log("error");
+    }
+  };
+
+  const test = async(quiz, name, value) => {
+    console.log(quiz);
+    console.log(name);
+    console.log(value);
+  }
+
+  const test2 = ({value}) => {
+    alert(value);
+    setValue(value);
+    //setName(value);
+    //alert(resultName);
+    alert(resultVal);
+  }
+
+  
   //input data
   const columns = useMemo(
     () => [
       {
         accessor: "qid",
         Header: "문항번호",
+        Cell: (tableProps) => (
+          <EditText  onSave={(e) => handleSave} onChange={() => changeQuiz(tableProps.row.original)}  defaultValue={tableProps.cell.value}/>
+        )
       },
       {
         accessor: "title",
         Header: "문항내용",
-        Cell: ({cell: {value}}) => (
-          <EditText onSave={handleSave} defaultValue={value}/>
+        Cell: (tableProps) => (
+          <EditText name="title" onChange={handleSave} onSave={() => changeQuiz(tableProps.row.original)}  defaultValue={tableProps.cell.value}/>
         ),  
       },
       {
         accessor: "script",
         Header: "참고내용",
-        Cell: ({cell: {value}}) => (
-          <EditText defaultValue={value}/>
+        Cell: (tableProps) => (
+          <EditText  onSave={() => changeQuiz(tableProps.row.original)}  defaultValue={tableProps.cell.value}/>
         ),  
       },
       {
         accessor: `choice1`,
         Header: "선택01",
-        Cell: ({cell: {value}}) => (
-          <EditText defaultValue={value}/>
+        Cell: (tableProps) => (
+          <EditText  onSave={() => test(tableProps.row.original,"choice1", tableProps.cell.value)}  defaultValue={tableProps.cell.value}/>
         ),  
       },
       {
         accessor: "choice2",
         Header: "선택02",
-        Cell: ({cell: {value}}) => (
-          <EditText defaultValue={value}/>
+        Cell: (tableProps) => (
+          
+          <div>
+            <EditText  onChange={setName}  onSave={test2} defaultValue={tableProps.cell.value}/>
+            <p>{resultName}</p>
+          </div>
         ),  
       },
       {
         accessor: "choice3",
         Header: "선택03",
-        Cell: ({cell: {value}}) => (
-          <EditText defaultValue={value}/>
+        Cell: (tableProps) => (
+          <EditText  onSave={() => changeQuiz(tableProps.row.original)}  defaultValue={tableProps.cell.value}/>
         ),  
       },
       {
         accessor: "choice4",
         Header: "선택04",
-        Cell: ({cell: {value}}) => (
-          <EditText defaultValue={value}/>
+        Cell: (tableProps) => (
+          <EditText  onSave={() => changeQuiz(tableProps.row.original)}  defaultValue={tableProps.cell.value}/>
         ),  
       },
       {
         accessor: "choice5",
         Header: "선택05",
-        Cell: ({cell: {value}}) => (
-          <EditText defaultValue={value}/>
+        Cell: (tableProps) => (
+          <EditText  onSave={() => changeQuiz(tableProps.row.original)}  defaultValue={tableProps.cell.value}/>
         ),  
       },
       {
         accessor: "answer",
         Header: "정답",
-        Cell: ({cell: {value}}) => (
-          <EditText defaultValue={value}/>
+        Cell: (tableProps) => (
+          <EditText  onSave={() => changeQuiz(tableProps.row.original)}  defaultValue={tableProps.cell.value}/>
         ),  
       },
       {
         accessor: "score",
         Header: "점수",
-        Cell: ({cell: {value}}) => (
-          <EditText value={value} />
+        Cell: (tableProps) => (
+          <EditText  onSave={handleSave}  defaultValue={tableProps.cell.value}/>
         ),  
       },
       {

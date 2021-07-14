@@ -38,4 +38,5 @@ function Table({columns, data}) {
     );
 }
 
-export default Table
+export default Table;
+

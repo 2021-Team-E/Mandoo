@@ -4,5 +4,6 @@ venv/
 .DS_Store
 *.pem
 .vscode/
-upload
+
+upload/
 s3.py
