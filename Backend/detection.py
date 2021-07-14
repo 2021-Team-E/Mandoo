@@ -15,9 +15,10 @@ def get_img(image):
     # for detection in detections:
     #     print(detection["name"], " : ", detection["percentage_probability"], " : ", detection["box_points"])
 
-    title="test"
-    choices=[1122,2222,3232,4224,5225]
-    answer=1222
-    script="script"
+    title=["test"]
+    choices=["1122","2222","3232","4224","5225"]
+    answer="1"
+    script=["script",'url']
     image="image"
-    return title, choices, answer, script, image
+    score = "2"
+    return title, choices, answer, script, image, score

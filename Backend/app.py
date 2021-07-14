@@ -23,11 +23,12 @@ CORS(app, supports_credentials=True)
 
 nested_fields = {}
 nested_fields["_id"]= fields.String()
-nested_fields['title'] = fields.String()
-nested_fields["choices"] = fields.List(fields.String)
-nested_fields["answer"] = fields.Integer
-nested_fields["script"] = fields.String()
+nested_fields['title'] = fields.List(fields.String())
+nested_fields["choices"] = fields.List(fields.String())
+nested_fields["answer"] = fields.String()
+nested_fields["script"] = fields.List(fields.String())
 nested_fields["image"] = fields.String()
+nested_fields["score"] = fields.String()
 quizList_fields = {'quiz_list': fields.List(fields.Nested(api.model('nested', nested_fields)))}
 showquiz_fields = api.model('ShowQuiz',{
   'data' : fields.List(fields.Nested(api.model('quizlist',quizList_fields)))
@@ -222,7 +223,7 @@ class Image(Resource):
         img_url = "https://summer-program.s3.ap-northeast-2.amazonaws.com/"+imagefilename
 
 
-        title, choices, answer, script, image = get_img(imagefilename)
+        title, choices, answer, script, image, score = get_img(imagefilename)
         user_id = session.get('id')
         
         processed_quiz = {
@@ -230,8 +231,9 @@ class Image(Resource):
             "title":title,
             "choices": choices,
             "answer": answer,
-            "script" : img_url,
-            "image" : img_url,
+            "script" : script,
+            "image" : image,
+            "score" : score
         }
         quiz_id = quiz.insert_one(processed_quiz)
         author = user.find_one({"id":user_id})
@@ -303,8 +305,8 @@ class Quizmodify(Resource):
     qmodify_parser.add_argument('answer', required=True, location='json',type=int, help="answer")
     qmodify_parser.add_argument('script', required=True, location='json',type=str, help="script")
     qmodify_parser.add_argument('image', required=True, location='json',type=str, help="image") # 추후에 file type으로 변경 가능성 있음
-
-    @api.expect(qmodify_parser)
+    
+    @api.expect(showquiz_fields)
     @api.response(201, '퀴즈 수정 성공')
     @api.response(400, 'Bad Request')
     @api.response(401, '로그인 필요')
