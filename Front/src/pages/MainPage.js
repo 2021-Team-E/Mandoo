@@ -9,6 +9,7 @@ import axios from "axios";
 import { USER_SERVER } from "../config";
 import Modal from "../components/Modals/Modal.js";
 import addImg from "./imgIcon.png";
+import noLoginImg from "./noLogin.PNG";
 import { useHistory } from "react-router-dom";
 import { EditText } from "react-edit-text";
 
@@ -492,7 +493,43 @@ const MainPage = (props) => {
         </div>
       ) : (
         <div>
-          <p>로그인이 필요합니다.</p>
+          <img src={noLoginImg} alt="noLogin state"
+          style={{
+                width: "91vw",
+                marginLeft: "auto",
+                marginRight: "auto",
+                paddingLeft: "30px",
+                marginTop: "25px"
+              }} />
+          <footer
+            style={{
+              backgroundColor: "black",
+              color: "white",
+              height: "3vh",
+              width: "100%",
+              position: "fixed",
+              bottom: "0",
+            }}
+          >
+            <div>
+              아이콘 제작자:{" "}
+              <a
+                style={{ textDecoration: "none", color: "white" }}
+                href="https://www.flaticon.com/kr/authors/pixel-perfect"
+                title="Pixel perfect"
+              >
+                Pixel perfect
+              </a>{" "}
+              from{" "}
+              <a
+                style={{ textDecoration: "none", color: "white" }}
+                href="https://www.flaticon.com/kr/"
+                title="Flaticon"
+              >
+                www.flaticon.com
+              </a>
+            </div>
+          </footer>
         </div>
       )}
     </div>
