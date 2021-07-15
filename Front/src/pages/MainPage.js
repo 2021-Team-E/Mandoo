@@ -116,6 +116,7 @@ const MainPage = (props) => {
 
     const changedValue = await changeQuiz(e.name, e.value, value);
     console.log(changedValue);
+    alert("수정되었습니다.");
   };
 
   // 바뀌는 값의 json 저장 -> 이값은 나중에 확정 버튼 누르면 서버로 가게.
@@ -338,10 +339,12 @@ const MainPage = (props) => {
             withCredentials: true,
           })
           .then(function (response) {
+            // 로딩 창 여기에
             if (response.data.success) {
               //성공적으로 이미지 업로드 시 replace
               console.log(response);
               window.location.replace("/");
+              alert("문제가 등록되었습니다.");
             }
           });
       } catch (error) {
@@ -358,6 +361,7 @@ const MainPage = (props) => {
       const request = await axios
         .delete(`${USER_SERVER}/api/quizdelete`, { data: deletedquiz })
         .then((response) => window.location.replace("/"));
+      alert("문제가 삭제되었습니다.");
     } catch {
       console.log("error");
     }
@@ -400,6 +404,7 @@ const MainPage = (props) => {
                     width: "150px",
                     height: "200px",
                     border: "solid 1px black",
+                    backgroundColor: "#f2f2f2",
                   }}
                   src={fileUrl}
                   alt={fileUrl}
@@ -423,13 +428,14 @@ const MainPage = (props) => {
             style={{
               marginRight: "auto",
               width: "85vw",
-              height: "70vh",
+              maxHeight: "70vh",
               overflow: "auto",
               border: "solid 2px black",
               marginLeft: "auto",
               float: "left",
               marginTop: "60px",
               position: "auto",
+              //backgroundColor: 'white',
             }}
           >
             <Table columns={columns} data={data} />
