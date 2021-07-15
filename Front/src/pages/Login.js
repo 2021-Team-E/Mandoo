@@ -10,7 +10,6 @@ import Header from '../components/Header';
 import logo from './loginLogo.PNG';
 
 const Fix = styled.div`
-  min-height: 100vh;
   background-color: #f0f8ff;
   text-align: center;
 `;
@@ -71,6 +70,7 @@ const Login = () => {
       if (response.data.success) {
         window.localStorage.setItem('isAuth', 'true');
         history.push(`/`);
+        alert('로그인 되었습니다.');
       }
     } catch (error) {
       alert(error.response.data.message);
@@ -101,19 +101,7 @@ const Login = () => {
               value={info.password}
               onChange={onInputChange}
             />
-            <Button
-              width="460"
-              height="55"
-              font="20"
-              background="#B7DDFF"
-              color="#000000"
-              marginLeft="auto"
-              marginRight="auto"
-              marginTop="20"
-              onClick={formSubmit}
-            >
-              로그인
-            </Button>
+
             <Button
               width="460"
               height="55"
