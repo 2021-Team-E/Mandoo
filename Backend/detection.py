@@ -52,7 +52,7 @@ def get_img(image):
     
 
     
-    title=["test"]
+    title=["0000"]
     choices=["1122","2222","3232","4224","5225"]
     answer="1"
     script=["script",'url']

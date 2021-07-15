@@ -7,7 +7,7 @@ function Search({ onSubmit }) {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} align="left">
       <input name="filter" />
       <button>Search</button>
     </form>
