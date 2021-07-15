@@ -9,17 +9,16 @@ import Header from "../components/Header";
 
 const Fix = styled.div`
   min-height: 100vh;
-  background-color: #ffffff;
+  background-color: #f0f8ff;
   text-align: center;
 `;
 
 const Wrapper = styled.div`
   width: 50%;
-
   padding: 50px;
   display: inline-block;
   flex-direction: column;
-  margin-top: 10;
+  margin-top: 70px;
   margin-left: auto;
   margin-right: auto;
 `;
@@ -34,8 +33,6 @@ const LargeP = styled.div`
 
 const GrayCard = styled.div`
   width: 610px;
-  background-color: #f0f8ff;
-  margin-top: 30px;
   margin-bottom: 30px;
   margin-left: auto;
   margin-right: auto;
@@ -111,31 +108,32 @@ const SignUp = () => {
         <LargeP>회원가입</LargeP>
         <GrayCard>
           <form>
-            <Input placeholder="   이름" name="name" onChange={onInputChange} />
-            <Input placeholder="   아이디" name="id" onChange={onInputChange} />
+            <Input placeholder="  이름" name="name" onChange={onInputChange} />
+            <Input placeholder="  아이디" name="id" onChange={onInputChange} />
             <Input
               style={{ fontFamily: "Roboto" }}
               type="password"
-              placeholder="   비밀번호"
+              placeholder="  비밀번호"
               name="password1"
               onChange={onInputChange}
             />
             <Input
               style={{ fontFamily: "Roboto" }}
               type="password"
-              placeholder="   비밀번호 확인"
+              placeholder="  비밀번호 확인"
               name="password2"
               onChange={onInputChange}
             />
           </form>
-          <div style={{ clear: "both", textAlign: "center" }}>
+          <div style={{ clear: "both", textAlign: "center", marginTop: "30px", marginLeft: "auto", marginRight: "auto"}}>
             <Button
               width="100"
               font="20"
               background="#6495ED"
               color="#ffffff"
               marginTop="30"
-              marginRight="20"
+              marginRight="30"
+              marginLeft="30"
               onClick={pwdCheck}
             >
               확인
@@ -146,7 +144,8 @@ const SignUp = () => {
               background="#6495ED"
               color="#ffffff"
               marginTop="30"
-              marginRight="20"
+              marginRight="30"
+              marginLeft="30"
               onClick={() => history.push(`/`)}
             >
               취소
