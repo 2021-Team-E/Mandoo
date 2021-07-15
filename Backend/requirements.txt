@@ -25,5 +25,5 @@ keras-resnet==0.2.0
 imageai 
 boto3
 awscli
-pytesseract 
+pytesseract #도커 사용시 주석처리
 image
