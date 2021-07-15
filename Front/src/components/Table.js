@@ -1,5 +1,5 @@
-import React from "react";
-import { useTable } from "react-table";
+import React from 'react';
+import { useTable } from 'react-table';
 
 function Table({ columns, data }) {
   const {
@@ -16,27 +16,36 @@ function Table({ columns, data }) {
       border="1"
       align="center"
       style={{
-        backgroundColor: "white",
-        borderCollapse: "collapse",
-        width: "100%",
+        backgroundColor: 'white',
+        borderCollapse: 'collapse',
+        width: '100%',
       }}
     >
-      <thead style={{ borderBottom: "2px solid #036", color: "#369"}}>
+      <thead style={{ borderBottom: '2px solid #036', color: 'white' }}>
         {headerGroups.map((headerGroup) => (
           <tr {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map((column) => (
-              <th {...column.getHeaderProps()}>{column.render("Header")}</th>
+              <th
+                {...column.getHeaderProps()}
+                style={{
+                  top: '0',
+                  position: 'sticky',
+                  backgroundColor: '#369',
+                }}
+              >
+                {column.render('Header')}
+              </th>
             ))}
           </tr>
         ))}
       </thead>
-      <tbody {...getTableBodyProps()} align="center" >
+      <tbody {...getTableBodyProps()} align="center">
         {rows.map((row) => {
           prepareRow(row);
           return (
             <tr {...row.getRowProps()}>
               {row.cells.map((cell) => (
-                <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
               ))}
             </tr>
           );
