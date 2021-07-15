@@ -100,24 +100,6 @@ const MainPage = (props) => {
     setModalOpen(false);
   };
 
-  // 확정 버튼 onClick 함수
-  const decideData = () => {
-    if (window.localStorage.getItem("isAuth") === "true") {
-      alert("확정버튼 누름");
-    } else {
-      alert("로그인 먼저 해주세요!");
-    }
-  };
-
-  // 수정 버튼 onClick 함수
-  const changeData = () => {
-    if (window.localStorage.getItem("isAuth") === "true") {
-      alert("수정버튼 누름");
-    } else {
-      alert("로그인 먼저 해주세요!");
-    }
-  };
-
   /*
   const changeText = (e) => {
     this.setState({
