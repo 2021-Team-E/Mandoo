@@ -4,6 +4,7 @@ import Table from '../components/Table';
 //import BlankTop from '../components/BlankTop';
 //import {useHistory} from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import Loader from './Loader';
 
 import axios from 'axios';
 import { USER_SERVER } from '../config';
@@ -33,6 +34,7 @@ const btn = {
 
 const MainPage = (props) => {
   const [quizzes, setQuizzes] = useState([]);
+  const [loading, setLoading] = useState(false);
   const history = useHistory();
 
   useEffect(() => {
@@ -320,6 +322,7 @@ const MainPage = (props) => {
 
   // 전송 버튼 클릭 이벤트
   const sendImage = () => {
+    setLoading(true);
     const formData = new FormData();
     formData.append('image', fileImg);
     console.log(formData);
@@ -334,11 +337,15 @@ const MainPage = (props) => {
           })
           .then(function (response) {
             // 로딩 창 여기에
+
             if (response.data.success) {
               //성공적으로 이미지 업로드 시 replace
               console.log(response);
+
+              //alert('문제가 등록되었습니다.');
+              setLoading(false);
               window.location.replace('/');
-              alert('문제가 등록되었습니다.');
+              alert('문제가 등록되었습니다. ');
             }
           });
       } catch (error) {
@@ -360,7 +367,7 @@ const MainPage = (props) => {
       console.log('error');
     }
   };
-
+  if (loading) return <Loader type="spin" color="#ffffff" message={'로딩중'} />;
   //<BlankTop DesktopMargin='100' TabletMargin='3' MobileMargin='1'/>
   return (
     <div
