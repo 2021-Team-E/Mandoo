@@ -87,7 +87,7 @@ def get_img(image):
         for eachPrediction, eachProbability in zip(predictions, probabilities):
             print(eachPrediction , " : " , eachProbability)
 
-    #shutil.rmtree('./result/') # 결과 확인 필요 없을 때 써주기 (result/ 폴더 삭제해주는 기능)
+    #shutil.rmtree('./result/') # 결과 확인 필요 없을 때 주석 풀고 써주기 (result/ 폴더 삭제해주는 기능)
     print(dict)
     title=dict["question"]
     choices=dict["answer"]

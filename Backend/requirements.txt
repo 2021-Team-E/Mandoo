@@ -28,7 +28,7 @@ tesseract
 tesseract-ocr
 pytesseract
 image
-os
+
 
 boto3
 
