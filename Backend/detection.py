@@ -2,7 +2,7 @@
 from imageai.Detection.Custom import CustomObjectDetection
 from imageai.Classification.Custom import CustomImageClassification
 import pytesseract 
-from PIL import ImageEnhance, ImageFilter, Image
+from PIL import Image
 import os
 import boto3
 from s3 import BUCKET_NAME
@@ -12,7 +12,7 @@ pytesseract.pytesseract.tesseract_cmd="C:\\Program Files\\Tesseract-OCR\\tessera
 resource = boto3.resource('s3')
 buckets = resource.Bucket(name=BUCKET_NAME)
 
-file_path = 'model_ex-024_acc-1.000000.h5'  # 내 서버에 저장하는 것 (텍스트 추출 모델)--이미지 판단 모델인듯
+file_path = 'model_ex-024_acc-1.000000.h5'  # 내 서버에 저장하는 것 이미지 판단 모델인듯
 key_name = "model_ex-024_acc-1.000000.h5"   # s3버킷 저장되어있는 이름
 buckets.download_file(key_name, file_path)
 
@@ -31,7 +31,7 @@ def get_img(image):
     image_path="./upload/"+image_png #input 이미지 경로
     result_path="./result/"+image_png #test output 이미지 경로 (크롭 x, 결과확인용)
 
-    detections = detector.detectObjectsFromImage(input_image=image_path, output_image_path=result_path , extract_detected_objects=True,  minimum_percentage_probability=80)
+    detections = detector.detectObjectsFromImage(input_image=image_path, output_image_path=result_path , extract_detected_objects=True,  minimum_percentage_probability=50)
     
     label= []
     dict = {"question": [], "content" :[], "answer" : []}
@@ -62,23 +62,25 @@ def get_img(image):
     
     for index,detection in enumerate(detections[1]): #index로 몇번째 인지 접근 가능
         print(index, detection)
-        predictions, probabilities = prediction.classifyImage(detection, result_count=2)
-        text = pytesseract.image_to_string(Image.open(detection), lang='kor+eng')
+        predictions, probabilities = prediction.classifyImage(detection, result_count=2)    #predictions[0] : 무조건 퍼센트 높은 아이로 지정됨
+
+        text = pytesseract.image_to_string(Image.open(detection), lang='kor+eng')   
         
         this_labelname=label[index]
         print(this_labelname)
         print(dict[this_labelname])
         if probabilities[0] > probabilities[1]: # 텍스트인 경우인가요....?
-            print("This is a(n) 텍스트" + predictions[0])
+            print("This is a(n) " + predictions[0])
 
-        else:                                   # 이미지 포함한 경우인 경우인가요....?
-            print("This is a(n) 이미지" + predictions[1])
-            # dict[this_labelname].append("imageurl")
+        # else:                                   # 이미지 포함한 경우인 경우인가요....?
+        #     print("This is a(n) " + predictions[1])
+        #     # dict[this_labelname].append("imageurl")
 
-        if predictions[0] == "text":
+        if predictions[0] == "text": #텍스트인 경우
             print(text)
             dict[this_labelname].append(text)
-        if predictions[0] == "image":
+
+        else :  #이미지 포함한 경우
          
             dict[this_labelname].append("imageurl")
         print("\n\n")
