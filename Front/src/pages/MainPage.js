@@ -447,7 +447,7 @@ const MainPage = (props) => {
               marginLeft: "auto",
               float: "left",
               marginTop: "60px",
-              position: "auto"
+              position: "auto",
             }}
           >
             <Table columns={columns} data={data} />
