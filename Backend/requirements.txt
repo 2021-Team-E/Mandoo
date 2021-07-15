@@ -24,10 +24,13 @@ opencv-python
 keras-resnet==0.2.0
 imageai 
 awscli
-tesseract
-tesseract-ocr
+#pillow
+#tesseract
+#tesseract-ocr
+Image
 pytesseract
-image
+
+#image
 
 
 boto3
