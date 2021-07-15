@@ -32,19 +32,15 @@ function Table({ columns, data }) {
           style={{
             borderBottom: "2px solid #036",
             color: "white",
+            top: "23px",
+            position: "sticky",
+            backgroundColor: "#369",
           }}
         >
           {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map((column) => (
-                <th
-                  {...column.getHeaderProps()}
-                  style={{
-                    top: "23px",
-                    position: "sticky",
-                    backgroundColor: "#369",
-                  }}
-                >
+                <th {...column.getHeaderProps(column.getSortByToggleProps())}>
                   {column.render("Header")}
                 </th>
               ))}
