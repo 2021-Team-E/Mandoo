@@ -222,8 +222,9 @@ class Image(Resource):
         img.save('./upload/{0}'.format(secure_filename(imagefilename)))
         imagetoupload  = open('./upload/{0}'.format(secure_filename(imagefilename)), 'rb')
 
-        imagefilename = id +str(datetime.datetime.now()) + ".jpeg"
-
+        imagefilename ="upload/"+ id + "_" + str(datetime.datetime.now())+".jpeg"
+        imagefilename.replace(" ","")
+        
         s3.put_object(Body=imagetoupload, Bucket=BUCKET_NAME, Key=imagefilename, ContentType="image/jpeg")
         img_url = "https://summer-program.s3.ap-northeast-2.amazonaws.com/"+imagefilename 
         image = img_url              # 딥러닝 거치기 전의 이미지가 저장된 s3 주소 
