@@ -481,11 +481,11 @@ const MainPage = (props) => {
               alert('로그인을 해주세요');
             }}
             style={{
-              width: '90vw',
+              width: '93vw',
               marginLeft: 'auto',
               marginRight: 'auto',
-              paddingLeft: '50px',
-              marginTop: '20px',
+              paddingLeft: '30px',
+              marginTop: '30px',
             }}
           />
           <footer
