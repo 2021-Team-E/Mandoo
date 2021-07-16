@@ -366,7 +366,7 @@ const MainPage = (props) => {
       console.log('error');
     }
   };
-  //if (loading) return <Loader type="spin" color="#ffffff" message={'로딩중'} />;
+
   //<BlankTop DesktopMargin='100' TabletMargin='3' MobileMargin='1'/>
   return (
     <div
