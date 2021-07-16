@@ -15,7 +15,7 @@ function Loader({ type, color, message }) {
         }}
       >
         <h2>{message}</h2>
-        <h2>창을 닫지 마세요.</h2>
+        <h2>잠시만 기다려주세요.</h2>
         <ReactLoading type={type} color={color} height={'80%'} width={'80%'} />
       </div>
     </div>
