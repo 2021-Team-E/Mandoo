@@ -4,6 +4,7 @@ import Table from "../components/Table";
 //import BlankTop from '../components/BlankTop';
 //import {useHistory} from 'react-router-dom';
 import { useState, useEffect } from "react";
+import Loader from "./Loader";
 
 import axios from "axios";
 import { USER_SERVER } from "../config";
@@ -33,6 +34,7 @@ const btn = {
 
 const MainPage = (props) => {
   const [quizzes, setQuizzes] = useState([]);
+  const [loading, setLoading] = useState(false);
   const history = useHistory();
 
   useEffect(() => {
@@ -100,24 +102,6 @@ const MainPage = (props) => {
     setModalOpen(false);
   };
 
-  // 확정 버튼 onClick 함수
-  const decideData = () => {
-    if (window.localStorage.getItem("isAuth") === "true") {
-      alert("확정버튼 누름");
-    } else {
-      alert("로그인 먼저 해주세요!");
-    }
-  };
-
-  // 수정 버튼 onClick 함수
-  const changeData = () => {
-    if (window.localStorage.getItem("isAuth") === "true") {
-      alert("수정버튼 누름");
-    } else {
-      alert("로그인 먼저 해주세요!");
-    }
-  };
-
   /*
   const changeText = (e) => {
     this.setState({
@@ -134,6 +118,7 @@ const MainPage = (props) => {
 
     const changedValue = await changeQuiz(e.name, e.value, value);
     console.log(changedValue);
+    alert("수정되었습니다.");
   };
 
   // 바뀌는 값의 json 저장 -> 이값은 나중에 확정 버튼 누르면 서버로 가게.
@@ -181,12 +166,12 @@ const MainPage = (props) => {
     alert(resultVal);
   };
 
-  //input data
+  //테이블에 들어가는 내용(columns, data)
   const columns = useMemo(
     () => [
       {
-        accessor: "qid",
-        Header: "문항번호",
+        accessor: "qid", //해당 열을 data 객체의 어느 속성을 읽어야 하는지 명시
+        Header: "문항번호", //테이블 헤더에 보여줄 텍스트 명시
         Cell: (tableProps) => (
           <EditText
             name="qid"
@@ -235,14 +220,11 @@ const MainPage = (props) => {
         accessor: "choice2",
         Header: "선택02",
         Cell: (tableProps) => (
-          <div>
-            <EditText
-              onChange={setName}
-              onSave={test2}
-              defaultValue={tableProps.cell.value}
-            />
-            <p>{resultName}</p>
-          </div>
+          <EditText
+            name="script"
+            onSave={(e) => handleSave(tableProps.row.original, e)}
+            defaultValue={tableProps.cell.value}
+          />
         ),
       },
       {
@@ -298,7 +280,7 @@ const MainPage = (props) => {
         ),
       },
       {
-        Header: "Delete",
+        Header: "삭제 ",
         id: "delete",
         accessor: (str) => "delete",
 
@@ -310,9 +292,17 @@ const MainPage = (props) => {
                 color: "blue",
                 textDecoration: "underline",
               }}
-              onClick={() => deleteQuiz(tableProps.row.original._id)}
+              onClick={() => {
+                if (window.confirm("정말 삭제하시겠습니까?") === true) {
+                  //확인
+                  deleteQuiz(tableProps.row.original._id);
+                } else {
+                  //취소
+                  return false;
+                }
+              }}
             >
-              Delete
+              삭제
             </span>
           );
         },
@@ -320,6 +310,7 @@ const MainPage = (props) => {
     ],
     [quizzes]
   );
+
   const data = useMemo(() => {
     const showed_data = quizzes?.map((quiz) => {
       let data_return = {
@@ -343,6 +334,7 @@ const MainPage = (props) => {
 
   // 전송 버튼 클릭 이벤트
   const sendImage = () => {
+    setLoading(true);
     const formData = new FormData();
     formData.append("image", fileImg);
     console.log(formData);
@@ -357,9 +349,11 @@ const MainPage = (props) => {
           })
           .then(function (response) {
             if (response.data.success) {
+              setLoading(false);
               //성공적으로 이미지 업로드 시 replace
               console.log(response);
               window.location.replace("/");
+              alert("문제가 등록되었습니다.");
             }
           });
       } catch (error) {
@@ -376,6 +370,7 @@ const MainPage = (props) => {
       const request = await axios
         .delete(`${USER_SERVER}/api/quizdelete`, { data: deletedquiz })
         .then((response) => window.location.replace("/"));
+      alert("문제가 삭제되었습니다.");
     } catch {
       console.log("error");
     }
@@ -395,97 +390,107 @@ const MainPage = (props) => {
         <Header />
       </div>
       {window.localStorage.getItem("isAuth") === "true" ? (
-        <div>
-          <div className="content">
-            <img
-              src={addImg}
-              alt="imgadd"
-              onClick={openModal}
-              style={{
-                width: "100px",
-                height: "100px",
-                cursor: "pointer",
-                marginLeft: "25px",
-                padding: "0",
-                float: "left",
-              }}
-            />
-            <Modal open={modalOpen} close={closeModal}>
-              <div style={divBorder}>
-                <img
-                  style={{
-                    objectFit: "fill",
-                    width: "150px",
-                    height: "200px",
-                    border: "solid 1px black",
-                  }}
-                  src={fileUrl}
-                  alt={fileUrl}
-                />
-              </div>
-              <div>
-                <input
-                  type="file"
-                  accept="image/*"
-                  name="question_img"
-                  onChange={processImage}
-                ></input>
-                <button onClick={sendImage}>전송</button>
-              </div>
-            </Modal>
-          </div>
-          <div
-            className="table"
-            align="center"
-            title="표 안의 내용을 클릭해 수정하세요"
-            style={{
-              marginRight: "auto",
-              width: "85vw",
-              height: "70vh",
-              overflow: "auto",
-              border: "solid 2px black",
-              marginLeft: "auto",
-              float: "left",
-              marginTop: "60px",
-              position: "auto",
-            }}
-          >
-            <Table columns={columns} data={data} />
-          </div>
-          <div
-            className="confirm"
-            style={{ clear: "both", textAlign: "center" }}
-          ></div>
-          <footer
-            style={{
-              backgroundColor: "black",
-              color: "white",
-              height: "3vh",
-              width: "100%",
-              position: "fixed",
-              bottom: "0",
-            }}
-          >
-            <div>
-              아이콘 제작자:{" "}
-              <a
-                style={{ textDecoration: "none", color: "white" }}
-                href="https://www.flaticon.com/kr/authors/pixel-perfect"
-                title="Pixel perfect"
-              >
-                Pixel perfect
-              </a>{" "}
-              from{" "}
-              <a
-                style={{ textDecoration: "none", color: "white" }}
-                href="https://www.flaticon.com/kr/"
-                title="Flaticon"
-              >
-                www.flaticon.com
-              </a>
+        loading ? (
+          <Loader type="spin" color="#ffffff" message={"문제 등록 중입니다."} />
+        ) : (
+          <div>
+            <div className="content">
+              <img
+                src={addImg}
+                alt="imgadd"
+                onClick={openModal}
+                style={{
+                  width: "100px",
+                  height: "100px",
+                  cursor: "pointer",
+                  marginLeft: "25px",
+                  padding: "0",
+                  float: "left",
+                }}
+              />
+              <Modal open={modalOpen} close={closeModal}>
+                <div style={divBorder}>
+                  <img
+                    style={{
+                      objectFit: "fill",
+                      width: "150px",
+                      height: "200px",
+                      border: "solid 1px black",
+                      backgroundColor: "#f2f2f2",
+                    }}
+                    src={fileUrl}
+                    alt={fileUrl}
+                  />
+                </div>
+                <div>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    name="question_img"
+                    onChange={processImage}
+                  ></input>
+                  <button
+                    style={{ border: "solid 1px black" }}
+                    onClick={sendImage}
+                  >
+                    전송
+                  </button>
+                </div>
+              </Modal>
             </div>
-          </footer>
-        </div>
+            <div
+              className="table"
+              align="center"
+              style={{
+                marginRight: "auto",
+                width: "85vw",
+                maxHeight: "70vh",
+                overflow: "auto",
+                border: "solid 2px black",
+                marginLeft: "auto",
+                float: "left",
+                marginTop: "60px",
+                position: "auto",
+                //backgroundColor: 'white',
+              }}
+            >
+              <Table columns={columns} data={data} />
+            </div>
+            <div
+              className="confirm"
+              style={{ clear: "both", textAlign: "center" }}
+            ></div>
+            <footer
+              style={{
+                backgroundColor: "black",
+                color: "white",
+                height: "3vh",
+                width: "100%",
+                position: "fixed",
+                bottom: "0",
+              }}
+            >
+              <div>
+                아이콘 제작자:{" "}
+                <a
+                  style={{ textDecoration: "none", color: "white" }}
+                  href="https://www.flaticon.com/kr/authors/pixel-perfect"
+                  title="Pixel perfect"
+                >
+                  Pixel perfect
+                </a>{" "}
+                from{" "}
+                <a
+                  style={{ textDecoration: "none", color: "white" }}
+                  href="https://www.flaticon.com/kr/"
+                  title="Flaticon"
+                >
+                  www.flaticon.com
+                </a>
+              </div>
+            </footer>
+          </div>
+        )
       ) : (
         <div>
           <img
@@ -495,11 +500,11 @@ const MainPage = (props) => {
               alert("로그인을 해주세요");
             }}
             style={{
-              width: "90vw",
+              width: "93vw",
               marginLeft: "auto",
               marginRight: "auto",
-              paddingLeft: "50px",
-              marginTop: "20px",
+              paddingLeft: "30px",
+              marginTop: "30px",
             }}
           />
           <footer
@@ -536,5 +541,4 @@ const MainPage = (props) => {
     </div>
   );
 };
-
 export default MainPage;
