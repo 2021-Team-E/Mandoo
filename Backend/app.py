@@ -223,7 +223,7 @@ class Image(Resource):
         img_url = "https://summer-program.s3.ap-northeast-2.amazonaws.com/"+imagefilename
 
 
-        title, choices, answer, script, image, score = get_img(imagefilename)
+        title, choices, answer, script, image, score = get_img(id)
         user_id = session.get('id')
         
         processed_quiz = {

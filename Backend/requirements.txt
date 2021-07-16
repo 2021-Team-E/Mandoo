@@ -23,7 +23,11 @@ matplotlib==3.3.2
 opencv-python 
 keras-resnet==0.2.0
 imageai 
-boto3
 awscli
+#tesseract
+#tesseract-ocr
 pytesseract #도커 사용시 주석처리
 image
+
+
+boto3
