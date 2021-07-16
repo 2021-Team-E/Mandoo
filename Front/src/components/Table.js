@@ -8,14 +8,15 @@ function Table({ columns, data }) {
     getTableBodyProps, // <tbody>에 적용할 prop
     headerGroups, // <thead> 에서 렌더링할 데이터
     rows, // <tbody>에서 랜더링할 데이터
-    prepareRow,
-    setGlobalFilter,
-  } = useTable({ columns, data }, useGlobalFilter, useSortBy);
+    prepareRow, //렌더링 할 데이터 준비하는 함수
+    setGlobalFilter, //<search> 컴포넌트에 prop으로 전달
+  } = useTable({ columns, data }, useGlobalFilter, useSortBy); //useGlobalFilter(): 전체 데이터 검색, useSortBy(): 정렬
 
   return (
     <>
       <div style={{ top: "0", position: "sticky", backgroundColor: "#369" }}>
-        <Search onSubmit={setGlobalFilter} />
+        <Search onSubmit={setGlobalFilter} />{" "}
+        {/*setGolbalFilter 함수 호촐되고 rows 배열에 필터링된 검색 결과 반영 */}
       </div>
 
       <table
@@ -39,11 +40,17 @@ function Table({ columns, data }) {
         >
           {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column) => (
-                <th {...column.getHeaderProps(column.getSortByToggleProps())}>
-                  {column.render("Header")}
-                </th>
-              ))}
+              {headerGroup.headers.map(
+                (
+                  column //각 칸에 Header map
+                ) => (
+                  <th {...column.getHeaderProps(column.getSortByToggleProps())}>
+                    {" "}
+                    {/* 테이블 헤더 클릭하여 데이터 정렬 */}
+                    {column.render("Header")}
+                  </th>
+                )
+              )}
             </tr>
           ))}
         </thead>
@@ -53,9 +60,13 @@ function Table({ columns, data }) {
             prepareRow(row);
             return (
               <tr {...row.getRowProps()}>
-                {row.cells.map((cell) => (
-                  <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
-                ))}
+                {row.cells.map(
+                  (
+                    cell //각 칸에 data map
+                  ) => (
+                    <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                  )
+                )}
               </tr>
             );
           })}

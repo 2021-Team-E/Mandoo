@@ -163,12 +163,12 @@ const MainPage = (props) => {
     alert(resultVal);
   };
 
-  //input data
+  //테이블에 들어가는 내용(columns, data)
   const columns = useMemo(
     () => [
       {
-        accessor: "qid",
-        Header: "문항번호",
+        accessor: "qid", //해당 열을 data 객체의 어느 속성을 읽어야 하는지 명시
+        Header: "문항번호", //테이블 헤더에 보여줄 텍스트 명시
         Cell: (tableProps) => (
           <EditText
             name="qid"
@@ -280,7 +280,7 @@ const MainPage = (props) => {
         ),
       },
       {
-        Header: "Delete",
+        Header: "삭제 ",
         id: "delete",
         accessor: (str) => "delete",
 
@@ -294,7 +294,7 @@ const MainPage = (props) => {
               }}
               onClick={() => deleteQuiz(tableProps.row.original._id)}
             >
-              Delete
+              삭제
             </span>
           );
         },
@@ -302,6 +302,7 @@ const MainPage = (props) => {
     ],
     [quizzes]
   );
+
   const data = useMemo(() => {
     const showed_data = quizzes?.map((quiz) => {
       let data_return = {
