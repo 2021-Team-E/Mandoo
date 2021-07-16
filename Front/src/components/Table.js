@@ -48,7 +48,7 @@ function Table({ columns, data }) {
           ))}
         </thead>
 
-        <tbody {...getTableBodyProps()} align="center">
+        <tbody title="표 안의 내용을 클릭해 수정하세요" {...getTableBodyProps()} align="center">
           {rows.map((row) => {
             prepareRow(row);
             return (

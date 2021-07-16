@@ -425,7 +425,6 @@ const MainPage = (props) => {
             <div
               className="table"
               align="center"
-              title="표 안의 내용을 클릭해 수정하세요"
               style={{
                 marginRight: 'auto',
                 width: '85vw',
