@@ -33,7 +33,7 @@ function Table({ columns, data }) {
           style={{
             borderBottom: "2px solid #036",
             color: "white",
-            top: "24px",
+            top: "31.5px",
             position: "sticky",
             backgroundColor: "#369",
           }}
