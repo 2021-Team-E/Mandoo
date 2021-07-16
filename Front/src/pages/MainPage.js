@@ -336,8 +336,6 @@ const MainPage = (props) => {
             withCredentials: true,
           })
           .then(function (response) {
-            // 로딩 창 여기에
-
             if (response.data.success) {
               setLoading(false);
               //성공적으로 이미지 업로드 시 replace
@@ -381,7 +379,7 @@ const MainPage = (props) => {
       </div>
       {window.localStorage.getItem('isAuth') === 'true' ? (
         loading ? (
-          <Loader type="spin" color="#ffffff" message={'로딩중'} />
+          <Loader type="spin" color="#ffffff" message={'문제 등록 중입니다.'} />
         ) : (
           <div>
             <div className="content">

@@ -14,7 +14,7 @@ function Table({ columns, data }) {
 
   return (
     <>
-      <div style={{ top: '0', position: 'sticky', backgroundColor: '#369' }}>
+      <div style={{ top: '0', position: 'sticky', backgroundColor: '#369', color: 'white' }}>
         <Search onSubmit={setGlobalFilter} />
       </div>
 
