@@ -68,7 +68,9 @@ function Table({ columns, data }) {
                   (
                     cell //각 칸에 data map
                   ) => (
-                    <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                    <td style={{ height: "40px" }} {...cell.getCellProps()}>
+                      {cell.render("Cell")}
+                    </td>
                   )
                 )}
               </tr>
