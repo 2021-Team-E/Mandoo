@@ -5,10 +5,14 @@ import pytesseract
 from PIL import Image
 import os
 import boto3
-from s3 import BUCKET_NAME
+from s3 import AWS_SECRET_KEY, AWS_ACCESS_KEY, BUCKET_NAME
+import datetime
 import shutil
 
+
 pytesseract.pytesseract.tesseract_cmd="C:\\Program Files\\Tesseract-OCR\\tesseract.exe"
+
+s3 = boto3.client('s3', aws_access_key_id = AWS_ACCESS_KEY, aws_secret_access_key = AWS_SECRET_KEY)
 resource = boto3.resource('s3')
 buckets = resource.Bucket(name=BUCKET_NAME)
 
@@ -18,6 +22,10 @@ buckets.download_file(key_name, file_path)
 
 file_path = 'detection_config.json'  
 key_name = 'detection_config.json'  
+buckets.download_file(key_name, file_path)
+
+file_path = 'detection_model-ex-025--loss-0018.418-85per.h5'
+key_name = 'detection_model-ex-025--loss-0018.418-85per.h5'
 buckets.download_file(key_name, file_path)
 
 def get_img(image):
@@ -77,8 +85,10 @@ def get_img(image):
             dict[this_labelname].append(text)
 
         else :  #이미지 포함한 경우
-         
-            dict[this_labelname].append("imageurl")
+            imagefilename = detection[2:-4]+"_"+str(datetime.datetime.now())+".jpg"
+            s3.put_object(Body=detection, Bucket=BUCKET_NAME, Key=imagefilename)
+            img_url = "https://summer-program.s3.ap-northeast-2.amazonaws.com/"+imagefilename
+            dict[this_labelname].append(img_url)
         print("\n\n")
 
         #The below is just to check the likelihood
