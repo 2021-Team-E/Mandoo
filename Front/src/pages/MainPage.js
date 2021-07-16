@@ -292,7 +292,15 @@ const MainPage = (props) => {
                 color: "blue",
                 textDecoration: "underline",
               }}
-              onClick={() => deleteQuiz(tableProps.row.original._id)}
+              onClick={() => {
+                if (window.confirm("정말 삭제하시겠습니까?") === true) {
+                  //확인
+                  deleteQuiz(tableProps.row.original._id);
+                } else {
+                  //취소
+                  return false;
+                }
+              }}
             >
               삭제
             </span>
