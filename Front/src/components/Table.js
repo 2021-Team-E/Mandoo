@@ -14,7 +14,7 @@ function Table({ columns, data }) {
 
   return (
     <>
-      <div style={{ top: '0', position: 'sticky', backgroundColor: '#369', color: 'white' }}>
+      <div style={{ top: '0', position: 'sticky', backgroundColor: '#369' }}>
         <Search onSubmit={setGlobalFilter} />
       </div>
 
@@ -54,7 +54,9 @@ function Table({ columns, data }) {
             return (
               <tr {...row.getRowProps()}>
                 {row.cells.map((cell) => (
-                  <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                  <td style={{ height: '40px' }} {...cell.getCellProps()}>
+                    {cell.render('Cell')}
+                  </td>
                 ))}
               </tr>
             );

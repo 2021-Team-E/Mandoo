@@ -218,10 +218,11 @@ const MainPage = (props) => {
         accessor: 'choice2',
         Header: '선택02',
         Cell: (tableProps) => (
-          <div>
-            <EditText onChange={setName} onSave={test2} defaultValue={tableProps.cell.value} />
-            <p>{resultName}</p>
-          </div>
+          <EditText
+            name="script"
+            onSave={(e) => handleSave(tableProps.row.original, e)}
+            defaultValue={tableProps.cell.value}
+          />
         ),
       },
       {
