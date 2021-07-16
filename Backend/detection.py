@@ -1,14 +1,29 @@
+# from tensorflow.keras.models import load_model
+# import tensorflow.compat.v1 as tf
+import tensorflow 
+# tf.compat.v1.enable_eager_execution()
+# #tf.compat.v1.disable_eager_execution()
+# t2 = tf.constant([5.0])
+# print(t2)
+
+# tf.config.run_functions_eagerly(
+#     run_eagerly
+# )
+# tf.disable_v2_behavior()
 
 from imageai.Detection.Custom import CustomObjectDetection
 from imageai.Classification.Custom import CustomImageClassification
 import pytesseract 
+#from pytesseract import image_to_string
+#from tesseract import image_to_string
 from PIL import Image
 import os
 import boto3
 from s3 import BUCKET_NAME
 import shutil
 
-pytesseract.pytesseract.tesseract_cmd="C:\\Program Files\\Tesseract-OCR\\tesseract.exe"
+
+#pytesseract.pytesseract.tesseract_cmd="C:\\Program Files\\Tesseract-OCR\\tesseract.exe"
 resource = boto3.resource('s3')
 buckets = resource.Bucket(name=BUCKET_NAME)
 
