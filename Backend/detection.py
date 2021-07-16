@@ -113,7 +113,6 @@ def get_img(image):
     choices=dict["answer"]
     answer="1"
     script=dict["content"]
-    image="image"
     score = "2"
     
-    return title, choices, answer, script, image, score
+    return title, choices, answer, script, score

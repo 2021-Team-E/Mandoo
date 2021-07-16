@@ -222,10 +222,10 @@ class Image(Resource):
         imagetoupload  = open('./upload/{0}'.format(secure_filename(imagefilename)), 'rb')
 
         s3.put_object(Body=imagetoupload, Bucket=BUCKET_NAME, Key=imagefilename, ContentType="image/jpeg")
-        img_url = "https://summer-program.s3.ap-northeast-2.amazonaws.com/"+imagefilename
-
-
-        title, choices, answer, script, image, score = get_img(id)
+        img_url = "https://summer-program.s3.ap-northeast-2.amazonaws.com/"+imagefilename 
+        image = img_url              # 딥러닝 거치기 전의 이미지가 저장된 s3 주소 
+        print(image)
+        title, choices, answer, script, score = get_img(id)
         user_id = session.get('id')
         
         processed_quiz = {
