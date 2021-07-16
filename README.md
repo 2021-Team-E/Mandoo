@@ -22,4 +22,5 @@
 | 이채림 | Front-end           |          Web development          |
 | 박신영 | Front-end           |          Web development          |
 | 이하영 | Back-end            |            API Design             |
+| Ryan Lee | Deep learning            |            Algorithm             |
 | 박근우 | Devops              |           Cloud, Docker           |
