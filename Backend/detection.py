@@ -1,33 +1,18 @@
-# from tensorflow.keras.models import load_model
-# import tensorflow.compat.v1 as tf
-import tensorflow 
-# tf.compat.v1.enable_eager_execution()
-# #tf.compat.v1.disable_eager_execution()
-# t2 = tf.constant([5.0])
-# print(t2)
-
-# tf.config.run_functions_eagerly(
-#     run_eagerly
-# )
-# tf.disable_v2_behavior()
 
 from imageai.Detection.Custom import CustomObjectDetection
 from imageai.Classification.Custom import CustomImageClassification
 import pytesseract 
-#from pytesseract import image_to_string
-#from tesseract import image_to_string
 from PIL import Image
 import os
 import boto3
 from s3 import BUCKET_NAME
 import shutil
 
-
-#pytesseract.pytesseract.tesseract_cmd="C:\\Program Files\\Tesseract-OCR\\tesseract.exe"
+pytesseract.pytesseract.tesseract_cmd="C:\\Program Files\\Tesseract-OCR\\tesseract.exe"
 resource = boto3.resource('s3')
 buckets = resource.Bucket(name=BUCKET_NAME)
 
-file_path = 'model_ex-024_acc-1.000000.h5'  # 내 서버에 저장하는 것 이미지 판단 모델인듯
+file_path = 'model_ex-024_acc-1.000000.h5'  # 내 서버에 저장하는 것 이미지 포함 여부 판단 모델
 key_name = "model_ex-024_acc-1.000000.h5"   # s3버킷 저장되어있는 이름
 buckets.download_file(key_name, file_path)
 
@@ -50,17 +35,17 @@ def get_img(image):
     
     label= []
     dict = {"question": [], "content" :[], "answer" : []}
-    result_label = []
+   
 
     for detection in detections:   
         print(detection)
         print("\n")
 
-    for detection in detections[0]:  #eachObject
+    for detection in detections[0]:
         print(detection["name"], " : ", detection["percentage_probability"], " : ", detection["box_points"])
         label.append(detection["name"])
     print(label)
-    # distri_image = detections[1]
+    
 
     #텍스트 추출 부분
     execution_path = os.getcwd()    
@@ -69,29 +54,25 @@ def get_img(image):
     prediction = CustomImageClassification()
     prediction.setModelTypeAsInceptionV3()
     
-    prediction.setModelPath('./model_ex-024_acc-1.000000.h5') #"model_ex-024_acc-1.000000.h5"
+    prediction.setModelPath('./model_ex-024_acc-1.000000.h5')
     prediction.setJsonPath("./model_class.json")
     prediction.loadModel(num_objects=2)
     
-    #imageTrial_path = "./result/"+image+"-objects/answer-00001.jpg" #"구분된 사진주소"
+    
     
     for index,detection in enumerate(detections[1]): #index로 몇번째 인지 접근 가능
         print(index, detection)
         predictions, probabilities = prediction.classifyImage(detection, result_count=2)    #predictions[0] : 무조건 퍼센트 높은 아이로 지정됨
-
-        text = pytesseract.image_to_string(Image.open(detection), lang='kor+eng')   
         
         this_labelname=label[index]
         print(this_labelname)
         print(dict[this_labelname])
-        if probabilities[0] > probabilities[1]: # 텍스트인 경우인가요....?
+        
+        if probabilities[0] > probabilities[1]:
             print("This is a(n) " + predictions[0])
 
-        # else:                                   # 이미지 포함한 경우인 경우인가요....?
-        #     print("This is a(n) " + predictions[1])
-        #     # dict[this_labelname].append("imageurl")
-
         if predictions[0] == "text": #텍스트인 경우
+            text = pytesseract.image_to_string(Image.open(detection), lang='kor+eng')
             print(text)
             dict[this_labelname].append(text)
 
