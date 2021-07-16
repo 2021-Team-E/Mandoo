@@ -26,7 +26,7 @@ imageai
 awscli
 #tesseract
 #tesseract-ocr
-pytesseract #도커 사용시 주석처리
+pytesseract
 image
 
 
