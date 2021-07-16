@@ -31,3 +31,4 @@ image
 
 
 boto3
+opencv-contrib-python

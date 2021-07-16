@@ -28,8 +28,9 @@ file_path = 'detection_model-ex-025--loss-0018.418-85per.h5'
 key_name = 'detection_model-ex-025--loss-0018.418-85per.h5'
 buckets.download_file(key_name, file_path)
 
+
 def get_img(image):
-    image_png=image+".png"
+    image_png=image+".jpeg"
     detector = CustomObjectDetection()
     detector.setModelTypeAsYOLOv3()
     detector.setModelPath("./detection_model-ex-025--loss-0018.418-85per.h5") # 가중치 모델 경로 (3구분 모델)
@@ -46,7 +47,7 @@ def get_img(image):
    
 
     for detection in detections:   
-        print(detection)
+        #print(detection)
         print("\n")
 
     for detection in detections[0]:
@@ -74,8 +75,10 @@ def get_img(image):
         print(this_labelname)
         
         if this_labelname == "content" : # content로 판별시 이미지 여부 판단 모델 들어가지 않고 이미지 자체를 return 데이터에 담음
-            imagefilename = detection[2:-4]+"_"+str(datetime.datetime.now())+".jpg"
-            s3.put_object(Body=detection, Bucket=BUCKET_NAME, Key=imagefilename)
+            imagefilename = detection[2:-4]+"_"+str(datetime.datetime.now())+".jpeg"
+            imagefilename.replace(" ","")
+            imagetoupload = open(detection, "rb")
+            s3.put_object(Body=imagetoupload, Bucket=BUCKET_NAME, Key=imagefilename, ContentType="image/jpeg")
             img_url = "https://summer-program.s3.ap-northeast-2.amazonaws.com/"+imagefilename
             dict[this_labelname].append(img_url)
             continue
@@ -93,8 +96,9 @@ def get_img(image):
             dict[this_labelname].append(text)
 
         else :  #이미지 포함한 경우
-            imagefilename = detection[2:-4]+"_"+str(datetime.datetime.now())+".jpg"
-            s3.put_object(Body=detection, Bucket=BUCKET_NAME, Key=imagefilename)
+            imagefilename = detection[2:-4]+"_"+str(datetime.datetime.now())+".jpeg"
+            imagetoupload = open(detection, "rb")
+            s3.put_object(Body=imagetoupload, Bucket=BUCKET_NAME, Key=imagefilename, ContentType="image/jpeg")
             img_url = "https://summer-program.s3.ap-northeast-2.amazonaws.com/"+imagefilename
             dict[this_labelname].append(img_url)
         print("\n\n")
