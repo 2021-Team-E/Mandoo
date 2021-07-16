@@ -418,7 +418,9 @@ const MainPage = (props) => {
                     name="question_img"
                     onChange={processImage}
                   ></input>
-                  <button onClick={sendImage}>전송</button>
+                  <button style={{ border: 'solid 1px black' }} onClick={sendImage}>
+                    전송
+                  </button>
                 </div>
               </Modal>
             </div>
