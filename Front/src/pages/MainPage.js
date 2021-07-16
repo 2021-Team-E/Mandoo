@@ -339,12 +339,11 @@ const MainPage = (props) => {
             // 로딩 창 여기에
 
             if (response.data.success) {
+              setLoading(false);
               //성공적으로 이미지 업로드 시 replace
               console.log(response);
-
-              //alert('문제가 등록되었습니다.');
-              setLoading(false);
               window.location.replace('/');
+
               alert('문제가 등록되었습니다. ');
             }
           });
@@ -367,7 +366,7 @@ const MainPage = (props) => {
       console.log('error');
     }
   };
-  if (loading) return <Loader type="spin" color="#ffffff" message={'로딩중'} />;
+  //if (loading) return <Loader type="spin" color="#ffffff" message={'로딩중'} />;
   //<BlankTop DesktopMargin='100' TabletMargin='3' MobileMargin='1'/>
   return (
     <div
@@ -382,96 +381,100 @@ const MainPage = (props) => {
         <Header />
       </div>
       {window.localStorage.getItem('isAuth') === 'true' ? (
-        <div>
-          <div className="content">
-            <img
-              src={addImg}
-              alt="imgadd"
-              onClick={openModal}
-              style={{
-                width: '100px',
-                height: '100px',
-                cursor: 'pointer',
-                marginLeft: '25px',
-                padding: '0',
-                float: 'left',
-              }}
-            />
-            <Modal open={modalOpen} close={closeModal}>
-              <div style={divBorder}>
-                <img
-                  style={{
-                    objectFit: 'fill',
-                    width: '150px',
-                    height: '200px',
-                    border: 'solid 1px black',
-                    backgroundColor: '#f2f2f2',
-                  }}
-                  src={fileUrl}
-                  alt={fileUrl}
-                />
-              </div>
-              <div>
-                <input
-                  type="file"
-                  accept="image/*"
-                  name="question_img"
-                  onChange={processImage}
-                ></input>
-                <button onClick={sendImage}>전송</button>
-              </div>
-            </Modal>
-          </div>
-          <div
-            className="table"
-            align="center"
-            title="표 안의 내용을 클릭해 수정하세요"
-            style={{
-              marginRight: 'auto',
-              width: '85vw',
-              maxHeight: '70vh',
-              overflow: 'auto',
-              border: 'solid 2px black',
-              marginLeft: 'auto',
-              float: 'left',
-              marginTop: '60px',
-              position: 'auto',
-              //backgroundColor: 'white',
-            }}
-          >
-            <Table columns={columns} data={data} />
-          </div>
-          <div className="confirm" style={{ clear: 'both', textAlign: 'center' }}></div>
-          <footer
-            style={{
-              backgroundColor: 'black',
-              color: 'white',
-              height: '3vh',
-              width: '100%',
-              position: 'fixed',
-              bottom: '0',
-            }}
-          >
-            <div>
-              아이콘 제작자:{' '}
-              <a
-                style={{ textDecoration: 'none', color: 'white' }}
-                href="https://www.flaticon.com/kr/authors/pixel-perfect"
-                title="Pixel perfect"
-              >
-                Pixel perfect
-              </a>{' '}
-              from{' '}
-              <a
-                style={{ textDecoration: 'none', color: 'white' }}
-                href="https://www.flaticon.com/kr/"
-                title="Flaticon"
-              >
-                www.flaticon.com
-              </a>
+        loading ? (
+          <Loader type="spin" color="#ffffff" message={'로딩중'} />
+        ) : (
+          <div>
+            <div className="content">
+              <img
+                src={addImg}
+                alt="imgadd"
+                onClick={openModal}
+                style={{
+                  width: '100px',
+                  height: '100px',
+                  cursor: 'pointer',
+                  marginLeft: '25px',
+                  padding: '0',
+                  float: 'left',
+                }}
+              />
+              <Modal open={modalOpen} close={closeModal}>
+                <div style={divBorder}>
+                  <img
+                    style={{
+                      objectFit: 'fill',
+                      width: '150px',
+                      height: '200px',
+                      border: 'solid 1px black',
+                      backgroundColor: '#f2f2f2',
+                    }}
+                    src={fileUrl}
+                    alt={fileUrl}
+                  />
+                </div>
+                <div>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    name="question_img"
+                    onChange={processImage}
+                  ></input>
+                  <button onClick={sendImage}>전송</button>
+                </div>
+              </Modal>
             </div>
-          </footer>
-        </div>
+            <div
+              className="table"
+              align="center"
+              title="표 안의 내용을 클릭해 수정하세요"
+              style={{
+                marginRight: 'auto',
+                width: '85vw',
+                maxHeight: '70vh',
+                overflow: 'auto',
+                border: 'solid 2px black',
+                marginLeft: 'auto',
+                float: 'left',
+                marginTop: '60px',
+                position: 'auto',
+                //backgroundColor: 'white',
+              }}
+            >
+              <Table columns={columns} data={data} />
+            </div>
+            <div className="confirm" style={{ clear: 'both', textAlign: 'center' }}></div>
+            <footer
+              style={{
+                backgroundColor: 'black',
+                color: 'white',
+                height: '3vh',
+                width: '100%',
+                position: 'fixed',
+                bottom: '0',
+              }}
+            >
+              <div>
+                아이콘 제작자:{' '}
+                <a
+                  style={{ textDecoration: 'none', color: 'white' }}
+                  href="https://www.flaticon.com/kr/authors/pixel-perfect"
+                  title="Pixel perfect"
+                >
+                  Pixel perfect
+                </a>{' '}
+                from{' '}
+                <a
+                  style={{ textDecoration: 'none', color: 'white' }}
+                  href="https://www.flaticon.com/kr/"
+                  title="Flaticon"
+                >
+                  www.flaticon.com
+                </a>
+              </div>
+            </footer>
+          </div>
+        )
       ) : (
         <div>
           <img
@@ -522,5 +525,4 @@ const MainPage = (props) => {
     </div>
   );
 };
-
 export default MainPage;
