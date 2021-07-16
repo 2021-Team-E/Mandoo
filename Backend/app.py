@@ -15,6 +15,7 @@ from werkzeug.utils import secure_filename
 import boto3
 from s3 import AWS_SECRET_KEY, AWS_ACCESS_KEY, BUCKET_NAME
 import io
+import datetime
 
 app = Flask(__name__)
 api = Api(app)  # Flask 객체에 Api 객체 등록
@@ -220,6 +221,8 @@ class Image(Resource):
         imagefilename = id + ".jpeg" # 서버 디렉토리에 저장하는 과정 (혹시 몰라서 추가)
         img.save('./upload/{0}'.format(secure_filename(imagefilename)))
         imagetoupload  = open('./upload/{0}'.format(secure_filename(imagefilename)), 'rb')
+
+        imagefilename = id +str(datetime.datetime.now()) + ".jpeg"
 
         s3.put_object(Body=imagetoupload, Bucket=BUCKET_NAME, Key=imagefilename, ContentType="image/jpeg")
         img_url = "https://summer-program.s3.ap-northeast-2.amazonaws.com/"+imagefilename 
