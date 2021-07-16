@@ -11,6 +11,7 @@ const Header = () => {
   const history = useHistory();
   useEffect(() => {}, [isAuth]);
 
+  // 로그아웃
   const logout = async () => {
     const response = await axios.get(`${USER_SERVER}/api/logout`);
     console.log(response);
@@ -19,6 +20,9 @@ const Header = () => {
     history.push('/');
     alert('로그아웃 되었습니다.');
   };
+
+  // navigation의 메뉴 누르면 각자 페이지로 이동.
+  // 로고 누르면 메인페이지로 이동
   return (
     <div className="nav">
       <div className="nav-logo">
