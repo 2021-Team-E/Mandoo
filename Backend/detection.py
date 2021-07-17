@@ -75,7 +75,7 @@ def get_img(image):
         print(this_labelname)
         
         if this_labelname == "content" : # content로 판별시 이미지 여부 판단 모델 들어가지 않고 이미지 자체를 return 데이터에 담음
-            imagefilename ="result/"+ image + "_" + this_labelname + "_"+ str(index) + "_" + str(datetime.datetime.now())+".jpeg"
+            imagefilename ="result/"+ image + "_" + this_labelname + "_"+ str(index) + "_" + str(datetime.datetime.now()).replace("\\","/").replace(" ","").replace(":","")+".jpeg"
             imagefilename.replace(" ","")
             imagetoupload = open(detection, "rb")
             s3.put_object(Body=imagetoupload, Bucket=BUCKET_NAME, Key=imagefilename, ContentType="image/jpeg")
