@@ -22,12 +22,14 @@ h5py==2.10.0
 matplotlib==3.3.2 
 opencv-python 
 keras-resnet==0.2.0
-imageai 
+#imageai #doesn't have to install this when use Dockerfile
 awscli
-#tesseract
-#tesseract-ocr
-pytesseract 
+
+tesseract 
+#tesseract-ocr #doesn't have to install this when use Dockerfile
 image
+#pytesseract #doesn't have to install this when use Dockerfile
+
 
 
 boto3
