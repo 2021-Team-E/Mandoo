@@ -14,6 +14,8 @@ from werkzeug.datastructures import FileStorage
 from werkzeug.utils import secure_filename
 import boto3
 from s3 import AWS_SECRET_KEY, AWS_ACCESS_KEY, BUCKET_NAME
+import io
+import datetime
 
 app = Flask(__name__)
 api = Api(app)  # Flask 객체에 Api 객체 등록
@@ -216,14 +218,18 @@ class Image(Resource):
 
         img = args['image']
         
-        imagefilename = id + ".png" # 서버 디렉토리에 저장하는 과정 (혹시 몰라서 추가)
+        imagefilename = id + ".jpeg" # 서버 디렉토리에 저장하는 과정 (혹시 몰라서 추가)
         img.save('./upload/{0}'.format(secure_filename(imagefilename)))
+        imagetoupload  = open('./upload/{0}'.format(secure_filename(imagefilename)), 'rb')
 
-        s3.put_object(Body='./upload/{0}'.format(secure_filename(imagefilename)), Bucket=BUCKET_NAME, Key=imagefilename)
-        img_url = "https://summer-program.s3.ap-northeast-2.amazonaws.com/"+imagefilename
-
-
-        title, choices, answer, script, image, score = get_img(id)
+        imagefilename ="upload/"+ id + "_" + str(datetime.datetime.now())+".jpeg"
+        imagefilename.replace(" ","")
+        
+        s3.put_object(Body=imagetoupload, Bucket=BUCKET_NAME, Key=imagefilename, ContentType="image/jpeg")
+        img_url = "https://summer-program.s3.ap-northeast-2.amazonaws.com/"+imagefilename 
+        image = img_url              # 딥러닝 거치기 전의 이미지가 저장된 s3 주소 
+        print(image)
+        title, choices, answer, script, score = get_img(id)
         user_id = session.get('id')
         
         processed_quiz = {

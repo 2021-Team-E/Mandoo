@@ -5,12 +5,14 @@ import pytesseract
 from PIL import Image
 import os
 import boto3
-from s3 import *
+from s3 import AWS_SECRET_KEY, AWS_ACCESS_KEY, BUCKET_NAME
+import datetime
 import shutil
 
+
 pytesseract.pytesseract.tesseract_cmd="C:\\Program Files\\Tesseract-OCR\\tesseract.exe"
-s3 = boto3.client('s3')
-resource = boto3.resource('s3',aws_access_key_id=AWS_ACCESS_KEY, aws_secret_access_key=AWS_SECRET_KEY)
+s3 = boto3.client('s3', aws_access_key_id = AWS_ACCESS_KEY, aws_secret_access_key = AWS_SECRET_KEY)
+resource = boto3.resource('s3')
 buckets = resource.Bucket(name=BUCKET_NAME)
 
 file_path = 'model_ex-024_acc-1.000000.h5'  # 내 서버에 저장하는 것 이미지 포함 여부 판단 모델
@@ -21,8 +23,13 @@ file_path = 'detection_config.json'
 key_name = 'detection_config.json'  
 buckets.download_file(key_name, file_path)
 
+file_path = 'detection_model-ex-025--loss-0018.418-85per.h5'
+key_name = 'detection_model-ex-025--loss-0018.418-85per.h5'
+buckets.download_file(key_name, file_path)
+
+
 def get_img(image):
-    image_png=image+".png"
+    image_png=image+".jpeg"
     detector = CustomObjectDetection()
     detector.setModelTypeAsYOLOv3()
     detector.setModelPath("./detection_model-ex-025--loss-0018.418-85per.h5") # 가중치 모델 경로 (3구분 모델)
@@ -39,7 +46,7 @@ def get_img(image):
    
 
     for detection in detections:   
-        print(detection)
+        #print(detection)
         print("\n")
 
     for detection in detections[0]:
@@ -63,11 +70,21 @@ def get_img(image):
     
     for index,detection in enumerate(detections[1]): #index로 몇번째 인지 접근 가능
         print(index, detection)
-        predictions, probabilities = prediction.classifyImage(detection, result_count=2)    #predictions[0] : 무조건 퍼센트 높은 아이로 지정됨
-        
         this_labelname=label[index]
         print(this_labelname)
-        print(dict[this_labelname])
+        
+        if this_labelname == "content" : # content로 판별시 이미지 여부 판단 모델 들어가지 않고 이미지 자체를 return 데이터에 담음
+            imagefilename ="result/"+ image + "_" + this_labelname + "_"+ str(index) + "_" + str(datetime.datetime.now()).replace("\\","/").replace(" ","").replace(":","")+".jpeg"
+            imagefilename.replace(" ","")
+            imagetoupload = open(detection, "rb")
+            s3.put_object(Body=imagetoupload, Bucket=BUCKET_NAME, Key=imagefilename, ContentType="image/jpeg")
+            img_url = "https://summer-program.s3.ap-northeast-2.amazonaws.com/"+imagefilename
+            dict[this_labelname].append(img_url)
+            continue
+
+        predictions, probabilities = prediction.classifyImage(detection, result_count=2)    #predictions[0] : 무조건 퍼센트 높은 아이로 지정됨
+        
+        
         
         if probabilities[0] > probabilities[1]:
             print("This is a(n) " + predictions[0])
@@ -78,8 +95,12 @@ def get_img(image):
             dict[this_labelname].append(text)
 
         else :  #이미지 포함한 경우
-         
-            dict[this_labelname].append("imageurl")
+            imagefilename ="result/"+ image + "_" + this_labelname + "_"+ str(index) + "_" + str(datetime.datetime.now())+".jpeg"
+            imagefilename.replace(" ","")
+            imagetoupload = open(detection, "rb")
+            s3.put_object(Body=imagetoupload, Bucket=BUCKET_NAME, Key=imagefilename, ContentType="image/jpeg")
+            img_url = "https://summer-program.s3.ap-northeast-2.amazonaws.com/"+imagefilename
+            dict[this_labelname].append(img_url)
         print("\n\n")
 
         #The below is just to check the likelihood
@@ -92,7 +113,6 @@ def get_img(image):
     choices=dict["answer"]
     answer="1"
     script=dict["content"]
-    image="image"
     score = "2"
     
-    return title, choices, answer, script, image, score
+    return title, choices, answer, script, score
