@@ -162,7 +162,6 @@ const MainPage = (props) => {
           <EditText
             name="qid"
             onSave={(e) => handleSave(tableProps.row.original, e)}
-            //onChange={changeQuiz(tableProps.row.original)}
             defaultValue={tableProps.cell.value}
           />
         ),
@@ -308,7 +307,7 @@ const MainPage = (props) => {
         answer: quiz.answer,
         script: quiz.script,
         image: quiz.image,
-        score: "3점",
+        score: quiz.score,
       };
 
       quiz.choices.map((choice, i) => {
