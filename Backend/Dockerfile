@@ -22,7 +22,7 @@ RUN pip3 install imageai --upgrade
 RUN pip3 install pytesseract
 
 ARG DEBIAN_FRONTEND=noninteractive
-RUN apt-get install tesseract-ocr -y
+RUN apt-get install tesseract-ocr-kor -y
 
 EXPOSE 5000
 
