@@ -113,57 +113,43 @@ const MainPage = (props) => {
 
   // 바뀌는 value값 저장
   const handleSave = async (value, e) => {
-    console.log(e);
-    console.log(value);
-
+    console.log(e.name);
     const changedValue = await changeQuiz(e.name, e.value, value);
-    console.log(changedValue);
-    alert("수정되었습니다.");
-  };
-
-  // 바뀌는 값의 json 저장 -> 이값은 나중에 확정 버튼 누르면 서버로 가게.
-  const changeQuiz = async (name, value, quiz) => {
-    /*let q_choices = [];
-    q_choices.push(
-      quiz.choice1,
-      quiz.choice2,
-      quiz.choice3,
-      quiz.choice4,
-      quiz.choice5
-    );*/
-    quiz = { ...quiz, [name]: value };
-    return quiz;
-
-    // quiz.choices.map((choice, i) => {
-    //   changedquiz[`choice${i + 1}`] = choice;
-    // });
-    /*setJson(changedquiz); // 혹시 몰라서 상태 저장
-    setJson({
-      ...resultJson,
-      [resultName]: resultVal,
-    });
-
     try {
       const request = await axios
-        .post(`${USER_SERVER}/api/quizmodify`, { data: resultJson })
-        .then((response) => window.location.replace("/"));
+        .put(`${USER_SERVER}/api/quizmodify`, changedValue)
+        .then(() => {
+          alert("수정되었습니다.");
+          window.location.replace("/");
+        });
     } catch {
       console.log("error");
-    }*/
+    }
   };
 
-  const test = async (quiz, name, value) => {
-    console.log(quiz);
-    console.log(name);
-    console.log(value);
-  };
-
-  const test2 = ({ value }) => {
-    alert(value);
-    setValue(value);
-    //setName(value);
-    //alert(resultName);
-    alert(resultVal);
+  const changeQuiz = async (name, value, quiz) => {
+    let processed_value;
+    if (
+      name.substring(0, 6) !== "choice" &&
+      name.substring(0, 6) !== "answer" &&
+      name.substring(0, 5) !== "score"
+    ) {
+      processed_value = value.split(",");
+    } else processed_value = value;
+    quiz = { ...quiz, [name]: processed_value };
+    const quiz_to_return = {
+      _id: quiz._id,
+      title: quiz.title,
+      choices: [],
+      answer: quiz.answer,
+      script: quiz.script,
+      image: quiz.image,
+      score: quiz.score,
+    };
+    let tmp_arr = [];
+    [1, 2, 3, 4, 5].map((num) => tmp_arr.push(quiz[`choice${num}`] || ""));
+    quiz_to_return.choices = tmp_arr;
+    return quiz_to_return;
   };
 
   //테이블에 들어가는 내용(columns, data)
@@ -176,7 +162,6 @@ const MainPage = (props) => {
           <EditText
             name="qid"
             onSave={(e) => handleSave(tableProps.row.original, e)}
-            //onChange={changeQuiz(tableProps.row.original)}
             defaultValue={tableProps.cell.value}
           />
         ),
@@ -205,13 +190,12 @@ const MainPage = (props) => {
         ),
       },
       {
-        accessor: `choice1`,
+        accessor: "choice1",
         Header: "선택01",
         Cell: (tableProps) => (
           <EditText
-            onSave={() =>
-              test(tableProps.row.original, "choice1", tableProps.cell.value)
-            }
+            name="choice1"
+            onSave={(e) => handleSave(tableProps.row.original, e)}
             defaultValue={tableProps.cell.value}
           />
         ),
@@ -221,7 +205,7 @@ const MainPage = (props) => {
         Header: "선택02",
         Cell: (tableProps) => (
           <EditText
-            name="script"
+            name="choice2"
             onSave={(e) => handleSave(tableProps.row.original, e)}
             defaultValue={tableProps.cell.value}
           />
@@ -232,7 +216,8 @@ const MainPage = (props) => {
         Header: "선택03",
         Cell: (tableProps) => (
           <EditText
-            onSave={() => changeQuiz(tableProps.row.original)}
+            name="choice3"
+            onSave={(e) => handleSave(tableProps.row.original, e)}
             defaultValue={tableProps.cell.value}
           />
         ),
@@ -242,7 +227,8 @@ const MainPage = (props) => {
         Header: "선택04",
         Cell: (tableProps) => (
           <EditText
-            onSave={() => changeQuiz(tableProps.row.original)}
+            name="choice4"
+            onSave={(e) => handleSave(tableProps.row.original, e)}
             defaultValue={tableProps.cell.value}
           />
         ),
@@ -252,7 +238,8 @@ const MainPage = (props) => {
         Header: "선택05",
         Cell: (tableProps) => (
           <EditText
-            onSave={() => changeQuiz(tableProps.row.original)}
+            name="choice5"
+            onSave={(e) => handleSave(tableProps.row.original, e)}
             defaultValue={tableProps.cell.value}
           />
         ),
@@ -320,7 +307,7 @@ const MainPage = (props) => {
         answer: quiz.answer,
         script: quiz.script,
         image: quiz.image,
-        score: "3점",
+        score: quiz.score,
       };
 
       quiz.choices.map((choice, i) => {
