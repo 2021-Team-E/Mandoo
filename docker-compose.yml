@@ -22,7 +22,7 @@ services:
     ports:
       - 3000:3000
     volumes:
-      - "./Front:/usr/src/app/Front"
+      - "./:/usr/src/app/"
       - "/usr/src/app/Front/node_modules"
     stdin_open: true # react-script 3.4.1 부터 필요
     tty: true
@@ -47,23 +47,29 @@ services:
       - "27017:27017"
 
   flask_app:
+    stdin_open: true # docker run -i
+    tty: true # docker run -t
     build:
       context: .
       dockerfile: ./Backend/Dockerfile
+    
     ports:
       - "5000:5000"
+    volumes:
+      - ./Backend:/app
+      - ./__init__.py/:/usr/local/lib/python3.8/dist-packages/imageai/Detection/Custom/
     links:
       - mongo_db:mongo_db
     depends_on:
       - mongo_db
       # - redis
+    
     networks:
       app-tier:
         aliases:
           - flask-app
     restart: always
-    volumes:
-      - ./Backend:/app
+    
 
   # elastic_search:
   #   image: docker.elastic.co/elasticsearch/elasticsearch:7.10.1
