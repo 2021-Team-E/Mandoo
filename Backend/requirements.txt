@@ -30,7 +30,14 @@ tesseract
 image
 #pytesseract #doesn't have to install this when use Dockerfile
 
-
+## yolov5 requirement 
+PyYAML
+tensorboard
+torch
+torchvision
+pandas
+tqdm
+seaborn
 
 boto3
 opencv-contrib-python
