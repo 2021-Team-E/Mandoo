@@ -233,9 +233,20 @@ const MainPage = (props) => {
               (HoveredRow === tableProps.cell.row.index) &
               (HoveredColumn === tableProps.cell.column.Header) ? (
                 <div style={divHover}>
-                  {urls?.map((url, i) => (
-                    <img alt="이미지" src={url} style={imgStyle} />
-                  ))}
+                  <header
+                    style={{
+                      backgroundColor: '#f2f2f2',
+                      position: 'relative',
+                      borderRadius: '10px',
+                    }}
+                  >
+                    <h3>이미지 미리보기</h3>
+                  </header>
+                  <main style={{ backgroundColor: 'white', marginTop: '10px' }}>
+                    {urls?.map((url, i) => (
+                      <img alt="이미지" src={url} style={imgStyle} />
+                    ))}
+                  </main>
                 </div>
               ) : (
                 <></>
@@ -325,7 +336,18 @@ const MainPage = (props) => {
                 (HoveredRow === tableProps.cell.row.index) &
                 (HoveredColumn === tableProps.cell.column.Header) ? (
                   <div style={divHover}>
-                    <img alt="이미지" src={tableProps.cell.value} style={imgStyle} />
+                    <header
+                      style={{
+                        backgroundColor: '#f2f2f2',
+                        position: 'relative',
+                        borderRadius: '10px',
+                      }}
+                    >
+                      <h3>이미지 미리보기</h3>
+                    </header>
+                    <main style={{ backgroundColor: 'white', marginTop: '10px' }}>
+                      <img alt="이미지" src={tableProps.cell.value} style={imgStyle} />
+                    </main>
                   </div>
                 ) : (
                   <></>
@@ -360,7 +382,18 @@ const MainPage = (props) => {
                 (HoveredRow === tableProps.cell.row.index) &
                 (HoveredColumn === tableProps.cell.column.Header) ? (
                   <div style={divHover}>
-                    <img alt="이미지" src={tableProps.cell.value} style={imgStyle} />
+                    <header
+                      style={{
+                        backgroundColor: '#f2f2f2',
+                        position: 'relative',
+                        borderRadius: '10px',
+                      }}
+                    >
+                      <h3>이미지 미리보기</h3>
+                    </header>
+                    <main style={{ backgroundColor: 'white', marginTop: '10px' }}>
+                      <img alt="이미지" src={tableProps.cell.value} style={imgStyle} />
+                    </main>
                   </div>
                 ) : (
                   <></>
@@ -395,7 +428,18 @@ const MainPage = (props) => {
                 (HoveredRow === tableProps.cell.row.index) &
                 (HoveredColumn === tableProps.cell.column.Header) ? (
                   <div style={divHover}>
-                    <img alt="이미지" src={tableProps.cell.value} style={imgStyle} />
+                    <header
+                      style={{
+                        backgroundColor: '#f2f2f2',
+                        position: 'relative',
+                        borderRadius: '10px',
+                      }}
+                    >
+                      <h3>이미지 미리보기</h3>
+                    </header>
+                    <main style={{ backgroundColor: 'white', marginTop: '10px' }}>
+                      <img alt="이미지" src={tableProps.cell.value} style={imgStyle} />
+                    </main>
                   </div>
                 ) : (
                   <></>
@@ -430,7 +474,18 @@ const MainPage = (props) => {
                 (HoveredRow === tableProps.cell.row.index) &
                 (HoveredColumn === tableProps.cell.column.Header) ? (
                   <div style={divHover}>
-                    <img alt="이미지" src={tableProps.cell.value} style={imgStyle} />
+                    <header
+                      style={{
+                        backgroundColor: '#f2f2f2',
+                        position: 'relative',
+                        borderRadius: '10px',
+                      }}
+                    >
+                      <h3>이미지 미리보기</h3>
+                    </header>
+                    <main style={{ backgroundColor: 'white', marginTop: '10px' }}>
+                      <img alt="이미지" src={tableProps.cell.value} style={imgStyle} />
+                    </main>
                   </div>
                 ) : (
                   <></>
@@ -465,7 +520,18 @@ const MainPage = (props) => {
                 (HoveredRow === tableProps.cell.row.index) &
                 (HoveredColumn === tableProps.cell.column.Header) ? (
                   <div style={divHover}>
-                    <img alt="이미지" src={tableProps.cell.value} style={imgStyle} />
+                    <header
+                      style={{
+                        backgroundColor: '#f2f2f2',
+                        position: 'relative',
+                        borderRadius: '10px',
+                      }}
+                    >
+                      <h3>이미지 미리보기</h3>
+                    </header>
+                    <main style={{ backgroundColor: 'white', marginTop: '10px' }}>
+                      <img alt="이미지" src={tableProps.cell.value} style={imgStyle} />
+                    </main>
                   </div>
                 ) : (
                   <></>
