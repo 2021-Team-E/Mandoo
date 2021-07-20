@@ -13,6 +13,7 @@ import addImg from "./imgIcon.png";
 import noLoginImg from "./noLogin.PNG";
 import { useHistory } from "react-router-dom";
 import { EditText } from "react-edit-text";
+import styled from "styled-components";
 
 // 테두리 만드는 css
 const divBorder = {
@@ -112,9 +113,12 @@ const MainPage = (props) => {
   */
 
   // 바뀌는 value값 저장
-  const handleSave = async (value, e) => {
-    console.log(e.name);
-    const changedValue = await changeQuiz(e.name, e.value, value);
+  const handleSave = async (quiz, e) => {
+    const tmp = e.name.split(",");
+    const name = tmp[0];
+    let idx = 0;
+    if (tmp.length === 2) idx = tmp[1];
+    const changedValue = await changeQuiz(name, idx, e.value, quiz);
     try {
       const request = await axios
         .put(`${USER_SERVER}/api/quizmodify`, changedValue)
@@ -127,16 +131,21 @@ const MainPage = (props) => {
     }
   };
 
-  const changeQuiz = async (name, value, quiz) => {
-    let processed_value;
-    if (
-      name.substring(0, 6) !== "choice" &&
-      name.substring(0, 6) !== "answer" &&
-      name.substring(0, 5) !== "score"
-    ) {
-      processed_value = value.split(",");
-    } else processed_value = value;
-    quiz = { ...quiz, [name]: processed_value };
+  const changeQuiz = async (name, idx, value, quiz) => {
+    let arr = quiz[`${name}`];
+    let tmp_arr = [];
+    if (typeof arr === "object") {
+      arr.map((content, i) => {
+        if (Number(idx) === i) {
+          tmp_arr.push(value);
+        } else {
+          tmp_arr.push(content);
+        }
+      });
+      quiz = { ...quiz, [name]: tmp_arr };
+    } else {
+      quiz = { ...quiz, [name]: value };
+    }
     const quiz_to_return = {
       _id: quiz._id,
       title: quiz.title,
@@ -146,10 +155,25 @@ const MainPage = (props) => {
       image: quiz.image,
       score: quiz.score,
     };
-    let tmp_arr = [];
-    [1, 2, 3, 4, 5].map((num) => tmp_arr.push(quiz[`choice${num}`] || ""));
-    quiz_to_return.choices = tmp_arr;
+    let tmp_arr2 = [];
+    [1, 2, 3, 4, 5].map((num) => tmp_arr2.push(quiz[`choice${num}`] || ""));
+    quiz_to_return.choices = tmp_arr2;
     return quiz_to_return;
+  };
+  const showImg = (urls) => {
+    const url_arr = [];
+    if (typeof urls === "object") {
+      urls.map((url, i) => {
+        if (url.substring(0, 25) === "https://summer-program.s3") {
+          url_arr.push(url);
+        }
+      });
+      url_arr?.map((url) => {
+        console.log(url);
+      });
+    } else if (urls.substring(0, 25) === "https://summer-program.s3") {
+      console.log(urls);
+    }
   };
 
   //테이블에 들어가는 내용(columns, data)
@@ -161,6 +185,7 @@ const MainPage = (props) => {
         Cell: (tableProps) => (
           <EditText
             name="qid"
+            readonly="true"
             onSave={(e) => handleSave(tableProps.row.original, e)}
             defaultValue={tableProps.cell.value}
           />
@@ -169,80 +194,184 @@ const MainPage = (props) => {
       {
         accessor: "title",
         Header: "문항내용",
-        Cell: (tableProps) => (
-          <EditText
-            name="title"
-            //onChange={handleSave}
-            onSave={(e) => handleSave(tableProps.row.original, e)}
-            defaultValue={tableProps.cell.value}
-          />
-        ),
+        Cell: (tableProps) => {
+          return (
+            <div
+              name="title"
+              onMouseEnter={() => showImg(tableProps.cell.value)}
+              style={{ cursor: "pointer" }}
+            >
+              {tableProps.cell.value.map((content, i) => {
+                if (content.substring(0, 25) === "https://summer-program.s3") {
+                  return <EditText readonly="true" defaultValue="img_url" />;
+                }
+                return (
+                  <EditText
+                    name={`title,${i}`}
+                    onSave={(e) => handleSave(tableProps.row.original, e)}
+                    defaultValue={content}
+                  />
+                );
+              })}
+            </div>
+          );
+        },
       },
       {
         accessor: "script",
         Header: "참고내용",
-        Cell: (tableProps) => (
-          <EditText
-            name="script"
-            onSave={(e) => handleSave(tableProps.row.original, e)}
-            defaultValue={tableProps.cell.value}
-          />
-        ),
+        Cell: (tableProps) => {
+          return (
+            <div
+              name="script"
+              onMouseEnter={() => showImg(tableProps.cell.value)}
+              style={{ cursor: "pointer" }}
+            >
+              {tableProps.cell.value.map((content, i) => {
+                if (content.substring(0, 25) === "https://summer-program.s3") {
+                  return <EditText readonly="true" defaultValue="img_url" />;
+                }
+                return (
+                  <EditText
+                    name={`script,${i}`}
+                    onSave={(e) => handleSave(tableProps.row.original, e)}
+                    defaultValue={content}
+                  />
+                );
+              })}
+            </div>
+          );
+        },
       },
       {
         accessor: "choice1",
         Header: "선택01",
-        Cell: (tableProps) => (
-          <EditText
-            name="choice1"
-            onSave={(e) => handleSave(tableProps.row.original, e)}
-            defaultValue={tableProps.cell.value}
-          />
-        ),
+        Cell: (tableProps) => {
+          if (
+            String(tableProps.cell.value).substring(0, 25) ===
+            "https://summer-program.s3"
+          ) {
+            return (
+              <div
+                onMouseEnter={() => showImg(tableProps.cell.value)}
+                style={{ cursor: "pointer" }}
+              >
+                <EditText readonly="true" defaultValue="img_url" />
+              </div>
+            );
+          }
+          return (
+            <EditText
+              name="choice1"
+              onSave={(e) => handleSave(tableProps.row.original, e)}
+              defaultValue={tableProps.cell.value}
+            />
+          );
+        },
       },
       {
         accessor: "choice2",
         Header: "선택02",
-        Cell: (tableProps) => (
-          <EditText
-            name="choice2"
-            onSave={(e) => handleSave(tableProps.row.original, e)}
-            defaultValue={tableProps.cell.value}
-          />
-        ),
+        Cell: (tableProps) => {
+          if (
+            String(tableProps.cell.value).substring(0, 25) ===
+            "https://summer-program.s3"
+          ) {
+            return (
+              <div
+                onMouseEnter={() => showImg(tableProps.cell.value)}
+                style={{ cursor: "pointer" }}
+              >
+                <EditText readonly="true" defaultValue="img_url" />
+              </div>
+            );
+          }
+          return (
+            <EditText
+              name="choice2"
+              onSave={(e) => handleSave(tableProps.row.original, e)}
+              defaultValue={tableProps.cell.value}
+            />
+          );
+        },
       },
       {
         accessor: "choice3",
         Header: "선택03",
-        Cell: (tableProps) => (
-          <EditText
-            name="choice3"
-            onSave={(e) => handleSave(tableProps.row.original, e)}
-            defaultValue={tableProps.cell.value}
-          />
-        ),
+        Cell: (tableProps) => {
+          if (
+            String(tableProps.cell.value).substring(0, 25) ===
+            "https://summer-program.s3"
+          ) {
+            return (
+              <div
+                onMouseEnter={() => showImg(tableProps.cell.value)}
+                style={{ cursor: "pointer" }}
+              >
+                <EditText readonly="true" defaultValue="img_url" />
+              </div>
+            );
+          }
+          return (
+            <EditText
+              name="choice3"
+              onSave={(e) => handleSave(tableProps.row.original, e)}
+              defaultValue={tableProps.cell.value}
+            />
+          );
+        },
       },
       {
         accessor: "choice4",
         Header: "선택04",
-        Cell: (tableProps) => (
-          <EditText
-            name="choice4"
-            onSave={(e) => handleSave(tableProps.row.original, e)}
-            defaultValue={tableProps.cell.value}
-          />
-        ),
+        Cell: (tableProps) => {
+          if (
+            String(tableProps.cell.value).substring(0, 25) ===
+            "https://summer-program.s3"
+          ) {
+            return (
+              <div
+                onMouseEnter={() => showImg(tableProps.cell.value)}
+                style={{ cursor: "pointer" }}
+              >
+                <EditText readonly="true" defaultValue="img_url" />
+              </div>
+            );
+          }
+          return (
+            <EditText
+              name="choice4"
+              onSave={(e) => handleSave(tableProps.row.original, e)}
+              defaultValue={tableProps.cell.value}
+            />
+          );
+        },
       },
       {
         accessor: "choice5",
         Header: "선택05",
-        Cell: (tableProps) => (
-          <EditText
-            name="choice5"
-            onSave={(e) => handleSave(tableProps.row.original, e)}
-            defaultValue={tableProps.cell.value}
-          />
-        ),
+        Cell: (tableProps) => {
+          if (
+            String(tableProps.cell.value).substring(0, 25) ===
+            "https://summer-program.s3"
+          ) {
+            return (
+              <div
+                onMouseEnter={() => showImg(tableProps.cell.value)}
+                style={{ cursor: "pointer" }}
+              >
+                <EditText readonly="true" defaultValue="img_url" />
+              </div>
+            );
+          }
+          return (
+            <EditText
+              name="choice5"
+              onSave={(e) => handleSave(tableProps.row.original, e)}
+              defaultValue={tableProps.cell.value}
+            />
+          );
+        },
       },
       {
         accessor: "answer",
