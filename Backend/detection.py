@@ -8,7 +8,19 @@ import boto3
 from s3 import AWS_SECRET_KEY, AWS_ACCESS_KEY, BUCKET_NAME
 import datetime
 import shutil
+##########################################
 
+from pathlib import Path
+
+import cv2
+import torch
+from numpy import random
+
+from models.experimental import attempt_load
+from utils.datasets import LoadImages
+from utils.general import check_img_size, non_max_suppression, scale_coords, set_logging
+from utils.plots import plot_one_box
+from utils.torch_utils import select_device
 
 pytesseract.pytesseract.tesseract_cmd="C:\\Program Files\\Tesseract-OCR\\tesseract.exe"
 # pytesseract.pytesseract.tesseract_cmd="/usr/bin/tesseract"    #서버 환경에서의 경로
