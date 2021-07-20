@@ -33,6 +33,32 @@ const btn = {
   fontWeight: 'bold',
 };
 
+// hover 관련 image css
+const imgStyle = {
+  width: '300px',
+  //border: '2px solid black',
+
+  //position: 'relation',
+  //marginRight: 'auto',
+  //marginLeft: 'auto',
+  marginRight: '10px',
+  display: 'block',
+  backgroundColor: 'white',
+};
+
+// hover 관련 div css
+const divHover = {
+  position: 'absolute',
+  //display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  left: '25%',
+  top: '12%',
+  backgroundColor: '#f2f2f2',
+  borderRadius: '10px',
+  paddingTop: '0',
+};
+
 const MainPage = (props) => {
   const [quizzes, setQuizzes] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -206,9 +232,9 @@ const MainPage = (props) => {
               {isHovered &
               (HoveredRow === tableProps.cell.row.index) &
               (HoveredColumn === tableProps.cell.column.Header) ? (
-                <div style={{ position: 'absolute' }}>
+                <div style={divHover}>
                   {urls?.map((url, i) => (
-                    <img alt="이미지" src={url} />
+                    <img alt="이미지" src={url} style={imgStyle} />
                   ))}
                 </div>
               ) : (
@@ -247,10 +273,21 @@ const MainPage = (props) => {
               {isHovered &
               (HoveredRow === tableProps.cell.row.index) &
               (HoveredColumn === tableProps.cell.column.Header) ? (
-                <div style={{ position: 'absolute' }}>
-                  {urls?.map((url, i) => (
-                    <img alt="이미지" src={url} />
-                  ))}
+                <div style={divHover}>
+                  <header
+                    style={{
+                      backgroundColor: '#f2f2f2',
+                      position: 'relative',
+                      borderRadius: '10px',
+                    }}
+                  >
+                    <h3>이미지 미리보기</h3>
+                  </header>
+                  <main style={{ backgroundColor: 'white', marginTop: '10px' }}>
+                    {urls?.map((url, i) => (
+                      <img alt="이미지" src={url} style={imgStyle} />
+                    ))}
+                  </main>
                 </div>
               ) : (
                 <></>
@@ -287,8 +324,8 @@ const MainPage = (props) => {
                 {isHovered &
                 (HoveredRow === tableProps.cell.row.index) &
                 (HoveredColumn === tableProps.cell.column.Header) ? (
-                  <div style={{ position: 'absolute' }}>
-                    <img alt="이미지" src={tableProps.cell.value} />
+                  <div style={divHover}>
+                    <img alt="이미지" src={tableProps.cell.value} style={imgStyle} />
                   </div>
                 ) : (
                   <></>
@@ -322,8 +359,8 @@ const MainPage = (props) => {
                 {isHovered &
                 (HoveredRow === tableProps.cell.row.index) &
                 (HoveredColumn === tableProps.cell.column.Header) ? (
-                  <div style={{ position: 'absolute' }}>
-                    <img alt="이미지" src={tableProps.cell.value} />
+                  <div style={divHover}>
+                    <img alt="이미지" src={tableProps.cell.value} style={imgStyle} />
                   </div>
                 ) : (
                   <></>
@@ -357,8 +394,8 @@ const MainPage = (props) => {
                 {isHovered &
                 (HoveredRow === tableProps.cell.row.index) &
                 (HoveredColumn === tableProps.cell.column.Header) ? (
-                  <div style={{ position: 'absolute' }}>
-                    <img alt="이미지" src={tableProps.cell.value} />
+                  <div style={divHover}>
+                    <img alt="이미지" src={tableProps.cell.value} style={imgStyle} />
                   </div>
                 ) : (
                   <></>
@@ -392,8 +429,8 @@ const MainPage = (props) => {
                 {isHovered &
                 (HoveredRow === tableProps.cell.row.index) &
                 (HoveredColumn === tableProps.cell.column.Header) ? (
-                  <div style={{ position: 'absolute' }}>
-                    <img alt="이미지" src={tableProps.cell.value} />
+                  <div style={divHover}>
+                    <img alt="이미지" src={tableProps.cell.value} style={imgStyle} />
                   </div>
                 ) : (
                   <></>
@@ -427,8 +464,8 @@ const MainPage = (props) => {
                 {isHovered &
                 (HoveredRow === tableProps.cell.row.index) &
                 (HoveredColumn === tableProps.cell.column.Header) ? (
-                  <div style={{ position: 'absolute' }}>
-                    <img alt="이미지" src={tableProps.cell.value} />
+                  <div style={divHover}>
+                    <img alt="이미지" src={tableProps.cell.value} style={imgStyle} />
                   </div>
                 ) : (
                   <></>
