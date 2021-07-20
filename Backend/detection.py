@@ -18,8 +18,7 @@ from numpy import random
 
 from models.experimental import attempt_load
 from utils.datasets import LoadImages
-from utils.general import check_img_size, check_requirements, check_imshow, colorstr, non_max_suppression, \
-    apply_classifier, scale_coords, xyxy2xywh, strip_optimizer, set_logging, increment_path, save_one_box
+from utils.general import check_img_size, non_max_suppression, scale_coords, set_logging,save_one_box
 from utils.plots import colors, plot_one_box
 from utils.torch_utils import select_device
 
@@ -56,7 +55,7 @@ def get_img(image):
     image_png=image+".jpeg"
     imgsz = 640
     save_dir = Path('result')
-    
+    save_crop=True 
 
     # Initialize
     set_logging()
@@ -98,12 +97,12 @@ def get_img(image):
         # Process detections
         for i, det in enumerate(pred):  # detections per image
             # det = det[det[:, -1] == 1]
-
             p, s, im0, frame = Path(path), '', im0s, getattr(dataset, 'frame', 0)
 
             save_path = str(save_dir / p.name)
             s += '%gx%g ' % img.shape[2:]  # print string
             gn = torch.tensor(im0.shape)[[1, 0, 1, 0]]  # normalization gain whwh
+            imc = im0.copy() if save_crop else im0  # for save_crop
             if len(det):
                 # Rescale boxes from img_size to im0 size
                 det[:, :4] = scale_coords(img.shape[2:], det[:, :4], im0.shape).round()
@@ -121,7 +120,8 @@ def get_img(image):
                     print(label)
                     #label = f'{names[int(cls)]} {conf:.2f}'
                     plot_one_box(xyxy, im0, label=label, color=colors(c, True), line_thickness=3)
-                    
+                    if save_crop:
+                            save_one_box(xyxy, imc, file=save_dir / 'crops' / names[c] / f'{p.stem}.jpg', BGR=True)
 
                 result = "True"
             else:
