@@ -36,6 +36,9 @@ const btn = {
 const MainPage = (props) => {
   const [quizzes, setQuizzes] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+  const [HoveredRow, setHoveredRow] = useState();
+  const [HoveredColumn, setHoveredColumn] = useState();
   const history = useHistory();
 
   useEffect(() => {
@@ -43,7 +46,7 @@ const MainPage = (props) => {
       window.localStorage.setItem("isAuth", "false");
     }
     if (window.localStorage.getItem("isAuth") === "true") getQuiz();
-  }, []);
+  }, [isHovered]);
 
   const getQuiz = async () => {
     try {
@@ -64,16 +67,6 @@ const MainPage = (props) => {
   const [fileUrl, setFileUrl] = useState(null);
   const [fileImg, setFileImg] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
-  const [resultVal, setValue] = useState("");
-  const [resultName, setName] = useState("");
-  const [resultJson, setJson] = useState({
-    quiz_id: "",
-    title: "",
-    answer: "",
-    script: "",
-    image: "",
-    score: "",
-  });
 
   const stateUpdate = (imageUrl, imageFile) => {
     setFileUrl(imageUrl);
@@ -160,7 +153,8 @@ const MainPage = (props) => {
     quiz_to_return.choices = tmp_arr2;
     return quiz_to_return;
   };
-  const showImg = (urls) => {
+
+  const getUrls = (urls) => {
     const url_arr = [];
     if (typeof urls === "object") {
       urls.map((url, i) => {
@@ -168,12 +162,18 @@ const MainPage = (props) => {
           url_arr.push(url);
         }
       });
-      url_arr?.map((url) => {
-        console.log(url);
-      });
     } else if (urls.substring(0, 25) === "https://summer-program.s3") {
-      console.log(urls);
+      url_arr.push(urls);
     }
+    if (url_arr.length !== 0) {
+      return url_arr;
+    }
+  };
+
+  const setTarget = (row, column) => {
+    setHoveredColumn(column);
+    setHoveredRow(row);
+    setIsHovered(true);
   };
 
   //테이블에 들어가는 내용(columns, data)
@@ -195,12 +195,30 @@ const MainPage = (props) => {
         accessor: "title",
         Header: "문항내용",
         Cell: (tableProps) => {
+          const urls = getUrls(tableProps.cell.value);
           return (
             <div
               name="title"
-              onMouseEnter={() => showImg(tableProps.cell.value)}
+              onMouseEnter={() =>
+                setTarget(
+                  tableProps.cell.row.index,
+                  tableProps.cell.column.Header
+                )
+              }
+              onMouseLeave={() => setIsHovered(false)}
               style={{ cursor: "pointer" }}
             >
+              {isHovered &
+              (HoveredRow === tableProps.cell.row.index) &
+              (HoveredColumn === tableProps.cell.column.Header) ? (
+                <div style={{ position: "absolute" }}>
+                  {urls?.map((url, i) => (
+                    <img alt="이미지" src={url} />
+                  ))}
+                </div>
+              ) : (
+                <></>
+              )}
               {tableProps.cell.value.map((content, i) => {
                 if (content.substring(0, 25) === "https://summer-program.s3") {
                   return <EditText readonly="true" defaultValue="img_url" />;
@@ -221,12 +239,30 @@ const MainPage = (props) => {
         accessor: "script",
         Header: "참고내용",
         Cell: (tableProps) => {
+          const urls = getUrls(tableProps.cell.value);
           return (
             <div
               name="script"
-              onMouseEnter={() => showImg(tableProps.cell.value)}
+              onMouseEnter={() =>
+                setTarget(
+                  tableProps.cell.row.index,
+                  tableProps.cell.column.Header
+                )
+              }
+              onMouseLeave={() => setIsHovered(false)}
               style={{ cursor: "pointer" }}
             >
+              {isHovered &
+              (HoveredRow === tableProps.cell.row.index) &
+              (HoveredColumn === tableProps.cell.column.Header) ? (
+                <div style={{ position: "absolute" }}>
+                  {urls?.map((url, i) => (
+                    <img alt="이미지" src={url} />
+                  ))}
+                </div>
+              ) : (
+                <></>
+              )}
               {tableProps.cell.value.map((content, i) => {
                 if (content.substring(0, 25) === "https://summer-program.s3") {
                   return <EditText readonly="true" defaultValue="img_url" />;
@@ -253,9 +289,24 @@ const MainPage = (props) => {
           ) {
             return (
               <div
-                onMouseEnter={() => showImg(tableProps.cell.value)}
+                onMouseEnter={() =>
+                  setTarget(
+                    tableProps.cell.row.index,
+                    tableProps.cell.column.Header
+                  )
+                }
+                onMouseLeave={() => setIsHovered(false)}
                 style={{ cursor: "pointer" }}
               >
+                {isHovered &
+                (HoveredRow === tableProps.cell.row.index) &
+                (HoveredColumn === tableProps.cell.column.Header) ? (
+                  <div style={{ position: "absolute" }}>
+                    <img alt="이미지" src={tableProps.cell.value} />
+                  </div>
+                ) : (
+                  <></>
+                )}
                 <EditText readonly="true" defaultValue="img_url" />
               </div>
             );
@@ -279,9 +330,24 @@ const MainPage = (props) => {
           ) {
             return (
               <div
-                onMouseEnter={() => showImg(tableProps.cell.value)}
+                onMouseEnter={() =>
+                  setTarget(
+                    tableProps.cell.row.index,
+                    tableProps.cell.column.Header
+                  )
+                }
+                onMouseLeave={() => setIsHovered(false)}
                 style={{ cursor: "pointer" }}
               >
+                {isHovered &
+                (HoveredRow === tableProps.cell.row.index) &
+                (HoveredColumn === tableProps.cell.column.Header) ? (
+                  <div style={{ position: "absolute" }}>
+                    <img alt="이미지" src={tableProps.cell.value} />
+                  </div>
+                ) : (
+                  <></>
+                )}
                 <EditText readonly="true" defaultValue="img_url" />
               </div>
             );
@@ -305,9 +371,24 @@ const MainPage = (props) => {
           ) {
             return (
               <div
-                onMouseEnter={() => showImg(tableProps.cell.value)}
+                onMouseEnter={() =>
+                  setTarget(
+                    tableProps.cell.row.index,
+                    tableProps.cell.column.Header
+                  )
+                }
+                onMouseLeave={() => setIsHovered(false)}
                 style={{ cursor: "pointer" }}
               >
+                {isHovered &
+                (HoveredRow === tableProps.cell.row.index) &
+                (HoveredColumn === tableProps.cell.column.Header) ? (
+                  <div style={{ position: "absolute" }}>
+                    <img alt="이미지" src={tableProps.cell.value} />
+                  </div>
+                ) : (
+                  <></>
+                )}
                 <EditText readonly="true" defaultValue="img_url" />
               </div>
             );
@@ -331,9 +412,24 @@ const MainPage = (props) => {
           ) {
             return (
               <div
-                onMouseEnter={() => showImg(tableProps.cell.value)}
+                onMouseEnter={() =>
+                  setTarget(
+                    tableProps.cell.row.index,
+                    tableProps.cell.column.Header
+                  )
+                }
+                onMouseLeave={() => setIsHovered(false)}
                 style={{ cursor: "pointer" }}
               >
+                {isHovered &
+                (HoveredRow === tableProps.cell.row.index) &
+                (HoveredColumn === tableProps.cell.column.Header) ? (
+                  <div style={{ position: "absolute" }}>
+                    <img alt="이미지" src={tableProps.cell.value} />
+                  </div>
+                ) : (
+                  <></>
+                )}
                 <EditText readonly="true" defaultValue="img_url" />
               </div>
             );
@@ -357,9 +453,24 @@ const MainPage = (props) => {
           ) {
             return (
               <div
-                onMouseEnter={() => showImg(tableProps.cell.value)}
+                onMouseEnter={() =>
+                  setTarget(
+                    tableProps.cell.row.index,
+                    tableProps.cell.column.Header
+                  )
+                }
+                onMouseLeave={() => setIsHovered(false)}
                 style={{ cursor: "pointer" }}
               >
+                {isHovered &
+                (HoveredRow === tableProps.cell.row.index) &
+                (HoveredColumn === tableProps.cell.column.Header) ? (
+                  <div style={{ position: "absolute" }}>
+                    <img alt="이미지" src={tableProps.cell.value} />
+                  </div>
+                ) : (
+                  <></>
+                )}
                 <EditText readonly="true" defaultValue="img_url" />
               </div>
             );
@@ -657,4 +768,5 @@ const MainPage = (props) => {
     </div>
   );
 };
+
 export default MainPage;
