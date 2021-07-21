@@ -65,6 +65,7 @@ const MainPage = (props) => {
   const [isHovered, setIsHovered] = useState(false);
   const [HoveredRow, setHoveredRow] = useState();
   const [HoveredColumn, setHoveredColumn] = useState();
+  const [toggle, setToggle] = useState(true);
   const history = useHistory();
 
   useEffect(() => {
@@ -72,7 +73,7 @@ const MainPage = (props) => {
       window.localStorage.setItem("isAuth", "false");
     }
     if (window.localStorage.getItem("isAuth") === "true") getQuiz();
-  }, [isHovered]);
+  }, [isHovered, toggle]);
 
   const getQuiz = async () => {
     try {
@@ -85,6 +86,7 @@ const MainPage = (props) => {
       if (error.response.status === 401) {
         alert(error.response.data.message);
         window.localStorage.setItem("isAuth", "false");
+        setToggle(!toggle);
       }
     }
   };
