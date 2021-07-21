@@ -19,7 +19,7 @@ from utils.plots import colors, plot_one_box
 from utils.torch_utils import select_device
 
 pytesseract.pytesseract.tesseract_cmd="C:\\Program Files\\Tesseract-OCR\\tesseract.exe"
-# pytesseract.pytesseract.tesseract_cmd="/usr/bin/tesseract"    #서버 환경에서의 경로
+#pytesseract.pytesseract.tesseract_cmd="/usr/bin/tesseract"    #서버 환경에서의 경로
 s3 = boto3.client('s3', aws_access_key_id = AWS_ACCESS_KEY, aws_secret_access_key = AWS_SECRET_KEY)
 resource = boto3.resource('s3', aws_access_key_id = AWS_ACCESS_KEY, aws_secret_access_key = AWS_SECRET_KEY)
 buckets = resource.Bucket(name=BUCKET_NAME)
@@ -48,7 +48,7 @@ weights = 'modelv2.0.pt'
 def get_img(image):
 
     image_png=image+".jpeg"
-    imgsz = 640
+    imgsz = 416
     save_dir = Path('result')
     save_crop=True 
 
