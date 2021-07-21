@@ -53,7 +53,7 @@ def get_img(image):
     imgsz = 416
     save_dir = Path('result')
     save_crop=True 
-
+    
     # Initialize
     set_logging()
     device = select_device('')
@@ -146,6 +146,8 @@ def get_img(image):
                     elif names[c] == "answer":
                         answerset = LoadImages(crop_path, img_size=imgsz)
                         names2 = model2.module.names if hasattr(model2, 'module') else model2.names
+                        flag_for_choice = 0 # 첫번째 choice의 image/text 구분을 하는 순간 1로 변화시킴 
+                        flag_for_choice_result = 0 # choice detection 결과 text이면 1, image이면 2
 
                         for path, img, im0s, vid_cap in answerset:
                             answerimg = torch.from_numpy(img).to(device)
@@ -160,10 +162,11 @@ def get_img(image):
                             # Apply NMS
                             pred2 = non_max_suppression(pred2, 0.5, 0.45, classes=None, agnostic=False)
 
+                            
                             # Process detections
                             for i, det in enumerate(pred2):  # detections per image
                                 p, s, im02, frame = Path(path), '', im0s, getattr(answerset, 'frame', 0)
-
+                                
                                 s += '%gx%g ' % answerimg.shape[2:]  # print string
                                 gn = torch.tensor(im02.shape)[[1, 0, 1, 0]]  # normalization gain whwh
                                 imc2 = im02.copy() if save_crop else im02  # for save_crop
@@ -175,95 +178,163 @@ def get_img(image):
                                     for c in det[:, -1].unique():
                                         n = (det[:, -1] == c).sum()  # detections per class
                                         s += f"{n} {names2[int(c)]}{'s' * (n > 1)}, "  # add to string
-
+                                    count = 0
                                     # Write results
                                     for *xyxy, conf, cls in reversed(det):
                                         c = int(cls)  # integer class
                                         label =  f'{names2[c]} {conf:.2f}'
-                                        answer_save_path = str(save_dir / 'crops' / 'answer' /'choice'/ f'{i}{p.stem}.jpg')
-                                        print(i)
+                                        answer_save_path = str(save_dir / 'crops' / 'answer' /'choice'/ f'{count}{p.stem}.jpg')
+                                   
                                         plot_one_box(xyxy, im02, label=label, color=colors(c, True), line_thickness=3)
+                                        count = count +1
                                         if save_crop:
                                             save_one_box(xyxy, imc2, file=answer_save_path, BGR=True)
-                                        ###이미지/텍스트 분류 모델 들어가야함 --> 첫 choice만 detect하도록
-                                        # 이미지일 경우 s3버킷에 저장하는 코드 들어가야함
-                                        # 아래 코드는 text일 경우임        
-                                        text = pytesseract.image_to_string(Image.open(answer_save_path), lang='kor+eng')
-                                        print(text)
-                                        dict[names[c]].append(text)
+                                    det2 = det    
+                                    ###이미지/텍스트 분류 모델 들어가야함 --> 첫 choice만 detect하도록
+                                        
+                                    # choiceset = LoadImages(answer_save_path, img_size=imgsz)
+                                    # names3 = model3.module.names if hasattr(model3, 'module') else model3.names
+                            
+                                    # for path, img, im0s, vid_cap in choiceset:
+                                    #     if flag_for_choice == 1 : # 첫 choice만 가지고 나머지 choice도 판별
+                                    #         break
+                                    #     choiceimg = torch.from_numpy(img).to(device)
+                                    #     choiceimg = choiceimg.half() if half else choiceimg.float()  # uint8 to fp16/32
+                                    #     choiceimg /= 255.0  # 0 - 255 to 0.0 - 1.0
+                                    #     if choiceimg.ndimension() == 3:
+                                    #         choiceimg = choiceimg.unsqueeze(0)
 
-                                # Save results (image with detections) choice detection 결과 저장
-                                if save_img:
-                                    if dataset.mode == 'image':
-                                        cv2.imwrite(answer_save_path, im02)
-                                        print(answer_save_path)
+                                    #     # Inference
+                                    #     pred3 = model3(choiceimg, augment=False)[0]
+
+                                    #     # Apply NMS
+                                    #     pred3 = non_max_suppression(pred3, 0.5, 0.45, classes=None, agnostic=False)
+
+                                    #     # Process detections
+                                    #     for i, det in enumerate(pred3):  # detections per image
+                                    #         p, s, im03, frame = Path(path), '', im0s, getattr(choiceset, 'frame', 0)
+
+                                    #         s += '%gx%g ' % choiceimg.shape[2:]  # print string
+                                    #         gn = torch.tensor(im03.shape)[[1, 0, 1, 0]]  # normalization gain whwh
+                                    #         imc3 = im03.copy() if save_crop else im03  # for save_crop
+                                    #         if len(det):
+                                    #             flag_for_choice = 1
+                                    #             # Rescale boxes from img_size to im0 size
+                                    #             det[:, :4] = scale_coords(choiceimg.shape[2:], det[:, :4], im03.shape).round()
+
+                                    #             # Print results
+                                    #             for c in det[:, -1].unique():
+                                    #                 n = (det[:, -1] == c).sum()  # detections per class
+                                    #                 s += f"{n} {names3[int(c)]}{'s' * (n > 1)}, "  # add to string
+
+                                    #             # Write results
+                                    #             for *xyxy, conf, cls in reversed(det):
+                                    #                 c = int(cls)  # integer class
+                                    #                 label =  f'{names3[c]} {conf:.2f}'
+                                    #                 choice_save_path = str(save_dir / 'crops' / 'answer' / 'choice' /names3[c] / f'{i}{p.stem}.jpg')
+                                    #                 plot_one_box(xyxy, im03, label=label, color=colors(c, True), line_thickness=3)
+                                                    
+
+                                    #                 if names3[c] == "text": # 텍스트인 경우   
+                                    #                     flag_for_choice_result = 1
+                                    #                 elif names3[c] == "image": # 이미지인 경우
+                                    #                     flag_for_choice_result = 2
+
+                                    #                 if save_crop:
+                                    #                     save_one_box(xyxy, imc3, file=choice_save_path, BGR=True)
+
+                                    #         # Save results (image with detections) question detection 결과 저장
+                                    #         if save_img:
+                                    #             if dataset.mode == 'image':
+                                    #                 cv2.imwrite(choice_save_path, im03)
+                                    #                 print(choice_save_path)
+
+                                   
+                                    # for i in range (0,len(det2)):
+
+                                    #     choice_result_save_path=str(save_dir / 'crops' / 'answer' /'choice'/ f'{i}{p.stem}.jpg')
+                                       
+                                    #     # 아래 코드는 text일 경우임
+                                    #     if flag_for_choice_result == 1: # choice가 텍스트인 경우            
+                                    #         text = pytesseract.image_to_string(Image.open(choice_result_save_path), lang='kor+eng')
+                                    #         print(text)
+                                    #         dict[names[c]].append(text)
+
+                                    #     elif flag_for_choice_result == 2 : # choice가 이미지인 경우
+                                    #         imagefilename ="result/"+ image + "_" + "answer" + "_"+ str(i) + "_" + str(datetime.datetime.now()).replace("\\","/").replace(" ","").replace(":","")+".jpeg"
+                                    #         imagefilename.replace(" ","")
+                                    #         imagetoupload = open( choice_result_save_path , "rb")
+                                    #         s3.put_object(Body=imagetoupload, Bucket=BUCKET_NAME, Key=imagefilename, ContentType="image/jpeg")
+                                    #         img_url = "https://summer-program.s3.ap-northeast-2.amazonaws.com/"+imagefilename
+                                    #         dict[names[c]].append(img_url)    
+                                        
+        
 
                     # elif names[c] == "question":
-                    #     questionset = LoadImages(crop_path, img_size=imgsz)
-                    #     names3 = model3.module.names if hasattr(model3, 'module') else model3.names
+                        # questionset = LoadImages(crop_path, img_size=imgsz)
+                        # names3 = model3.module.names if hasattr(model3, 'module') else model3.names
                
-                    #     for path, img, im0s, vid_cap in questionset:
-                    #         questionimg = torch.from_numpy(img).to(device)
-                    #         questionimg = answerimg.half() if half else answerimg.float()  # uint8 to fp16/32
-                    #         questionimg /= 255.0  # 0 - 255 to 0.0 - 1.0
-                    #         if questionimg.ndimension() == 3:
-                    #             questionimg = questionimg.unsqueeze(0)
+                        # for path, img, im0s, vid_cap in questionset:
+                        #     questionimg = torch.from_numpy(img).to(device)
+                        #     questionimg = answerimg.half() if half else answerimg.float()  # uint8 to fp16/32
+                        #     questionimg /= 255.0  # 0 - 255 to 0.0 - 1.0
+                        #     if questionimg.ndimension() == 3:
+                        #         questionimg = questionimg.unsqueeze(0)
 
-                    #         # Inference
-                    #         pred3 = model3(questionimg, augment=False)[0]
+                        #     # Inference
+                        #     pred3 = model3(questionimg, augment=False)[0]
 
-                    #         # Apply NMS
-                    #         pred3 = non_max_suppression(pred3, 0.5, 0.45, classes=None, agnostic=False)
+                        #     # Apply NMS
+                        #     pred3 = non_max_suppression(pred3, 0.5, 0.45, classes=None, agnostic=False)
 
-                    #         # Process detections
-                    #         for i, det in enumerate(pred3):  # detections per image
-                    #             p, s, im03, frame = Path(path), '', im0s, getattr(questionset, 'frame', 0)
+                        #     # Process detections
+                        #     for i, det in enumerate(pred3):  # detections per image
+                        #         p, s, im03, frame = Path(path), '', im0s, getattr(questionset, 'frame', 0)
 
-                    #             s += '%gx%g ' % questionimg.shape[2:]  # print string
-                    #             gn = torch.tensor(im03.shape)[[1, 0, 1, 0]]  # normalization gain whwh
-                    #             imc3 = im03.copy() if save_crop else im03  # for save_crop
-                    #             if len(det):
-                    #                 # Rescale boxes from img_size to im0 size
-                    #                 det[:, :4] = scale_coords(questionimg.shape[2:], det[:, :4], im03.shape).round()
+                        #         s += '%gx%g ' % questionimg.shape[2:]  # print string
+                        #         gn = torch.tensor(im03.shape)[[1, 0, 1, 0]]  # normalization gain whwh
+                        #         imc3 = im03.copy() if save_crop else im03  # for save_crop
+                        #         if len(det):
+                        #             # Rescale boxes from img_size to im0 size
+                        #             det[:, :4] = scale_coords(questionimg.shape[2:], det[:, :4], im03.shape).round()
 
-                    #                 # Print results
-                    #                 for c in det[:, -1].unique():
-                    #                     n = (det[:, -1] == c).sum()  # detections per class
-                    #                     s += f"{n} {names3[int(c)]}{'s' * (n > 1)}, "  # add to string
+                        #             # Print results
+                        #             for c in det[:, -1].unique():
+                        #                 n = (det[:, -1] == c).sum()  # detections per class
+                        #                 s += f"{n} {names3[int(c)]}{'s' * (n > 1)}, "  # add to string
 
-                    #                 # Write results
-                    #                 for *xyxy, conf, cls in reversed(det):
-                    #                     c = int(cls)  # integer class
-                    #                     label =  f'{names3[c]} {conf:.2f}'
-                    #                     question_save_path = str(save_dir / 'crops' / 'question' / names3[c] / f'{i}{p.stem}.jpg')
-                    #                     plot_one_box(xyxy, im03, label=label, color=colors(c, True), line_thickness=3)
+                        #             # Write results
+                        #             for *xyxy, conf, cls in reversed(det):
+                        #                 c = int(cls)  # integer class
+                        #                 label =  f'{names3[c]} {conf:.2f}'
+                        #                 question_save_path = str(save_dir / 'crops' / 'question' / names3[c] / f'{i}{p.stem}.jpg')
+                        #                 plot_one_box(xyxy, im03, label=label, color=colors(c, True), line_thickness=3)
 
-                    #                     if save_crop:
-                    #                         save_one_box(xyxy, imc3, file=question_save_path, BGR=True)
+                        #                 if save_crop:
+                        #                     save_one_box(xyxy, imc3, file=question_save_path, BGR=True)
                                      
             
-                    #                     # 아래 코드는 text일 경우임
-                    #                     if names3[c] == "text": #텍스트인 경우            
-                    #                     text = pytesseract.image_to_string(Image.open(questionset), lang='kor+eng')
-                    #                     print(text)
-                    #                     dict[names[c]].append(text)
+                        #                 # 아래 코드는 text일 경우임
+                        #                 if names3[c] == "text": #텍스트인 경우            
+                            #                 text = pytesseract.image_to_string(Image.open(questionset), lang='kor+eng')
+                            #                 print(text)
+                            #                 dict[names[c]].append(text)
 
-                    #                     elif names3[c] == "image": #이미지인 경우
-                    #                         imagefilename ="result/"+ image + "_" + names[c] + "_"+ str(i) + "_" + str(datetime.datetime.now()).replace("\\","/").replace(" ","").replace(":","")+".jpeg"
-                    #                         imagefilename.replace(" ","")
-                    #                         imagetoupload = open( crop_path , "rb")
-                    #                         s3.put_object(Body=imagetoupload, Bucket=BUCKET_NAME, Key=imagefilename, ContentType="image/jpeg")
-                    #                         img_url = "https://summer-program.s3.ap-northeast-2.amazonaws.com/"+imagefilename
-                    #                         dict[names[c]].append(img_url)
+                        #                 elif names3[c] == "image": #이미지인 경우
+                        #                     imagefilename ="result/"+ image + "_" + names[c] + "_"+ str(i) + "_" + str(datetime.datetime.now()).replace("\\","/").replace(" ","").replace(":","")+".jpeg"
+                        #                     imagefilename.replace(" ","")
+                        #                     imagetoupload = open( crop_path , "rb")
+                        #                     s3.put_object(Body=imagetoupload, Bucket=BUCKET_NAME, Key=imagefilename, ContentType="image/jpeg")
+                        #                     img_url = "https://summer-program.s3.ap-northeast-2.amazonaws.com/"+imagefilename
+                        #                     dict[names[c]].append(img_url)
 
 
-                    #             # Save results (image with detections) question detection 결과 저장
-                    #             if save_img:
-                    #                 if dataset.mode == 'image':
-                    #                     cv2.imwrite(question_save_path, im03)
-                    #                     print(question_save_path)
-                    
-
+                        #         # Save results (image with detections) question detection 결과 저장
+                        #         if save_img:
+                        #             if dataset.mode == 'image':
+                        #                 cv2.imwrite(question_save_path, im03)
+                        #                 print(question_save_path)
+                   
             # Save results (image with detections)
             if save_img:
                 if dataset.mode == 'image':
