@@ -14,14 +14,14 @@ ENV FLASK_RUN_HOST=0.0.0.0
 COPY ./Backend/requirements.txt requirements.txt
 RUN pip3 install -r requirements.txt
 
-#relative with tensorflow
-# RUN apt-get -y install libgl1-mesa-glx # from imageai.Detection.Custom import CustomObjectDetection - ImportError: libGL.so.1 solve
+#relative with ImportError: libGL.so.1 
+RUN apt-get -y install libgl1-mesa-glx 
 
 # RUN pip3 install imageai --upgrade
-# RUN pip3 install pytesseract
+RUN pip3 install pytesseract
 
-# ARG DEBIAN_FRONTEND=noninteractive
-# RUN apt-get install tesseract-ocr-kor -y
+ARG DEBIAN_FRONTEND=noninteractive
+RUN apt-get install tesseract-ocr-kor -y
 
 EXPOSE 5000
 
