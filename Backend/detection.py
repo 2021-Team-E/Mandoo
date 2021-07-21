@@ -26,7 +26,7 @@ buckets = resource.Bucket(name=BUCKET_NAME)
 
 ##모델 로드 부분
 weights1 = 'modelv2.0.pt'
-weights2 = 'choice5_bestweight'
+weights2 = 'choice5_bestweight.pt'
 ## s3 버킷에 weights 모델 올리면 사용
 # file_path = 'modelv1.0.pt'  # 내 서버에 저장하는 것 이미지 포함 여부 판단 모델
 # key_name = 'modelv1.0.pt'   # s3버킷 저장되어있는 이름
@@ -137,7 +137,56 @@ def get_img(image):
 
                         
                         continue
-                    
+
+
+
+                    elif names[c] == "answer":
+                      answerset = LoadImages(crop_path, img_size=imgsz)
+                      model2.module.names if hasattr(model2, 'module') else model2.names
+
+                      for path, img, im0s, vid_cap in answerset:
+                        answerimg = torch.from_numpy(img).to(device)
+                        answerimg = answerimg.half() if half else answerimg.float()  # uint8 to fp16/32
+                        answerimg /= 255.0  # 0 - 255 to 0.0 - 1.0
+                        if answerimg.ndimension() == 3:
+                            answerimg = answerimg.unsqueeze(0)
+
+                        # Inference
+                        pred2 = model2(answerimg, augment=False)[0]
+
+                        # Apply NMS
+                        pred2 = non_max_suppression(pred2, 0.5, 0.45, classes=None, agnostic=False)
+
+                        # Process detections
+                        for i, det in enumerate(pred2):  # detections per image
+                            p, s, im02, frame = Path(path), '', im0s, getattr(answerset, 'frame', 0)
+
+                            s += '%gx%g ' % answerimg.shape[2:]  # print string
+                            gn = torch.tensor(im02.shape)[[1, 0, 1, 0]]  # normalization gain whwh
+                            imc2 = im02.copy() if save_crop else im02  # for save_crop
+                            if len(det):
+                                # Rescale boxes from img_size to im0 size
+                                det[:, :4] = scale_coords(answerimg.shape[2:], det[:, :4], im02.shape).round()
+
+                                # Print results
+                                for c in det[:, -1].unique():
+                                    n = (det[:, -1] == c).sum()  # detections per class
+                                    s += f"{n} {names[int(c)]}{'s' * (n > 1)}, "  # add to string
+
+                                # Write results
+                                for *xyxy, conf, cls in reversed(det):
+                                    c = int(cls)  # integer class
+                                    answer_save_path = str(save_dir / 'crops' / 'answer' / f'{i}{p.stem}.jpg')
+                                    plot_one_box(xyxy, im02, label=label, color=colors(c, True), line_thickness=3)
+                                    if save_crop:
+                                            save_one_box(xyxy, imc2, file=answer_save_path, BGR=True)
+                                    ###이미지/텍스트 분류 모델 들어가야함
+                                    # 이미지일 경우 s3버킷에 저장하는 코드 들어가야함
+                                    # 아래 코드는 text일 경우임        
+                                    text = pytesseract.image_to_string(Image.open(answer_save_path), lang='kor+eng')
+                                    print(text)
+                                    dict[names[c]].append(text)
+
                     # elif names[c] == "question" : 
                     #     # 이미지/text 감별 모델 부분 (model3)
                     #     # predictions, probabilities = prediction.classifyImage(detection, result_count=2)    #predictions[0] : 무조건 퍼센트 높은 아이로 지정됨
