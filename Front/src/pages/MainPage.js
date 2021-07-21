@@ -43,23 +43,14 @@ const MainPage = (props) => {
   const [isHovered, setIsHovered] = useState(false);
   const [HoveredRow, setHoveredRow] = useState();
   const [HoveredColumn, setHoveredColumn] = useState();
-<<<<<<< HEAD
-=======
   const [toggle, setToggle] = useState(true);
-  const history = useHistory();
->>>>>>> a9572ee51cb382c7e584ecbee8130c2860f2cc4d
 
   useEffect(() => {
     if (window.localStorage.getItem('isAuth') === null) {
       window.localStorage.setItem('isAuth', 'false');
     }
-<<<<<<< HEAD
     if (window.localStorage.getItem('isAuth') === 'true') getQuiz();
-  }, [isHovered]);
-=======
-    if (window.localStorage.getItem("isAuth") === "true") getQuiz();
   }, [isHovered, toggle]);
->>>>>>> a9572ee51cb382c7e584ecbee8130c2860f2cc4d
 
   const getQuiz = async () => {
     try {
@@ -71,12 +62,8 @@ const MainPage = (props) => {
     } catch (error) {
       if (error.response.status === 401) {
         alert(error.response.data.message);
-<<<<<<< HEAD
         window.localStorage.setItem('isAuth', 'false');
-=======
-        window.localStorage.setItem("isAuth", "false");
         setToggle(!toggle);
->>>>>>> a9572ee51cb382c7e584ecbee8130c2860f2cc4d
       }
     }
   };
