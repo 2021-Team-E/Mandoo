@@ -4,6 +4,7 @@ import os
 import boto3
 from s3 import AWS_SECRET_KEY, AWS_ACCESS_KEY, BUCKET_NAME
 import datetime
+import re
 import shutil
 #############아래는 yolov5 버전 입니다###################
 
@@ -184,9 +185,11 @@ def get_img(image):
                                     # 이미지일 경우 s3버킷에 저장하는 코드 들어가야함
                                     # 아래 코드는 text일 경우임        
                                     text = pytesseract.image_to_string(Image.open(answer_save_path), lang='kor+eng')
+                                    text = text.split("\n")[0]
+                                    text = re.sub(r'[^가-힣a-zA-Zㄱ-ㅎ()0-9.,?![]~%-_/<>\s]:\'\"\+','', text)
                                     print(text)
                                     dict[names[c]].append(text)
-
+                      continue  
                     # elif names[c] == "question" : 
                     #     # 이미지/text 감별 모델 부분 (model3)
                     #     # predictions, probabilities = prediction.classifyImage(detection, result_count=2)    #predictions[0] : 무조건 퍼센트 높은 아이로 지정됨
@@ -268,6 +271,8 @@ def get_img(image):
 
                     # if predictions[0] == "text": #텍스트인 경우
                     text = pytesseract.image_to_string(Image.open(crop_path), lang='kor+eng')
+                    text = text.split("\n")[0]
+                    text = re.sub(r'[^가-힣a-zA-Zㄱ-ㅎ()0-9.,?![]~%-_/<>\s]:\'\"\+]','', text)
                     print(text)
                     dict[names[c]].append(text)
 
