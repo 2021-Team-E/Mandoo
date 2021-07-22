@@ -229,6 +229,7 @@ class Image(Resource):
         img_url = "https://summer-program.s3.ap-northeast-2.amazonaws.com/"+imagefilename 
         image = img_url              # 딥러닝 거치기 전의 이미지가 저장된 s3 주소 
         print(image)
+        print(id)
         title, choices, answer, script, score = get_img(id)
         user_id = session.get('id')
         

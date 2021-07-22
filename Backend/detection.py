@@ -49,6 +49,7 @@ weights2 = 'choice5_bestweight'
 def get_img(image):
 
     image_png=image+".jpeg"
+    print(image_png)
     imgsz = 416
     save_dir = Path('result')
     save_crop=True 

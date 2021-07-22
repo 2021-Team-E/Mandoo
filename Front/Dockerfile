@@ -1,19 +1,17 @@
-# Pull latest official node image
-FROM node:10
+FROM node:10 as builder
 
-# Set working directory
 WORKDIR /usr/src/app/Front
 
-# add `/app/node_modules/.bin` to environment variables
-ENV PATH /app/node_modules/.bin:$PATH
-
-# Copy package files and install app dependencies
 COPY package.json ./
 
 RUN npm install
 
-# Expose ports
-EXPOSE 3000
+COPY ./ ./
 
-# Start the React app
-CMD ["npm", "start"]
+RUN npm install
+
+RUN npm run build
+
+FROM nginx:latest
+EXPOSE 80
+COPY --from=builder /usr/src/app/Front/build /usr/share/nginx/html

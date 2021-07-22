@@ -17,7 +17,8 @@ services:
 
   react:
     build:
-      context: ./Front
+      context: .
+      dockerfile: ./Front/Dockerfile
     container_name: react
     ports:
       - 3000:3000
@@ -52,7 +53,7 @@ services:
     build:
       context: .
       dockerfile: ./Backend/Dockerfile
-    
+
     ports:
       - "5000:5000"
     volumes:
@@ -63,13 +64,12 @@ services:
     depends_on:
       - mongo_db
       # - redis
-    
+
     networks:
       app-tier:
         aliases:
           - flask-app
     restart: always
-    
 
   # elastic_search:
   #   image: docker.elastic.co/elasticsearch/elasticsearch:7.10.1
