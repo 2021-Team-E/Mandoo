@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import Header from "../components/Header";
 import Table from "../components/Table";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Loader from "./Loader";
 import axios from "axios";
 import { USER_SERVER } from "../config";
@@ -43,7 +43,6 @@ const MainPage = (props) => {
   const [isHovered, setIsHovered] = useState(false);
   const [HoveredRow, setHoveredRow] = useState();
   const [HoveredColumn, setHoveredColumn] = useState();
-  const [lock, setLock] = useState(false);
   const [toggle, setToggle] = useState(true);
 
   useEffect(() => {
@@ -118,11 +117,6 @@ const MainPage = (props) => {
     } catch {
       console.log("error");
     }
-    setLock(false);
-  };
-
-  const setLocked = (boolean) => {
-    setLock(boolean);
   };
 
   const changeQuiz = async (name, idx, value, quiz) => {
@@ -201,14 +195,18 @@ const MainPage = (props) => {
             <div
               name="title"
               onMouseEnter={() =>
-                lock
+                document.activeElement.type === "text"
                   ? {}
                   : setTarget(
                       tableProps.cell.row.index,
                       tableProps.cell.column.Header
                     )
               }
-              onMouseLeave={() => (lock ? {} : setIsHovered(false))}
+              onMouseLeave={() =>
+                document.activeElement.type === "text"
+                  ? {}
+                  : setIsHovered(false)
+              }
               style={{ cursor: "pointer" }}
             >
               {isHovered &
@@ -239,13 +237,11 @@ const MainPage = (props) => {
                   return <EditText readonly="true" defaultValue="img_url" />;
                 }
                 return (
-                  <div onClick={async () => await setLocked(true)}>
-                    <EditText
-                      name={`title,${i}`}
-                      onSave={(e) => handleSave(tableProps.row.original, e)}
-                      defaultValue={content}
-                    />
-                  </div>
+                  <EditText
+                    name={`title,${i}`}
+                    onSave={(e) => handleSave(tableProps.row.original, e)}
+                    defaultValue={content}
+                  />
                 );
               })}
             </div>
@@ -261,14 +257,18 @@ const MainPage = (props) => {
             <div
               title="script"
               onMouseEnter={() =>
-                lock
-                  ? {}
+                document.activeElement.type === "text"
+                  ? console.log(document.activeElement.type)
                   : setTarget(
                       tableProps.cell.row.index,
                       tableProps.cell.column.Header
                     )
               }
-              onMouseLeave={() => (lock ? {} : setIsHovered(false))}
+              onMouseLeave={() =>
+                document.activeElement.type === "text"
+                  ? {}
+                  : setIsHovered(false)
+              }
               style={{ cursor: "pointer" }}
             >
               {isHovered &
@@ -298,13 +298,11 @@ const MainPage = (props) => {
                   return <EditText readonly="true" defaultValue="img_url" />;
                 }
                 return (
-                  <div onClick={() => setLock(true)}>
-                    <EditText
-                      name={`script,${i}`}
-                      onSave={(e) => handleSave(tableProps.row.original, e)}
-                      defaultValue={content}
-                    />
-                  </div>
+                  <EditText
+                    name={`script,${i}`}
+                    onSave={(e) => handleSave(tableProps.row.original, e)}
+                    defaultValue={content}
+                  />
                 );
               })}
             </div>
@@ -322,14 +320,18 @@ const MainPage = (props) => {
             return (
               <div
                 onMouseEnter={() =>
-                  lock
+                  document.activeElement.type === "text"
                     ? {}
                     : setTarget(
                         tableProps.cell.row.index,
                         tableProps.cell.column.Header
                       )
                 }
-                onMouseLeave={() => (lock ? {} : setIsHovered(false))}
+                onMouseLeave={() =>
+                  document.activeElement.type === "text"
+                    ? {}
+                    : setIsHovered(false)
+                }
                 style={{ cursor: "pointer" }}
               >
                 {isHovered &
@@ -364,16 +366,19 @@ const MainPage = (props) => {
           }
           return (
             <div
-              onClick={() => setLock(true)}
               onMouseEnter={() =>
-                lock
+                document.activeElement.type === "text"
                   ? {}
                   : setTarget(
                       tableProps.cell.row.index,
                       tableProps.cell.column.Header
                     )
               }
-              onMouseLeave={() => (lock ? {} : setIsHovered(false))}
+              onMouseLeave={() =>
+                document.activeElement.type === "text"
+                  ? {}
+                  : setIsHovered(false)
+              }
             >
               <EditText
                 name="choice1"
@@ -395,14 +400,18 @@ const MainPage = (props) => {
             return (
               <div
                 onMouseEnter={() =>
-                  lock
+                  document.activeElement.type === "text"
                     ? {}
                     : setTarget(
                         tableProps.cell.row.index,
                         tableProps.cell.column.Header
                       )
                 }
-                onMouseLeave={() => (lock ? {} : setIsHovered(false))}
+                onMouseLeave={() =>
+                  document.activeElement.type === "text"
+                    ? {}
+                    : setIsHovered(false)
+                }
                 style={{ cursor: "pointer" }}
               >
                 {isHovered &
@@ -436,7 +445,22 @@ const MainPage = (props) => {
             );
           }
           return (
-            <div onClick={() => setLock(true)}>
+            <div
+              onMouseEnter={() =>
+                document.activeElement.type === "text"
+                  ? {}
+                  : setTarget(
+                      tableProps.cell.row.index,
+                      tableProps.cell.column.Header
+                    )
+              }
+              onMouseLeave={() =>
+                document.activeElement.type === "text"
+                  ? {}
+                  : setIsHovered(false)
+              }
+              style={{ cursor: "pointer" }}
+            >
               <EditText
                 name="choice2"
                 onSave={(e) => handleSave(tableProps.row.original, e)}
@@ -457,14 +481,18 @@ const MainPage = (props) => {
             return (
               <div
                 onMouseEnter={() =>
-                  lock
+                  document.activeElement.type === "text"
                     ? {}
                     : setTarget(
                         tableProps.cell.row.index,
                         tableProps.cell.column.Header
                       )
                 }
-                onMouseLeave={() => (lock ? {} : setIsHovered(false))}
+                onMouseLeave={() =>
+                  document.activeElement.type === "text"
+                    ? {}
+                    : setIsHovered(false)
+                }
                 style={{ cursor: "pointer" }}
               >
                 {isHovered &
@@ -498,7 +526,22 @@ const MainPage = (props) => {
             );
           }
           return (
-            <div onClick={() => setLock(true)}>
+            <div
+              onMouseEnter={() =>
+                document.activeElement.type === "text"
+                  ? {}
+                  : setTarget(
+                      tableProps.cell.row.index,
+                      tableProps.cell.column.Header
+                    )
+              }
+              onMouseLeave={() =>
+                document.activeElement.type === "text"
+                  ? {}
+                  : setIsHovered(false)
+              }
+              style={{ cursor: "pointer" }}
+            >
               <EditText
                 name="choice3"
                 onSave={(e) => handleSave(tableProps.row.original, e)}
@@ -519,14 +562,18 @@ const MainPage = (props) => {
             return (
               <div
                 onMouseEnter={() =>
-                  lock
+                  document.activeElement.type === "text"
                     ? {}
                     : setTarget(
                         tableProps.cell.row.index,
                         tableProps.cell.column.Header
                       )
                 }
-                onMouseLeave={() => (lock ? {} : setIsHovered(false))}
+                onMouseLeave={() =>
+                  document.activeElement.type === "text"
+                    ? {}
+                    : setIsHovered(false)
+                }
                 style={{ cursor: "pointer" }}
               >
                 {isHovered &
@@ -560,7 +607,22 @@ const MainPage = (props) => {
             );
           }
           return (
-            <div onClick={() => setLock(true)}>
+            <div
+              onMouseEnter={() =>
+                document.activeElement.type === "text"
+                  ? {}
+                  : setTarget(
+                      tableProps.cell.row.index,
+                      tableProps.cell.column.Header
+                    )
+              }
+              onMouseLeave={() =>
+                document.activeElement.type === "text"
+                  ? {}
+                  : setIsHovered(false)
+              }
+              style={{ cursor: "pointer" }}
+            >
               <EditText
                 name="choice4"
                 onSave={(e) => handleSave(tableProps.row.original, e)}
@@ -581,14 +643,18 @@ const MainPage = (props) => {
             return (
               <div
                 onMouseEnter={() =>
-                  lock
+                  document.activeElement.type === "text"
                     ? {}
                     : setTarget(
                         tableProps.cell.row.index,
                         tableProps.cell.column.Header
                       )
                 }
-                onMouseLeave={() => (lock ? {} : setIsHovered(false))}
+                onMouseLeave={() =>
+                  document.activeElement.type === "text"
+                    ? {}
+                    : setIsHovered(false)
+                }
                 style={{ cursor: "pointer" }}
               >
                 {isHovered &
@@ -622,7 +688,22 @@ const MainPage = (props) => {
             );
           }
           return (
-            <div onClick={() => setLock(true)}>
+            <div
+              onMouseEnter={() =>
+                document.activeElement.type === "text"
+                  ? {}
+                  : setTarget(
+                      tableProps.cell.row.index,
+                      tableProps.cell.column.Header
+                    )
+              }
+              onMouseLeave={() =>
+                document.activeElement.type === "text"
+                  ? {}
+                  : setIsHovered(false)
+              }
+              style={{ cursor: "pointer" }}
+            >
               <EditText
                 name="choice5"
                 onSave={(e) => handleSave(tableProps.row.original, e)}
@@ -636,7 +717,20 @@ const MainPage = (props) => {
         accessor: "answer",
         Header: "정답",
         Cell: (tableProps) => (
-          <div onClick={() => setLock(true)}>
+          <div
+            onMouseEnter={() =>
+              document.activeElement.type === "text"
+                ? {}
+                : setTarget(
+                    tableProps.cell.row.index,
+                    tableProps.cell.column.Header
+                  )
+            }
+            onMouseLeave={() =>
+              document.activeElement.type === "text" ? {} : setIsHovered(false)
+            }
+            style={{ cursor: "pointer" }}
+          >
             <EditText
               name="answer"
               onSave={(e) => handleSave(tableProps.row.original, e)}
@@ -649,7 +743,20 @@ const MainPage = (props) => {
         accessor: "score",
         Header: "점수",
         Cell: (tableProps) => (
-          <div onClick={() => setLock(true)}>
+          <div
+            onMouseEnter={() =>
+              document.activeElement.type === "text"
+                ? {}
+                : setTarget(
+                    tableProps.cell.row.index,
+                    tableProps.cell.column.Header
+                  )
+            }
+            onMouseLeave={() =>
+              document.activeElement.type === "text" ? {} : setIsHovered(false)
+            }
+            style={{ cursor: "pointer" }}
+          >
             <EditText
               name="score"
               onSave={(e) => handleSave(tableProps.row.original, e)}
@@ -762,8 +869,8 @@ const MainPage = (props) => {
         width: "100vw",
         height: "88vh",
         marginTop: "80px",
+        zIndex: "0",
       }}
-      onClick={() => setLock(false)}
     >
       <div className="nav">
         <Header />
