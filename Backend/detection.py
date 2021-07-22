@@ -36,9 +36,9 @@ weights2 = 'choice5_bestweight.pt'
 # key_name = 'modelv1.0.pt'   # s3버킷 저장되어있는 이름
 # buckets.download_file(key_name, file_path)
 
-file_path = 'model_ex-024_acc-1.000000.h5'  # 내 서버에 저장하는 것 이미지 포함 여부 판단 모델
-key_name = "model_ex-024_acc-1.000000.h5"   # s3버킷 저장되어있는 이름
-buckets.download_file(key_name, file_path)
+# file_path = 'model_ex-024_acc-1.000000.h5'  # 내 서버에 저장하는 것 이미지 포함 여부 판단 모델
+# key_name = "model_ex-024_acc-1.000000.h5"   # s3버킷 저장되어있는 이름
+# buckets.download_file(key_name, file_path)
 
 # file_path = 'detection_config.json'  
 # key_name = 'detection_config.json'  
@@ -187,13 +187,12 @@ def get_img(image):
                                     n=len(det)
                                     tensor=det
                                     sorted_choice=tensor.numpy()
-                                   
+                                    print("\n",sorted_choice)
                                     if (abs(sorted_choice[0][0]-sorted_choice[1][0])<10): # y축으로만 정렬
-                                
                                         for i in range(n):
-                                            print(i)
+                                           
                                             for j in range(0, n - i - 1):
-                                                print(j)
+                                                
                                                 temp=[]
                                                 if (sorted_choice[j][1] > sorted_choice[j+1][1]):
                                                 
@@ -202,10 +201,55 @@ def get_img(image):
                                                     sorted_choice[j + 1] = sorted_choice[j]
                                                  
                                                     sorted_choice[j]=temp
+                                        print("첫 y축 정렬 결과 :\n",sorted_choice)
+                                        for i in range (n):
+                                            print("i : ", i)
+                                            for j in range(i, n - i - 1):
+                                                print("j : ", j)
+                                                print(sorted_choice[j][1] - sorted_choice[j+1][1])
+                                                if (abs(sorted_choice[j][1] - sorted_choice[j+1][1])<5) :
+
+                                                    if (sorted_choice[j][0] > sorted_choice[j+1][0]) :
+
+                                                        temp= sorted_choice[j + 1].copy()   # 서로 위치를 변환
+                                                        sorted_choice[j + 1] = sorted_choice[j]
+                                                        sorted_choice[j]=temp
+
+                                                        print("change!")
+                                                        print(sorted_choice)
+                                                    break
                                                     
-                                
-                                      
-                                    # flag_for_list=1
+                                        # if (abs(sorted_choice[0][1]-sorted_choice[n-1][1])<80): #지그재그인 경우
+                                        #     for i in range(n):
+                                            
+                                        #         for j in range(0, n - i - 1):
+                                        #             print(j)
+                                        #             temp=[]
+                                        #             if (sorted_choice[j][0] > sorted_choice[j+1][0]):
+                                                    
+                                        #                 temp= sorted_choice[j + 1].copy() # 서로 위치를 변환
+                                                
+                                        #                 sorted_choice[j + 1] = sorted_choice[j]
+                                                    
+                                        #                 sorted_choice[j]=temp
+                                        print("지그재그 방향 정렬 :\n ", sorted_choice)
+                                                    
+                                    elif (abs(sorted_choice[0][1]-sorted_choice[1][1])<10): # x축으로만 정렬
+                                       
+                                        for i in range(n):
+                                            print(i)
+                                            for j in range(0, n - i - 1):
+                                                print(j)
+                                                temp=[]
+                                                if (sorted_choice[j][0] > sorted_choice[j+1][0]):
+                                                
+                                                    temp= sorted_choice[j + 1].copy() # 서로 위치를 변환
+                                            
+                                                    sorted_choice[j + 1] = sorted_choice[j]
+                                                 
+                                                    sorted_choice[j]=temp
+                                        print("x축 방향 정렬 : ", sorted_choice)
+
                                     # Write results
                                     for *xyxy, conf, cls in (det):
                                         
