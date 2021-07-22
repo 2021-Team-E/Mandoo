@@ -6,6 +6,9 @@ from s3 import AWS_SECRET_KEY, AWS_ACCESS_KEY, BUCKET_NAME
 import datetime
 import re
 import shutil
+
+from imageai.Classification.Custom import CustomImageClassification
+
 #############아래는 yolov5 버전 입니다###################
 
 from pathlib import Path
@@ -34,9 +37,9 @@ weights2 = 'choice5_bestweight.pt'
 # key_name = 'modelv1.0.pt'   # s3버킷 저장되어있는 이름
 # buckets.download_file(key_name, file_path)
 
-# file_path = 'model_ex-024_acc-1.000000.h5'  # 내 서버에 저장하는 것 이미지 포함 여부 판단 모델
-# key_name = "model_ex-024_acc-1.000000.h5"   # s3버킷 저장되어있는 이름
-# buckets.download_file(key_name, file_path)
+file_path = 'model_ex-024_acc-1.000000.h5'  # 내 서버에 저장하는 것 이미지 포함 여부 판단 모델
+key_name = "model_ex-024_acc-1.000000.h5"   # s3버킷 저장되어있는 이름
+buckets.download_file(key_name, file_path)
 
 # file_path = 'detection_config.json'  
 # key_name = 'detection_config.json'  
@@ -99,7 +102,7 @@ def get_img(image):
 
         # Process detections
         for i, det in enumerate(pred):  # detections per image
-            print(i)
+            
             p, s, im0, frame = Path(path), '', im0s, getattr(dataset, 'frame', 0)
 
             save_path = str(save_dir / p.name)
@@ -122,14 +125,13 @@ def get_img(image):
                     label =  f'{names[c]} {conf:.2f}'
 
                     labels.append(names[c])
-                    print(labels)
+                   
                 
                     plot_one_box(xyxy, im0, label=label, color=colors(c, True), line_thickness=3)
                     if save_crop:
                         crop_path = save_dir / 'crops' / names[c] / f'{p.stem}.jpg'
                         save_one_box(xyxy, imc, file=crop_path, BGR=True)
-                        print(crop_path)
-                        print({p.stem})
+                        
 
                     if names[c] == "content" : # content로 판별시 이미지 여부 판단 모델 들어가지 않고 이미지 자체를 return 데이터에 담음
                         imagefilename ="result/"+ image + "_" + names[c] + "_"+ str(i) + "_" + str(datetime.datetime.now()).replace("\\","/").replace(" ","").replace(":","")+".jpeg"
@@ -191,6 +193,52 @@ def get_img(image):
                                         if save_crop:
                                             save_one_box(xyxy, imc2, file=answer_save_path, BGR=True)
                                     det2 = det    
+                                    ###이미지/텍스트 분류 모델 들어가야함 --> 첫 choice만 detect하도록
+                                        
+                                    prediction = CustomImageClassification()
+                                    prediction.setModelTypeAsInceptionV3()
+                                    
+                                    prediction.setModelPath('./model_ex-024_acc-1.000000.h5')
+                                    prediction.setJsonPath("./model_class.json")
+                                    prediction.loadModel(num_objects=2)
+
+                                    # questionset = LoadImages(crop_path, img_size=imgsz)
+                                    #names3 = model3.module.names if hasattr(model3, 'module') else model3.names
+
+                                    predictions, probabilities = prediction.classifyImage(image_input=crop_path, result_count=2)    #predictions[0] : 무조건 퍼센트 높은 아이로 지정됨
+                                    
+                                    if probabilities[0] > probabilities[1]:
+                                        print("This is a(n) " + predictions[0])
+
+                                    # 아래 코드는 text일 경우임
+                                    if predictions[0] == "text": #텍스트인 경우            
+                                        flag_for_choice_result = 1
+
+                                    else : #이미지인 경우
+                                        flag_for_choice_result = 2
+
+                                            
+                                    for i in range (0,len(det2)):
+
+                                        choice_result_save_path=str(save_dir / 'crops' / 'answer' /'choice'/ f'{i}{p.stem}.jpg')
+                                       
+                                        # 아래 코드는 text일 경우임
+                                        if flag_for_choice_result == 1: # choice가 텍스트인 경우            
+                                            text = pytesseract.image_to_string(Image.open(choice_result_save_path), lang='kor+eng')
+                                            print(text)
+                                            dict[names[c]].append(text)
+
+                                        elif flag_for_choice_result == 2 : # choice가 이미지인 경우
+                                            imagefilename ="result/"+ image + "_" + "answer" + "_"+ str(i) + "_" + str(datetime.datetime.now()).replace("\\","/").replace(" ","").replace(":","")+".jpeg"
+                                            imagefilename.replace(" ","")
+                                            imagetoupload = open( choice_result_save_path , "rb")
+                                            s3.put_object(Body=imagetoupload, Bucket=BUCKET_NAME, Key=imagefilename, ContentType="image/jpeg")
+                                            img_url = "https://summer-program.s3.ap-northeast-2.amazonaws.com/"+imagefilename
+                                            dict[names[c]].append(img_url)    
+                                    
+                                    
+                                    #image text 분류 yolov5버전
+                                    #det2 = det    
                                     ###이미지/텍스트 분류 모델 들어가야함 --> 첫 choice만 detect하도록
                                         
                                     # choiceset = LoadImages(answer_save_path, img_size=imgsz)
@@ -269,10 +317,41 @@ def get_img(image):
                                     #         imagetoupload = open( choice_result_save_path , "rb")
                                     #         s3.put_object(Body=imagetoupload, Bucket=BUCKET_NAME, Key=imagefilename, ContentType="image/jpeg")
                                     #         img_url = "https://summer-program.s3.ap-northeast-2.amazonaws.com/"+imagefilename
-                                    #         dict[names[c]].append(img_url)    
-                                        
+                                    #         dict[names[c]].append(img_url)                  
         
 
+                    elif names[c] == "question":
+
+                        prediction = CustomImageClassification()
+                        prediction.setModelTypeAsInceptionV3()
+                        
+                        prediction.setModelPath('./model_ex-024_acc-1.000000.h5')
+                        prediction.setJsonPath("./model_class.json")
+                        prediction.loadModel(num_objects=2)
+
+                        # questionset = LoadImages(crop_path, img_size=imgsz)
+                        #names3 = model3.module.names if hasattr(model3, 'module') else model3.names
+
+                        predictions, probabilities = prediction.classifyImage(image_input=crop_path, result_count=2)    #predictions[0] : 무조건 퍼센트 높은 아이로 지정됨
+                        
+                        if probabilities[0] > probabilities[1]:
+                            print("This is a(n) " + predictions[0])
+
+                        # 아래 코드는 text일 경우임
+                        if predictions[0] == "text": #텍스트인 경우            
+                            text = pytesseract.image_to_string(Image.open(crop_path), lang='kor+eng')
+                            print(text)
+                            dict[names[c]].append(text)
+
+                        else : #이미지인 경우
+                            imagefilename ="result/"+ image + "_" + names[c] + "_"+ str(i) + "_" + str(datetime.datetime.now()).replace("\\","/").replace(" ","").replace(":","")+".jpeg"
+                            imagefilename.replace(" ","")
+                            imagetoupload = open( crop_path , "rb")
+                            s3.put_object(Body=imagetoupload, Bucket=BUCKET_NAME, Key=imagefilename, ContentType="image/jpeg")
+                            img_url = "https://summer-program.s3.ap-northeast-2.amazonaws.com/"+imagefilename
+                            dict[names[c]].append(img_url)
+
+                    #image text 분류 yolov5버전
                     # elif names[c] == "question":
                         # questionset = LoadImages(crop_path, img_size=imgsz)
                         # names3 = model3.module.names if hasattr(model3, 'module') else model3.names
@@ -339,12 +418,12 @@ def get_img(image):
                         #             if dataset.mode == 'image':
                         #                 cv2.imwrite(question_save_path, im03)
                         #                 print(question_save_path)
-                   
+
             # Save results (image with detections)
             if save_img:
                 if dataset.mode == 'image':
                     cv2.imwrite(save_path, im0)
-                    print(save_path)
+                    
 
        
 
