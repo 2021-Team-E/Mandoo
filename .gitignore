@@ -8,3 +8,6 @@ upload/
 result/
 s3.py
 *.h5
+
+prometheus/data
+grafana/data
