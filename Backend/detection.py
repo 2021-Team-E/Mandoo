@@ -14,7 +14,7 @@ from pathlib import Path
 
 import cv2
 import torch
-
+import tensorflow as tf
 from models.experimental import attempt_load
 from utils.datasets import LoadImages
 from utils.general import check_img_size, non_max_suppression, scale_coords, set_logging,save_one_box
@@ -50,13 +50,15 @@ buckets.download_file(key_name, file_path)
 # buckets.download_file(key_name, file_path)
 
 
+
+
 def get_img(image):
 
     image_png=image+".jpeg"
     imgsz = 416
     save_dir = Path('result')
     save_crop=True 
-    
+    flag_for_list=0
     # Initialize
     set_logging()
     device = select_device('')
@@ -151,6 +153,7 @@ def get_img(image):
                         flag_for_choice = 0 # 첫번째 choice의 image/text 구분을 하는 순간 1로 변화시킴 
                         flag_for_choice_result = 0 # choice detection 결과 text이면 1, image이면 2
 
+               
                         for path, img, im0s, vid_cap in answerset:
                             answerimg = torch.from_numpy(img).to(device)
                             answerimg = answerimg.half() if half else answerimg.float()  # uint8 to fp16/32
@@ -181,8 +184,32 @@ def get_img(image):
                                         n = (det[:, -1] == c).sum()  # detections per class
                                         s += f"{n} {names2[int(c)]}{'s' * (n > 1)}, "  # add to string
                                     count = 0
+                                    n=len(det)
+                                    tensor=det
+                                    sorted_choice=tensor.numpy()
+                                   
+                                    if (abs(sorted_choice[0][0]-sorted_choice[1][0])<10): # y축으로만 정렬
+                                
+                                        for i in range(n):
+                                            print(i)
+                                            for j in range(0, n - i - 1):
+                                                print(j)
+                                                temp=[]
+                                                if (sorted_choice[j][1] > sorted_choice[j+1][1]):
+                                                
+                                                    temp= sorted_choice[j + 1].copy() # 서로 위치를 변환
+                                            
+                                                    sorted_choice[j + 1] = sorted_choice[j]
+                                                 
+                                                    sorted_choice[j]=temp
+                                                    
+                                
+                                      
+                                    # flag_for_list=1
                                     # Write results
-                                    for *xyxy, conf, cls in reversed(det):
+                                    for *xyxy, conf, cls in (det):
+                                        
+                                       
                                         c = int(cls)  # integer class
                                         label =  f'{names2[c]} {conf:.2f}'
                                         answer_save_path = str(save_dir / 'crops' / 'answer' /'choice'/ f'{count}{p.stem}.jpg')
@@ -224,7 +251,7 @@ def get_img(image):
                                         # 아래 코드는 text일 경우임
                                         if flag_for_choice_result == 1: # choice가 텍스트인 경우            
                                             text = pytesseract.image_to_string(Image.open(choice_result_save_path), lang='kor+eng')
-                                            print(text)
+                                            #print(text)
                                             dict[names[c]].append(text)
 
                                         elif flag_for_choice_result == 2 : # choice가 이미지인 경우
@@ -337,7 +364,7 @@ def get_img(image):
                         # 아래 코드는 text일 경우임
                         if predictions[0] == "text": #텍스트인 경우            
                             text = pytesseract.image_to_string(Image.open(crop_path), lang='kor+eng')
-                            print(text)
+                            #print(text)
                             dict[names[c]].append(text)
 
                         else : #이미지인 경우
