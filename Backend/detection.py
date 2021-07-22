@@ -225,6 +225,8 @@ def get_img(image):
                                         # 아래 코드는 text일 경우임
                                         if flag_for_choice_result == 1: # choice가 텍스트인 경우            
                                             text = pytesseract.image_to_string(Image.open(choice_result_save_path), lang='kor+eng')
+                                            text = text.split("\n")[0]
+                                            text = re.sub(r'[^가-힣a-zA-Zㄱ-ㅎ()0-9.,?![]~%-_/<>\s]:\'\"\+]','', text)
                                             print(text)
                                             dict[names[c]].append(text)
 
@@ -329,9 +331,6 @@ def get_img(image):
                         prediction.setJsonPath("./model_class.json")
                         prediction.loadModel(num_objects=2)
 
-                        # questionset = LoadImages(crop_path, img_size=imgsz)
-                        #names3 = model3.module.names if hasattr(model3, 'module') else model3.names
-
                         predictions, probabilities = prediction.classifyImage(image_input=crop_path, result_count=2)    #predictions[0] : 무조건 퍼센트 높은 아이로 지정됨
                         
                         if probabilities[0] > probabilities[1]:
@@ -340,6 +339,8 @@ def get_img(image):
                         # 아래 코드는 text일 경우임
                         if predictions[0] == "text": #텍스트인 경우            
                             text = pytesseract.image_to_string(Image.open(crop_path), lang='kor+eng')
+                            text = text.split("\n")[0]
+                            text = re.sub(r'[^가-힣a-zA-Zㄱ-ㅎ()0-9.,?![]~%-_/<>\s]:\'\"\+]','', text)
                             print(text)
                             dict[names[c]].append(text)
 
