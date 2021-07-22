@@ -37,9 +37,9 @@ weights2 = 'choice5_bestweight.pt'
 # key_name = 'modelv1.0.pt'   # s3버킷 저장되어있는 이름
 # buckets.download_file(key_name, file_path)
 
-# file_path = 'model_ex-024_acc-1.000000.h5'  # 내 서버에 저장하는 것 이미지 포함 여부 판단 모델
-# key_name = "model_ex-024_acc-1.000000.h5"   # s3버킷 저장되어있는 이름
-# buckets.download_file(key_name, file_path)
+file_path = 'model_ex-024_acc-1.000000.h5'  # 내 서버에 저장하는 것 이미지 포함 여부 판단 모델
+key_name = "model_ex-024_acc-1.000000.h5"   # s3버킷 저장되어있는 이름
+buckets.download_file(key_name, file_path)
 
 # file_path = 'detection_config.json'  
 # key_name = 'detection_config.json'  
