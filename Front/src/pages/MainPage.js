@@ -1,40 +1,40 @@
-import React, { useMemo } from 'react';
-import Header from '../components/Header';
-import Table from '../components/Table';
-import { useState, useEffect } from 'react';
-import Loader from './Loader';
-import axios from 'axios';
-import { USER_SERVER } from '../config';
-import Modal from '../components/Modals/Modal.js';
-import addImg from './imgIcon.png';
-import noLoginImg from './noLogin.PNG';
-import { useHistory } from 'react-router-dom';
-import { EditText } from 'react-edit-text';
+import React, { useMemo } from "react";
+import Header from "../components/Header";
+import Table from "../components/Table";
+import { useState, useEffect } from "react";
+import Loader from "./Loader";
+import axios from "axios";
+import { USER_SERVER } from "../config";
+import Modal from "../components/Modals/Modal.js";
+import addImg from "./imgIcon.png";
+import noLoginImg from "./noLogin.PNG";
+import { useHistory } from "react-router-dom";
+import { EditText } from "react-edit-text";
 
 // 테두리 만드는 css
 const divBorder = {
-  marginBottom: '40px',
-  position: 'relation',
+  marginBottom: "40px",
+  position: "relation",
 };
 
 // hover 관련 image css
 const imgStyle = {
-  width: '300px',
-  marginRight: '10px',
-  display: 'block',
-  backgroundColor: 'white',
+  width: "300px",
+  marginRight: "10px",
+  display: "block",
+  backgroundColor: "white",
 };
 
 // hover 관련 div css
 const divHover = {
-  position: 'absolute',
-  alignItems: 'center',
-  justifyContent: 'center',
-  left: '25%',
-  top: '12%',
-  backgroundColor: '#f2f2f2',
-  borderRadius: '10px',
-  paddingTop: '0',
+  position: "absolute",
+  alignItems: "center",
+  justifyContent: "center",
+  left: "25%",
+  top: "12%",
+  backgroundColor: "#f2f2f2",
+  borderRadius: "10px",
+  paddingTop: "0",
 };
 
 const MainPage = (props) => {
@@ -43,13 +43,14 @@ const MainPage = (props) => {
   const [isHovered, setIsHovered] = useState(false);
   const [HoveredRow, setHoveredRow] = useState();
   const [HoveredColumn, setHoveredColumn] = useState();
+  const [lock, setLock] = useState(false);
   const [toggle, setToggle] = useState(true);
 
   useEffect(() => {
-    if (window.localStorage.getItem('isAuth') === null) {
-      window.localStorage.setItem('isAuth', 'false');
+    if (window.localStorage.getItem("isAuth") === null) {
+      window.localStorage.setItem("isAuth", "false");
     }
-    if (window.localStorage.getItem('isAuth') === 'true') getQuiz();
+    if (window.localStorage.getItem("isAuth") === "true") getQuiz();
   }, [isHovered, toggle]);
 
   const getQuiz = async () => {
@@ -62,7 +63,7 @@ const MainPage = (props) => {
     } catch (error) {
       if (error.response.status === 401) {
         alert(error.response.data.message);
-        window.localStorage.setItem('isAuth', 'false');
+        window.localStorage.setItem("isAuth", "false");
         setToggle(!toggle);
       }
     }
@@ -86,11 +87,11 @@ const MainPage = (props) => {
 
   // 모달 여는 함수
   const openModal = () => {
-    if (window.localStorage.getItem('isAuth') === 'true') {
+    if (window.localStorage.getItem("isAuth") === "true") {
       setModalOpen(true);
       setFileUrl(null);
     } else {
-      alert('로그인을 먼저 해주세요!');
+      alert("로그인을 먼저 해주세요!");
       setModalOpen(false);
     }
   };
@@ -102,25 +103,32 @@ const MainPage = (props) => {
 
   // 바뀌는 value값 저장
   const handleSave = async (quiz, e) => {
-    const tmp = e.name.split(',');
+    const tmp = e.name.split(",");
     const name = tmp[0];
     let idx = 0;
     if (tmp.length === 2) idx = tmp[1];
     const changedValue = await changeQuiz(name, idx, e.value, quiz);
     try {
-      const request = await axios.put(`${USER_SERVER}/api/quizmodify`, changedValue).then(() => {
-        alert('수정되었습니다.');
-        window.location.replace('/');
-      });
+      const request = await axios
+        .put(`${USER_SERVER}/api/quizmodify`, changedValue)
+        .then(() => {
+          alert("수정되었습니다.");
+          window.location.replace("/");
+        });
     } catch {
-      console.log('error');
+      console.log("error");
     }
+    setLock(false);
+  };
+
+  const setLocked = (boolean) => {
+    setLock(boolean);
   };
 
   const changeQuiz = async (name, idx, value, quiz) => {
     let arr = quiz[`${name}`];
     let tmp_arr = [];
-    if (typeof arr === 'object') {
+    if (typeof arr === "object") {
       arr.map((content, i) => {
         if (Number(idx) === i) {
           tmp_arr.push(value);
@@ -142,20 +150,20 @@ const MainPage = (props) => {
       score: quiz.score,
     };
     let tmp_arr2 = [];
-    [1, 2, 3, 4, 5].map((num) => tmp_arr2.push(quiz[`choice${num}`] || ''));
+    [1, 2, 3, 4, 5].map((num) => tmp_arr2.push(quiz[`choice${num}`] || ""));
     quiz_to_return.choices = tmp_arr2;
     return quiz_to_return;
   };
 
   const getUrls = (urls) => {
     const url_arr = [];
-    if (typeof urls === 'object') {
+    if (typeof urls === "object") {
       urls.map((url, i) => {
-        if (url.substring(0, 25) === 'https://summer-program.s3') {
+        if (url.substring(0, 25) === "https://summer-program.s3") {
           url_arr.push(url);
         }
       });
-    } else if (urls.substring(0, 25) === 'https://summer-program.s3') {
+    } else if (urls.substring(0, 25) === "https://summer-program.s3") {
       url_arr.push(urls);
     }
     if (url_arr.length !== 0) {
@@ -173,8 +181,8 @@ const MainPage = (props) => {
   const columns = useMemo(
     () => [
       {
-        accessor: 'qid', //해당 열을 data 객체의 어느 속성을 읽어야 하는지 명시
-        Header: '문항번호', //테이블 헤더에 보여줄 텍스트 명시
+        accessor: "qid", //해당 열을 data 객체의 어느 속성을 읽어야 하는지 명시
+        Header: "번호", //테이블 헤더에 보여줄 텍스트 명시
         Cell: (tableProps) => (
           <EditText
             name="qid"
@@ -185,34 +193,39 @@ const MainPage = (props) => {
         ),
       },
       {
-        accessor: 'title',
-        Header: '문항내용',
+        accessor: "title",
+        Header: "질문",
         Cell: (tableProps) => {
           const urls = getUrls(tableProps.cell.value);
           return (
             <div
               name="title"
               onMouseEnter={() =>
-                setTarget(tableProps.cell.row.index, tableProps.cell.column.Header)
+                lock
+                  ? {}
+                  : setTarget(
+                      tableProps.cell.row.index,
+                      tableProps.cell.column.Header
+                    )
               }
-              onMouseLeave={() => setIsHovered(false)}
-              style={{ cursor: 'pointer' }}
+              onMouseLeave={() => (lock ? {} : setIsHovered(false))}
+              style={{ cursor: "pointer" }}
             >
               {isHovered &
               (HoveredRow === tableProps.cell.row.index) &
               (HoveredColumn === tableProps.cell.column.Header) &
-              (typeof urls === 'object' && urls.length !== 0) ? (
+              (typeof urls === "object" && urls.length !== 0) ? (
                 <div style={divHover}>
                   <header
                     style={{
-                      backgroundColor: '#f2f2f2',
-                      position: 'relative',
-                      borderRadius: '10px',
+                      backgroundColor: "#f2f2f2",
+                      position: "relative",
+                      borderRadius: "10px",
                     }}
                   >
                     <h3>이미지 미리보기</h3>
                   </header>
-                  <main style={{ backgroundColor: 'white', marginTop: '10px' }}>
+                  <main style={{ backgroundColor: "white", marginTop: "10px" }}>
                     {urls?.map((url, i) => (
                       <img alt="이미지" src={url} style={imgStyle} />
                     ))}
@@ -222,15 +235,17 @@ const MainPage = (props) => {
                 <></>
               )}
               {tableProps.cell.value.map((content, i) => {
-                if (content.substring(0, 25) === 'https://summer-program.s3') {
+                if (content.substring(0, 25) === "https://summer-program.s3") {
                   return <EditText readonly="true" defaultValue="img_url" />;
                 }
                 return (
-                  <EditText
-                    name={`title,${i}`}
-                    onSave={(e) => handleSave(tableProps.row.original, e)}
-                    defaultValue={content}
-                  />
+                  <div onClick={async () => await setLocked(true)}>
+                    <EditText
+                      name={`title,${i}`}
+                      onSave={(e) => handleSave(tableProps.row.original, e)}
+                      defaultValue={content}
+                    />
+                  </div>
                 );
               })}
             </div>
@@ -238,18 +253,23 @@ const MainPage = (props) => {
         },
       },
       {
-        accessor: 'script',
-        Header: '참고내용',
+        accessor: "script",
+        Header: "보기",
         Cell: (tableProps) => {
           const urls = getUrls(tableProps.cell.value);
           return (
             <div
-              name="script"
+              title="script"
               onMouseEnter={() =>
-                setTarget(tableProps.cell.row.index, tableProps.cell.column.Header)
+                lock
+                  ? {}
+                  : setTarget(
+                      tableProps.cell.row.index,
+                      tableProps.cell.column.Header
+                    )
               }
-              onMouseLeave={() => setIsHovered(false)}
-              style={{ cursor: 'pointer' }}
+              onMouseLeave={() => (lock ? {} : setIsHovered(false))}
+              style={{ cursor: "pointer" }}
             >
               {isHovered &
               (HoveredRow === tableProps.cell.row.index) &
@@ -257,14 +277,14 @@ const MainPage = (props) => {
                 <div style={divHover}>
                   <header
                     style={{
-                      backgroundColor: '#f2f2f2',
-                      position: 'relative',
-                      borderRadius: '10px',
+                      backgroundColor: "#f2f2f2",
+                      position: "relative",
+                      borderRadius: "10px",
                     }}
                   >
                     <h3>이미지 미리보기</h3>
                   </header>
-                  <main style={{ backgroundColor: 'white', marginTop: '10px' }}>
+                  <main style={{ backgroundColor: "white", marginTop: "10px" }}>
                     {urls?.map((url, i) => (
                       <img alt="이미지" src={url} style={imgStyle} />
                     ))}
@@ -274,15 +294,17 @@ const MainPage = (props) => {
                 <></>
               )}
               {tableProps.cell.value.map((content, i) => {
-                if (content.substring(0, 25) === 'https://summer-program.s3') {
+                if (content.substring(0, 25) === "https://summer-program.s3") {
                   return <EditText readonly="true" defaultValue="img_url" />;
                 }
                 return (
-                  <EditText
-                    name={`script,${i}`}
-                    onSave={(e) => handleSave(tableProps.row.original, e)}
-                    defaultValue={content}
-                  />
+                  <div onClick={() => setLock(true)}>
+                    <EditText
+                      name={`script,${i}`}
+                      onSave={(e) => handleSave(tableProps.row.original, e)}
+                      defaultValue={content}
+                    />
+                  </div>
                 );
               })}
             </div>
@@ -290,17 +312,25 @@ const MainPage = (props) => {
         },
       },
       {
-        accessor: 'choice1',
-        Header: '선택01',
+        accessor: "choice1",
+        Header: "선택01",
         Cell: (tableProps) => {
-          if (String(tableProps.cell.value).substring(0, 25) === 'https://summer-program.s3') {
+          if (
+            String(tableProps.cell.value).substring(0, 25) ===
+            "https://summer-program.s3"
+          ) {
             return (
               <div
                 onMouseEnter={() =>
-                  setTarget(tableProps.cell.row.index, tableProps.cell.column.Header)
+                  lock
+                    ? {}
+                    : setTarget(
+                        tableProps.cell.row.index,
+                        tableProps.cell.column.Header
+                      )
                 }
-                onMouseLeave={() => setIsHovered(false)}
-                style={{ cursor: 'pointer' }}
+                onMouseLeave={() => (lock ? {} : setIsHovered(false))}
+                style={{ cursor: "pointer" }}
               >
                 {isHovered &
                 (HoveredRow === tableProps.cell.row.index) &
@@ -308,15 +338,21 @@ const MainPage = (props) => {
                   <div style={divHover}>
                     <header
                       style={{
-                        backgroundColor: '#f2f2f2',
-                        position: 'relative',
-                        borderRadius: '10px',
+                        backgroundColor: "#f2f2f2",
+                        position: "relative",
+                        borderRadius: "10px",
                       }}
                     >
                       <h3>이미지 미리보기</h3>
                     </header>
-                    <main style={{ backgroundColor: 'white', marginTop: '10px' }}>
-                      <img alt="이미지" src={tableProps.cell.value} style={imgStyle} />
+                    <main
+                      style={{ backgroundColor: "white", marginTop: "10px" }}
+                    >
+                      <img
+                        alt="이미지"
+                        src={tableProps.cell.value}
+                        style={imgStyle}
+                      />
                     </main>
                   </div>
                 ) : (
@@ -327,26 +363,47 @@ const MainPage = (props) => {
             );
           }
           return (
-            <EditText
-              name="choice1"
-              onSave={(e) => handleSave(tableProps.row.original, e)}
-              defaultValue={tableProps.cell.value}
-            />
+            <div
+              onClick={() => setLock(true)}
+              onMouseEnter={() =>
+                lock
+                  ? {}
+                  : setTarget(
+                      tableProps.cell.row.index,
+                      tableProps.cell.column.Header
+                    )
+              }
+              onMouseLeave={() => (lock ? {} : setIsHovered(false))}
+            >
+              <EditText
+                name="choice1"
+                onSave={(e) => handleSave(tableProps.row.original, e)}
+                defaultValue={tableProps.cell.value}
+              />
+            </div>
           );
         },
       },
       {
-        accessor: 'choice2',
-        Header: '선택02',
+        accessor: "choice2",
+        Header: "선택02",
         Cell: (tableProps) => {
-          if (String(tableProps.cell.value).substring(0, 25) === 'https://summer-program.s3') {
+          if (
+            String(tableProps.cell.value).substring(0, 25) ===
+            "https://summer-program.s3"
+          ) {
             return (
               <div
                 onMouseEnter={() =>
-                  setTarget(tableProps.cell.row.index, tableProps.cell.column.Header)
+                  lock
+                    ? {}
+                    : setTarget(
+                        tableProps.cell.row.index,
+                        tableProps.cell.column.Header
+                      )
                 }
-                onMouseLeave={() => setIsHovered(false)}
-                style={{ cursor: 'pointer' }}
+                onMouseLeave={() => (lock ? {} : setIsHovered(false))}
+                style={{ cursor: "pointer" }}
               >
                 {isHovered &
                 (HoveredRow === tableProps.cell.row.index) &
@@ -354,15 +411,21 @@ const MainPage = (props) => {
                   <div style={divHover}>
                     <header
                       style={{
-                        backgroundColor: '#f2f2f2',
-                        position: 'relative',
-                        borderRadius: '10px',
+                        backgroundColor: "#f2f2f2",
+                        position: "relative",
+                        borderRadius: "10px",
                       }}
                     >
                       <h3>이미지 미리보기</h3>
                     </header>
-                    <main style={{ backgroundColor: 'white', marginTop: '10px' }}>
-                      <img alt="이미지" src={tableProps.cell.value} style={imgStyle} />
+                    <main
+                      style={{ backgroundColor: "white", marginTop: "10px" }}
+                    >
+                      <img
+                        alt="이미지"
+                        src={tableProps.cell.value}
+                        style={imgStyle}
+                      />
                     </main>
                   </div>
                 ) : (
@@ -373,26 +436,36 @@ const MainPage = (props) => {
             );
           }
           return (
-            <EditText
-              name="choice2"
-              onSave={(e) => handleSave(tableProps.row.original, e)}
-              defaultValue={tableProps.cell.value}
-            />
+            <div onClick={() => setLock(true)}>
+              <EditText
+                name="choice2"
+                onSave={(e) => handleSave(tableProps.row.original, e)}
+                defaultValue={tableProps.cell.value}
+              />
+            </div>
           );
         },
       },
       {
-        accessor: 'choice3',
-        Header: '선택03',
+        accessor: "choice3",
+        Header: "선택03",
         Cell: (tableProps) => {
-          if (String(tableProps.cell.value).substring(0, 25) === 'https://summer-program.s3') {
+          if (
+            String(tableProps.cell.value).substring(0, 25) ===
+            "https://summer-program.s3"
+          ) {
             return (
               <div
                 onMouseEnter={() =>
-                  setTarget(tableProps.cell.row.index, tableProps.cell.column.Header)
+                  lock
+                    ? {}
+                    : setTarget(
+                        tableProps.cell.row.index,
+                        tableProps.cell.column.Header
+                      )
                 }
-                onMouseLeave={() => setIsHovered(false)}
-                style={{ cursor: 'pointer' }}
+                onMouseLeave={() => (lock ? {} : setIsHovered(false))}
+                style={{ cursor: "pointer" }}
               >
                 {isHovered &
                 (HoveredRow === tableProps.cell.row.index) &
@@ -400,15 +473,21 @@ const MainPage = (props) => {
                   <div style={divHover}>
                     <header
                       style={{
-                        backgroundColor: '#f2f2f2',
-                        position: 'relative',
-                        borderRadius: '10px',
+                        backgroundColor: "#f2f2f2",
+                        position: "relative",
+                        borderRadius: "10px",
                       }}
                     >
                       <h3>이미지 미리보기</h3>
                     </header>
-                    <main style={{ backgroundColor: 'white', marginTop: '10px' }}>
-                      <img alt="이미지" src={tableProps.cell.value} style={imgStyle} />
+                    <main
+                      style={{ backgroundColor: "white", marginTop: "10px" }}
+                    >
+                      <img
+                        alt="이미지"
+                        src={tableProps.cell.value}
+                        style={imgStyle}
+                      />
                     </main>
                   </div>
                 ) : (
@@ -419,26 +498,36 @@ const MainPage = (props) => {
             );
           }
           return (
-            <EditText
-              name="choice3"
-              onSave={(e) => handleSave(tableProps.row.original, e)}
-              defaultValue={tableProps.cell.value}
-            />
+            <div onClick={() => setLock(true)}>
+              <EditText
+                name="choice3"
+                onSave={(e) => handleSave(tableProps.row.original, e)}
+                defaultValue={tableProps.cell.value}
+              />
+            </div>
           );
         },
       },
       {
-        accessor: 'choice4',
-        Header: '선택04',
+        accessor: "choice4",
+        Header: "선택04",
         Cell: (tableProps) => {
-          if (String(tableProps.cell.value).substring(0, 25) === 'https://summer-program.s3') {
+          if (
+            String(tableProps.cell.value).substring(0, 25) ===
+            "https://summer-program.s3"
+          ) {
             return (
               <div
                 onMouseEnter={() =>
-                  setTarget(tableProps.cell.row.index, tableProps.cell.column.Header)
+                  lock
+                    ? {}
+                    : setTarget(
+                        tableProps.cell.row.index,
+                        tableProps.cell.column.Header
+                      )
                 }
-                onMouseLeave={() => setIsHovered(false)}
-                style={{ cursor: 'pointer' }}
+                onMouseLeave={() => (lock ? {} : setIsHovered(false))}
+                style={{ cursor: "pointer" }}
               >
                 {isHovered &
                 (HoveredRow === tableProps.cell.row.index) &
@@ -446,15 +535,21 @@ const MainPage = (props) => {
                   <div style={divHover}>
                     <header
                       style={{
-                        backgroundColor: '#f2f2f2',
-                        position: 'relative',
-                        borderRadius: '10px',
+                        backgroundColor: "#f2f2f2",
+                        position: "relative",
+                        borderRadius: "10px",
                       }}
                     >
                       <h3>이미지 미리보기</h3>
                     </header>
-                    <main style={{ backgroundColor: 'white', marginTop: '10px' }}>
-                      <img alt="이미지" src={tableProps.cell.value} style={imgStyle} />
+                    <main
+                      style={{ backgroundColor: "white", marginTop: "10px" }}
+                    >
+                      <img
+                        alt="이미지"
+                        src={tableProps.cell.value}
+                        style={imgStyle}
+                      />
                     </main>
                   </div>
                 ) : (
@@ -465,26 +560,36 @@ const MainPage = (props) => {
             );
           }
           return (
-            <EditText
-              name="choice4"
-              onSave={(e) => handleSave(tableProps.row.original, e)}
-              defaultValue={tableProps.cell.value}
-            />
+            <div onClick={() => setLock(true)}>
+              <EditText
+                name="choice4"
+                onSave={(e) => handleSave(tableProps.row.original, e)}
+                defaultValue={tableProps.cell.value}
+              />
+            </div>
           );
         },
       },
       {
-        accessor: 'choice5',
-        Header: '선택05',
+        accessor: "choice5",
+        Header: "선택05",
         Cell: (tableProps) => {
-          if (String(tableProps.cell.value).substring(0, 25) === 'https://summer-program.s3') {
+          if (
+            String(tableProps.cell.value).substring(0, 25) ===
+            "https://summer-program.s3"
+          ) {
             return (
               <div
                 onMouseEnter={() =>
-                  setTarget(tableProps.cell.row.index, tableProps.cell.column.Header)
+                  lock
+                    ? {}
+                    : setTarget(
+                        tableProps.cell.row.index,
+                        tableProps.cell.column.Header
+                      )
                 }
-                onMouseLeave={() => setIsHovered(false)}
-                style={{ cursor: 'pointer' }}
+                onMouseLeave={() => (lock ? {} : setIsHovered(false))}
+                style={{ cursor: "pointer" }}
               >
                 {isHovered &
                 (HoveredRow === tableProps.cell.row.index) &
@@ -492,15 +597,21 @@ const MainPage = (props) => {
                   <div style={divHover}>
                     <header
                       style={{
-                        backgroundColor: '#f2f2f2',
-                        position: 'relative',
-                        borderRadius: '10px',
+                        backgroundColor: "#f2f2f2",
+                        position: "relative",
+                        borderRadius: "10px",
                       }}
                     >
                       <h3>이미지 미리보기</h3>
                     </header>
-                    <main style={{ backgroundColor: 'white', marginTop: '10px' }}>
-                      <img alt="이미지" src={tableProps.cell.value} style={imgStyle} />
+                    <main
+                      style={{ backgroundColor: "white", marginTop: "10px" }}
+                    >
+                      <img
+                        alt="이미지"
+                        src={tableProps.cell.value}
+                        style={imgStyle}
+                      />
                     </main>
                   </div>
                 ) : (
@@ -511,51 +622,57 @@ const MainPage = (props) => {
             );
           }
           return (
-            <EditText
-              name="choice5"
-              onSave={(e) => handleSave(tableProps.row.original, e)}
-              defaultValue={tableProps.cell.value}
-            />
+            <div onClick={() => setLock(true)}>
+              <EditText
+                name="choice5"
+                onSave={(e) => handleSave(tableProps.row.original, e)}
+                defaultValue={tableProps.cell.value}
+              />
+            </div>
           );
         },
       },
       {
-        accessor: 'answer',
-        Header: '정답',
+        accessor: "answer",
+        Header: "정답",
         Cell: (tableProps) => (
-          <EditText
-            name="answer"
-            onSave={(e) => handleSave(tableProps.row.original, e)}
-            defaultValue={tableProps.cell.value}
-          />
+          <div onClick={() => setLock(true)}>
+            <EditText
+              name="answer"
+              onSave={(e) => handleSave(tableProps.row.original, e)}
+              defaultValue={tableProps.cell.value}
+            />
+          </div>
         ),
       },
       {
-        accessor: 'score',
-        Header: '점수',
+        accessor: "score",
+        Header: "점수",
         Cell: (tableProps) => (
-          <EditText
-            name="score"
-            onSave={(e) => handleSave(tableProps.row.original, e)}
-            defaultValue={tableProps.cell.value}
-          />
+          <div onClick={() => setLock(true)}>
+            <EditText
+              name="score"
+              onSave={(e) => handleSave(tableProps.row.original, e)}
+              defaultValue={tableProps.cell.value}
+            />
+          </div>
         ),
       },
       {
-        Header: '삭제 ',
-        id: 'delete',
-        accessor: (str) => 'delete',
+        Header: "삭제 ",
+        id: "delete",
+        accessor: (str) => "delete",
 
         Cell: (tableProps) => {
           return (
             <span
               style={{
-                cursor: 'pointer',
-                color: 'blue',
-                textDecoration: 'underline',
+                cursor: "pointer",
+                color: "blue",
+                textDecoration: "underline",
               }}
               onClick={() => {
-                if (window.confirm('정말 삭제하시겠습니까?') === true) {
+                if (window.confirm("정말 삭제하시겠습니까?") === true) {
                   //확인
                   deleteQuiz(tableProps.row.original._id);
                 } else {
@@ -570,14 +687,14 @@ const MainPage = (props) => {
         },
       },
     ],
-    [quizzes],
+    [quizzes]
   );
 
   const data = useMemo(() => {
     const showed_data = quizzes?.map((quiz) => {
       let data_return = {
         _id: quiz._id,
-        qid: '0001',
+        qid: "0001",
         title: quiz.title,
         answer: quiz.answer,
         script: quiz.script,
@@ -598,11 +715,11 @@ const MainPage = (props) => {
   const sendImage = () => {
     setLoading(true);
     const formData = new FormData();
-    formData.append('image', fileImg);
+    formData.append("image", fileImg);
     console.log(formData);
     if (fileImg === null) {
       //이미지 선택 안하고 업로드 버튼 눌렀을 때 버그 수정
-      alert('이미지가 선택되지 않았습니다');
+      alert("이미지가 선택되지 않았습니다");
     } else {
       try {
         const request = axios
@@ -614,8 +731,8 @@ const MainPage = (props) => {
               setLoading(false);
               //성공적으로 이미지 업로드 시 replace
               console.log(response);
-              window.location.replace('/');
-              alert('문제가 등록되었습니다.');
+              window.location.replace("/");
+              alert("문제가 등록되었습니다.");
             }
           });
       } catch (error) {
@@ -631,28 +748,29 @@ const MainPage = (props) => {
     try {
       const request = await axios
         .delete(`${USER_SERVER}/api/quizdelete`, { data: deletedquiz })
-        .then((response) => window.location.replace('/'));
-      alert('문제가 삭제되었습니다.');
+        .then((response) => window.location.replace("/"));
+      alert("문제가 삭제되었습니다.");
     } catch {
-      console.log('error');
+      console.log("error");
     }
   };
 
   return (
     <div
       style={{
-        backgroundColor: '#f0f8ff',
-        width: '100vw',
-        height: '88vh',
-        marginTop: '80px',
+        backgroundColor: "#f0f8ff",
+        width: "100vw",
+        height: "88vh",
+        marginTop: "80px",
       }}
+      onClick={() => setLock(false)}
     >
       <div className="nav">
         <Header />
       </div>
-      {window.localStorage.getItem('isAuth') === 'true' ? (
+      {window.localStorage.getItem("isAuth") === "true" ? (
         loading ? (
-          <Loader type="spin" color="#ffffff" message={'문제 등록 중입니다.'} />
+          <Loader type="spin" color="#ffffff" message={"문제 등록 중입니다."} />
         ) : (
           <div>
             <div className="content">
@@ -661,23 +779,23 @@ const MainPage = (props) => {
                 alt="imgadd"
                 onClick={openModal}
                 style={{
-                  width: '100px',
-                  height: '100px',
-                  cursor: 'pointer',
-                  marginLeft: '25px',
-                  padding: '0',
-                  float: 'left',
+                  width: "100px",
+                  height: "100px",
+                  cursor: "pointer",
+                  marginLeft: "25px",
+                  padding: "0",
+                  float: "left",
                 }}
               />
               <Modal open={modalOpen} close={closeModal}>
                 <div style={divBorder}>
                   <img
                     style={{
-                      objectFit: 'fill',
-                      width: '150px',
-                      height: '200px',
-                      border: 'solid 1px black',
-                      backgroundColor: '#f2f2f2',
+                      objectFit: "fill",
+                      width: "150px",
+                      height: "200px",
+                      border: "solid 1px black",
+                      backgroundColor: "#f2f2f2",
                     }}
                     src={fileUrl}
                     alt={fileUrl}
@@ -690,7 +808,10 @@ const MainPage = (props) => {
                     name="question_img"
                     onChange={processImage}
                   ></input>
-                  <button style={{ border: 'solid 1px black' }} onClick={sendImage}>
+                  <button
+                    style={{ border: "solid 1px black" }}
+                    onClick={sendImage}
+                  >
                     전송
                   </button>
                 </div>
@@ -700,43 +821,46 @@ const MainPage = (props) => {
               className="table"
               align="center"
               style={{
-                marginRight: 'auto',
-                width: '85vw',
-                maxHeight: '70vh',
-                overflow: 'auto',
-                border: 'solid 2px black',
-                marginLeft: 'auto',
-                float: 'left',
-                marginTop: '60px',
-                position: 'auto',
+                marginRight: "auto",
+                width: "85vw",
+                maxHeight: "70vh",
+                overflow: "auto",
+                border: "solid 2px black",
+                marginLeft: "auto",
+                float: "left",
+                marginTop: "60px",
+                position: "auto",
                 //backgroundColor: 'white',
               }}
             >
               <Table columns={columns} data={data} />
             </div>
-            <div className="confirm" style={{ clear: 'both', textAlign: 'center' }}></div>
+            <div
+              className="confirm"
+              style={{ clear: "both", textAlign: "center" }}
+            ></div>
             <footer
               style={{
-                backgroundColor: 'black',
-                color: 'white',
-                height: '3vh',
-                width: '100%',
-                position: 'fixed',
-                bottom: '0',
+                backgroundColor: "black",
+                color: "white",
+                height: "3vh",
+                width: "100%",
+                position: "fixed",
+                bottom: "0",
               }}
             >
               <div>
-                아이콘 제작자:{' '}
+                아이콘 제작자:{" "}
                 <a
-                  style={{ textDecoration: 'none', color: 'white' }}
+                  style={{ textDecoration: "none", color: "white" }}
                   href="https://www.flaticon.com/kr/authors/pixel-perfect"
                   title="Pixel perfect"
                 >
                   Pixel perfect
-                </a>{' '}
-                from{' '}
+                </a>{" "}
+                from{" "}
                 <a
-                  style={{ textDecoration: 'none', color: 'white' }}
+                  style={{ textDecoration: "none", color: "white" }}
                   href="https://www.flaticon.com/kr/"
                   title="Flaticon"
                 >
@@ -752,38 +876,38 @@ const MainPage = (props) => {
             src={noLoginImg}
             alt="noLogin state"
             onClick={() => {
-              alert('로그인을 해주세요');
+              alert("로그인을 해주세요");
             }}
             style={{
-              width: '93vw',
-              marginLeft: 'auto',
-              marginRight: 'auto',
-              paddingLeft: '30px',
-              marginTop: '30px',
+              width: "93vw",
+              marginLeft: "auto",
+              marginRight: "auto",
+              paddingLeft: "30px",
+              marginTop: "30px",
             }}
           />
           <footer
             style={{
-              backgroundColor: 'black',
-              color: 'white',
-              height: '3vh',
-              width: '100%',
-              position: 'fixed',
-              bottom: '0',
+              backgroundColor: "black",
+              color: "white",
+              height: "3vh",
+              width: "100%",
+              position: "fixed",
+              bottom: "0",
             }}
           >
             <div>
-              아이콘 제작자:{' '}
+              아이콘 제작자:{" "}
               <a
-                style={{ textDecoration: 'none', color: 'white' }}
+                style={{ textDecoration: "none", color: "white" }}
                 href="https://www.flaticon.com/kr/authors/pixel-perfect"
                 title="Pixel perfect"
               >
                 Pixel perfect
-              </a>{' '}
-              from{' '}
+              </a>{" "}
+              from{" "}
               <a
-                style={{ textDecoration: 'none', color: 'white' }}
+                style={{ textDecoration: "none", color: "white" }}
                 href="https://www.flaticon.com/kr/"
                 title="Flaticon"
               >
