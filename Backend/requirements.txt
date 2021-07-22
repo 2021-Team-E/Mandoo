@@ -46,7 +46,7 @@ torchvision>=0.8.1
 tqdm>=4.41.0
 cv
 # logging -------------------------------------
-tensorboard>=2.4.1
+#tensorboard>=2.4.1
 # wandb
 
 # plotting ------------------------------------
@@ -63,4 +63,6 @@ pandas
 # pycocotools>=2.0  # COCO mAP
 # albumentations>=1.0.3
 thop  # FLOPs computation
-re
+
+#KAKAO OCR
+requests

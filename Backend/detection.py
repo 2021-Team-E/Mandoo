@@ -1,8 +1,8 @@
-import pytesseract 
+#import pytesseract 
 from PIL import Image
 import os
 import boto3
-from s3 import AWS_SECRET_KEY, AWS_ACCESS_KEY, BUCKET_NAME
+from s3 import AWS_SECRET_KEY, AWS_ACCESS_KEY, BUCKET_NAME, APPKEY
 import datetime
 import re
 import shutil
@@ -22,7 +22,9 @@ from utils.general import check_img_size, non_max_suppression, scale_coords, set
 from utils.plots import colors, plot_one_box
 from utils.torch_utils import select_device
 
-pytesseract.pytesseract.tesseract_cmd="C:\\Program Files\\Tesseract-OCR\\tesseract.exe"
+from kakaoOcr import main
+
+#pytesseract.pytesseract.tesseract_cmd="C:\\Program Files\\Tesseract-OCR\\tesseract.exe"
 #pytesseract.pytesseract.tesseract_cmd="/usr/bin/tesseract"    #서버 환경에서의 경로
 s3 = boto3.client('s3', aws_access_key_id = AWS_ACCESS_KEY, aws_secret_access_key = AWS_SECRET_KEY)
 resource = boto3.resource('s3', aws_access_key_id = AWS_ACCESS_KEY, aws_secret_access_key = AWS_SECRET_KEY)
@@ -37,9 +39,9 @@ weights2 = 'choice5_bestweight.pt'
 # key_name = 'modelv1.0.pt'   # s3버킷 저장되어있는 이름
 # buckets.download_file(key_name, file_path)
 
-file_path = 'model_ex-024_acc-1.000000.h5'  # 내 서버에 저장하는 것 이미지 포함 여부 판단 모델
-key_name = "model_ex-024_acc-1.000000.h5"   # s3버킷 저장되어있는 이름
-buckets.download_file(key_name, file_path)
+# file_path = 'model_ex-024_acc-1.000000.h5'  # 내 서버에 저장하는 것 이미지 포함 여부 판단 모델
+# key_name = "model_ex-024_acc-1.000000.h5"   # s3버킷 저장되어있는 이름
+# buckets.download_file(key_name, file_path)
 
 # file_path = 'detection_config.json'  
 # key_name = 'detection_config.json'  
@@ -192,52 +194,33 @@ def get_img(image):
                                         count = count +1
                                         if save_crop:
                                             save_one_box(xyxy, imc2, file=answer_save_path, BGR=True)
-                                    det2 = det    
-                                    ###이미지/텍스트 분류 모델 들어가야함 --> 첫 choice만 detect하도록
+                                    # det2 = det    
+                                    # ###이미지/텍스트 분류 모델 들어가야함 --> 첫 choice만 detect하도록
                                         
-                                    prediction = CustomImageClassification()
-                                    prediction.setModelTypeAsInceptionV3()
+                                    # prediction = CustomImageClassification()
+                                    # prediction.setModelTypeAsInceptionV3()
                                     
-                                    prediction.setModelPath('./model_ex-024_acc-1.000000.h5')
-                                    prediction.setJsonPath("./model_class.json")
-                                    prediction.loadModel(num_objects=2)
+                                    # prediction.setModelPath('./model_ex-024_acc-1.000000.h5')
+                                    # prediction.setJsonPath("./model_class.json")
+                                    # prediction.loadModel(num_objects=2)
 
-                                    # questionset = LoadImages(crop_path, img_size=imgsz)
-                                    #names3 = model3.module.names if hasattr(model3, 'module') else model3.names
+                                    # # questionset = LoadImages(crop_path, img_size=imgsz)
+                                    # #names3 = model3.module.names if hasattr(model3, 'module') else model3.names
 
-                                    predictions, probabilities = prediction.classifyImage(image_input=crop_path, result_count=2)    #predictions[0] : 무조건 퍼센트 높은 아이로 지정됨
+                                    # predictions, probabilities = prediction.classifyImage(image_input=crop_path, result_count=2)    #predictions[0] : 무조건 퍼센트 높은 아이로 지정됨
                                     
-                                    if probabilities[0] > probabilities[1]:
-                                        print("This is a(n) " + predictions[0])
+                                    # if probabilities[0] > probabilities[1]:
+                                    #     print("This is a(n) " + predictions[0])
 
-                                    # 아래 코드는 text일 경우임
-                                    if predictions[0] == "text": #텍스트인 경우            
-                                        flag_for_choice_result = 1
+                                    # # 아래 코드는 text일 경우임
+                                    # if predictions[0] == "text": #텍스트인 경우            
+                                    #     flag_for_choice_result = 1
 
-                                    else : #이미지인 경우
-                                        flag_for_choice_result = 2
+                                    # else : #이미지인 경우
+                                    #     flag_for_choice_result = 2
 
                                             
-                                    for i in range (0,len(det2)):
-
-                                        choice_result_save_path=str(save_dir / 'crops' / 'answer' /'choice'/ f'{i}{p.stem}.jpg')
-                                       
-                                        # 아래 코드는 text일 경우임
-                                        if flag_for_choice_result == 1: # choice가 텍스트인 경우            
-                                            text = pytesseract.image_to_string(Image.open(choice_result_save_path), lang='kor+eng')
-                                            text = text.split("\n")[0]
-                                            text = re.sub(r'[^가-힣a-zA-Zㄱ-ㅎ()0-9.,?![]~%-_/<>\s]:\'\"\+]','', text)
-                                            print(text)
-                                            dict[names[c]].append(text)
-
-                                        elif flag_for_choice_result == 2 : # choice가 이미지인 경우
-                                            imagefilename ="result/"+ image + "_" + "answer" + "_"+ str(i) + "_" + str(datetime.datetime.now()).replace("\\","/").replace(" ","").replace(":","")+".jpeg"
-                                            imagefilename.replace(" ","")
-                                            imagetoupload = open( choice_result_save_path , "rb")
-                                            s3.put_object(Body=imagetoupload, Bucket=BUCKET_NAME, Key=imagefilename, ContentType="image/jpeg")
-                                            img_url = "https://summer-program.s3.ap-northeast-2.amazonaws.com/"+imagefilename
-                                            dict[names[c]].append(img_url)    
-                                    
+                                    #
                                     
                                     #image text 분류 yolov5버전
                                     #det2 = det    
@@ -320,7 +303,10 @@ def get_img(image):
                                     #         s3.put_object(Body=imagetoupload, Bucket=BUCKET_NAME, Key=imagefilename, ContentType="image/jpeg")
                                     #         img_url = "https://summer-program.s3.ap-northeast-2.amazonaws.com/"+imagefilename
                                     #         dict[names[c]].append(img_url)                  
-        
+                                        text = main(answer_save_path, APPKEY)
+                                        text = re.sub(r'[^가-힣a-zA-Zㄱ-ㅎ()0-9.,?![]~%-_/<>\s]:\'\"\+]','', text)
+                                        print(text)
+                                        dict[names[c]].append(text)
 
                     elif names[c] == "question":
 
@@ -338,10 +324,9 @@ def get_img(image):
 
                         # 아래 코드는 text일 경우임
                         if predictions[0] == "text": #텍스트인 경우            
-                            text = pytesseract.image_to_string(Image.open(crop_path), lang='kor+eng')
-                            text = text.split("\n")[0]
+                            #text = pytesseract.image_to_string(Image.open(crop_path), lang='kor+eng')
+                            text = main(crop_path, APPKEY)
                             text = re.sub(r'[^가-힣a-zA-Zㄱ-ㅎ()0-9.,?![]~%-_/<>\s]:\'\"\+]','', text)
-                            print(text)
                             dict[names[c]].append(text)
 
                         else : #이미지인 경우
