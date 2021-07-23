@@ -10,6 +10,7 @@ import addImg from "./imgIcon.png";
 import noLoginImg from "./noLogin.PNG";
 import { useHistory } from "react-router-dom";
 import { EditText } from "react-edit-text";
+import TableCell from "../components/TableCell";
 
 // 테두리 만드는 css
 const divBorder = {
@@ -61,11 +62,11 @@ const MainPage = (props) => {
         setQuizzes(response.data.quiz_list);
       }
     } catch (error) {
-      if (error.response.status === 401) {
-        alert(error.response.data.message);
-        window.localStorage.setItem("isAuth", "false");
-        setToggle(!toggle);
-      }
+      // if (error.response.status === 401) {
+      //   alert(error.response.data.message);
+      //   window.localStorage.setItem("isAuth", "false");
+      //   setToggle(!toggle);
+      // }
     }
   };
 
@@ -177,7 +178,6 @@ const MainPage = (props) => {
     () => [
       {
         accessor: "qid", //해당 열을 data 객체의 어느 속성을 읽어야 하는지 명시
-
         Header: "번호", //테이블 헤더에 보여줄 텍스트 명시
         Cell: (tableProps) => (
           <EditText
@@ -194,59 +194,18 @@ const MainPage = (props) => {
         Cell: (tableProps) => {
           const urls = getUrls(tableProps.cell.value);
           return (
-            <div
-              name="title"
-              onMouseEnter={() =>
-                document.activeElement.type === "text"
-                  ? {}
-                  : setTarget(
-                      tableProps.cell.row.index,
-                      tableProps.cell.column.Header
-                    )
-              }
-              onMouseLeave={() =>
-                document.activeElement.type === "text"
-                  ? {}
-                  : setIsHovered(false)
-              }
-              style={{ cursor: "pointer" }}
-            >
-              {isHovered &
-              (HoveredRow === tableProps.cell.row.index) &
-              (HoveredColumn === tableProps.cell.column.Header) &
-              (typeof urls === "object" && urls.length !== 0) ? (
-                <div style={divHover}>
-                  <header
-                    style={{
-                      backgroundColor: "#f2f2f2",
-                      position: "relative",
-                      borderRadius: "10px",
-                    }}
-                  >
-                    <h3>이미지 미리보기</h3>
-                  </header>
-                  <main style={{ backgroundColor: "white", marginTop: "10px" }}>
-                    {urls?.map((url, i) => (
-                      <img alt="이미지" src={url} style={imgStyle} />
-                    ))}
-                  </main>
-                </div>
-              ) : (
-                <></>
-              )}
-              {tableProps.cell.value.map((content, i) => {
-                if (content.substring(0, 25) === "https://summer-program.s3") {
-                  return <EditText readonly="true" defaultValue="img_url" />;
-                }
-                return (
-                  <EditText
-                    name={`title,${i}`}
-                    onSave={(e) => handleSave(tableProps.row.original, e)}
-                    defaultValue={content}
-                  />
-                );
-              })}
-            </div>
+            <TableCell
+              title="title"
+              isHovered={isHovered}
+              HoveredRow={HoveredRow}
+              HoveredColumn={HoveredColumn}
+              setIsHovered={setIsHovered}
+              setHoveredRow={setHoveredRow}
+              setTarget={setTarget}
+              tableProps={tableProps}
+              urls={urls}
+              handleSave={handleSave}
+            />
           );
         },
       },
@@ -256,58 +215,17 @@ const MainPage = (props) => {
         Cell: (tableProps) => {
           const urls = getUrls(tableProps.cell.value);
           return (
-            <div
+            <TableCell
               title="script"
-              onMouseEnter={() =>
-                document.activeElement.type === "text"
-                  ? console.log(document.activeElement.type)
-                  : setTarget(
-                      tableProps.cell.row.index,
-                      tableProps.cell.column.Header
-                    )
-              }
-              onMouseLeave={() =>
-                document.activeElement.type === "text"
-                  ? {}
-                  : setIsHovered(false)
-              }
-              style={{ cursor: "pointer" }}
-            >
-              {isHovered &
-              (HoveredRow === tableProps.cell.row.index) &
-              (HoveredColumn === tableProps.cell.column.Header) ? (
-                <div style={divHover}>
-                  <header
-                    style={{
-                      backgroundColor: "#f2f2f2",
-                      position: "relative",
-                      borderRadius: "10px",
-                    }}
-                  >
-                    <h3>이미지 미리보기</h3>
-                  </header>
-                  <main style={{ backgroundColor: "white", marginTop: "10px" }}>
-                    {urls?.map((url, i) => (
-                      <img alt="이미지" src={url} style={imgStyle} />
-                    ))}
-                  </main>
-                </div>
-              ) : (
-                <></>
-              )}
-              {tableProps.cell.value.map((content, i) => {
-                if (content.substring(0, 25) === "https://summer-program.s3") {
-                  return <EditText readonly="true" defaultValue="img_url" />;
-                }
-                return (
-                  <EditText
-                    name={`script,${i}`}
-                    onSave={(e) => handleSave(tableProps.row.original, e)}
-                    defaultValue={content}
-                  />
-                );
-              })}
-            </div>
+              isHovered={isHovered}
+              HoveredRow={HoveredRow}
+              HoveredColumn={HoveredColumn}
+              setIsHovered={setIsHovered}
+              setTarget={setTarget}
+              tableProps={tableProps}
+              urls={urls}
+              handleSave={handleSave}
+            />
           );
         },
       },
@@ -315,79 +233,19 @@ const MainPage = (props) => {
         accessor: "choice1",
         Header: "선택01",
         Cell: (tableProps) => {
-          if (
-            String(tableProps.cell.value).substring(0, 25) ===
-            "https://summer-program.s3"
-          ) {
-            return (
-              <div
-                onMouseEnter={() =>
-                  document.activeElement.type === "text"
-                    ? {}
-                    : setTarget(
-                        tableProps.cell.row.index,
-                        tableProps.cell.column.Header
-                      )
-                }
-                onMouseLeave={() =>
-                  document.activeElement.type === "text"
-                    ? {}
-                    : setIsHovered(false)
-                }
-                style={{ cursor: "pointer" }}
-              >
-                {isHovered &
-                (HoveredRow === tableProps.cell.row.index) &
-                (HoveredColumn === tableProps.cell.column.Header) ? (
-                  <div style={divHover}>
-                    <header
-                      style={{
-                        backgroundColor: "#f2f2f2",
-                        position: "relative",
-                        borderRadius: "10px",
-                      }}
-                    >
-                      <h3>이미지 미리보기</h3>
-                    </header>
-                    <main
-                      style={{ backgroundColor: "white", marginTop: "10px" }}
-                    >
-                      <img
-                        alt="이미지"
-                        src={tableProps.cell.value}
-                        style={imgStyle}
-                      />
-                    </main>
-                  </div>
-                ) : (
-                  <></>
-                )}
-                <EditText readonly="true" defaultValue="img_url" />
-              </div>
-            );
-          }
+          const urls = getUrls(tableProps.cell.value);
           return (
-            <div
-              onMouseEnter={() =>
-                document.activeElement.type === "text"
-                  ? {}
-                  : setTarget(
-                      tableProps.cell.row.index,
-                      tableProps.cell.column.Header
-                    )
-              }
-              onMouseLeave={() =>
-                document.activeElement.type === "text"
-                  ? {}
-                  : setIsHovered(false)
-              }
-            >
-              <EditText
-                name="choice1"
-                onSave={(e) => handleSave(tableProps.row.original, e)}
-                defaultValue={tableProps.cell.value}
-              />
-            </div>
+            <TableCell
+              title="choice1"
+              isHovered={isHovered}
+              HoveredRow={HoveredRow}
+              HoveredColumn={HoveredColumn}
+              setIsHovered={setIsHovered}
+              setTarget={setTarget}
+              tableProps={tableProps}
+              urls={urls}
+              handleSave={handleSave}
+            />
           );
         },
       },
@@ -395,80 +253,19 @@ const MainPage = (props) => {
         accessor: "choice2",
         Header: "선택02",
         Cell: (tableProps) => {
-          if (
-            String(tableProps.cell.value).substring(0, 25) ===
-            "https://summer-program.s3"
-          ) {
-            return (
-              <div
-                onMouseEnter={() =>
-                  document.activeElement.type === "text"
-                    ? {}
-                    : setTarget(
-                        tableProps.cell.row.index,
-                        tableProps.cell.column.Header
-                      )
-                }
-                onMouseLeave={() =>
-                  document.activeElement.type === "text"
-                    ? {}
-                    : setIsHovered(false)
-                }
-                style={{ cursor: "pointer" }}
-              >
-                {isHovered &
-                (HoveredRow === tableProps.cell.row.index) &
-                (HoveredColumn === tableProps.cell.column.Header) ? (
-                  <div style={divHover}>
-                    <header
-                      style={{
-                        backgroundColor: "#f2f2f2",
-                        position: "relative",
-                        borderRadius: "10px",
-                      }}
-                    >
-                      <h3>이미지 미리보기</h3>
-                    </header>
-                    <main
-                      style={{ backgroundColor: "white", marginTop: "10px" }}
-                    >
-                      <img
-                        alt="이미지"
-                        src={tableProps.cell.value}
-                        style={imgStyle}
-                      />
-                    </main>
-                  </div>
-                ) : (
-                  <></>
-                )}
-                <EditText readonly="true" defaultValue="img_url" />
-              </div>
-            );
-          }
+          const urls = getUrls(tableProps.cell.value);
           return (
-            <div
-              onMouseEnter={() =>
-                document.activeElement.type === "text"
-                  ? {}
-                  : setTarget(
-                      tableProps.cell.row.index,
-                      tableProps.cell.column.Header
-                    )
-              }
-              onMouseLeave={() =>
-                document.activeElement.type === "text"
-                  ? {}
-                  : setIsHovered(false)
-              }
-              style={{ cursor: "pointer" }}
-            >
-              <EditText
-                name="choice2"
-                onSave={(e) => handleSave(tableProps.row.original, e)}
-                defaultValue={tableProps.cell.value}
-              />
-            </div>
+            <TableCell
+              title="choice2"
+              isHovered={isHovered}
+              HoveredRow={HoveredRow}
+              HoveredColumn={HoveredColumn}
+              setIsHovered={setIsHovered}
+              setTarget={setTarget}
+              tableProps={tableProps}
+              urls={urls}
+              handleSave={handleSave}
+            />
           );
         },
       },
@@ -476,80 +273,19 @@ const MainPage = (props) => {
         accessor: "choice3",
         Header: "선택03",
         Cell: (tableProps) => {
-          if (
-            String(tableProps.cell.value).substring(0, 25) ===
-            "https://summer-program.s3"
-          ) {
-            return (
-              <div
-                onMouseEnter={() =>
-                  document.activeElement.type === "text"
-                    ? {}
-                    : setTarget(
-                        tableProps.cell.row.index,
-                        tableProps.cell.column.Header
-                      )
-                }
-                onMouseLeave={() =>
-                  document.activeElement.type === "text"
-                    ? {}
-                    : setIsHovered(false)
-                }
-                style={{ cursor: "pointer" }}
-              >
-                {isHovered &
-                (HoveredRow === tableProps.cell.row.index) &
-                (HoveredColumn === tableProps.cell.column.Header) ? (
-                  <div style={divHover}>
-                    <header
-                      style={{
-                        backgroundColor: "#f2f2f2",
-                        position: "relative",
-                        borderRadius: "10px",
-                      }}
-                    >
-                      <h3>이미지 미리보기</h3>
-                    </header>
-                    <main
-                      style={{ backgroundColor: "white", marginTop: "10px" }}
-                    >
-                      <img
-                        alt="이미지"
-                        src={tableProps.cell.value}
-                        style={imgStyle}
-                      />
-                    </main>
-                  </div>
-                ) : (
-                  <></>
-                )}
-                <EditText readonly="true" defaultValue="img_url" />
-              </div>
-            );
-          }
+          const urls = getUrls(tableProps.cell.value);
           return (
-            <div
-              onMouseEnter={() =>
-                document.activeElement.type === "text"
-                  ? {}
-                  : setTarget(
-                      tableProps.cell.row.index,
-                      tableProps.cell.column.Header
-                    )
-              }
-              onMouseLeave={() =>
-                document.activeElement.type === "text"
-                  ? {}
-                  : setIsHovered(false)
-              }
-              style={{ cursor: "pointer" }}
-            >
-              <EditText
-                name="choice3"
-                onSave={(e) => handleSave(tableProps.row.original, e)}
-                defaultValue={tableProps.cell.value}
-              />
-            </div>
+            <TableCell
+              title="choice3"
+              isHovered={isHovered}
+              HoveredRow={HoveredRow}
+              HoveredColumn={HoveredColumn}
+              setIsHovered={setIsHovered}
+              setTarget={setTarget}
+              tableProps={tableProps}
+              urls={urls}
+              handleSave={handleSave}
+            />
           );
         },
       },
@@ -557,80 +293,19 @@ const MainPage = (props) => {
         accessor: "choice4",
         Header: "선택04",
         Cell: (tableProps) => {
-          if (
-            String(tableProps.cell.value).substring(0, 25) ===
-            "https://summer-program.s3"
-          ) {
-            return (
-              <div
-                onMouseEnter={() =>
-                  document.activeElement.type === "text"
-                    ? {}
-                    : setTarget(
-                        tableProps.cell.row.index,
-                        tableProps.cell.column.Header
-                      )
-                }
-                onMouseLeave={() =>
-                  document.activeElement.type === "text"
-                    ? {}
-                    : setIsHovered(false)
-                }
-                style={{ cursor: "pointer" }}
-              >
-                {isHovered &
-                (HoveredRow === tableProps.cell.row.index) &
-                (HoveredColumn === tableProps.cell.column.Header) ? (
-                  <div style={divHover}>
-                    <header
-                      style={{
-                        backgroundColor: "#f2f2f2",
-                        position: "relative",
-                        borderRadius: "10px",
-                      }}
-                    >
-                      <h3>이미지 미리보기</h3>
-                    </header>
-                    <main
-                      style={{ backgroundColor: "white", marginTop: "10px" }}
-                    >
-                      <img
-                        alt="이미지"
-                        src={tableProps.cell.value}
-                        style={imgStyle}
-                      />
-                    </main>
-                  </div>
-                ) : (
-                  <></>
-                )}
-                <EditText readonly="true" defaultValue="img_url" />
-              </div>
-            );
-          }
+          const urls = getUrls(tableProps.cell.value);
           return (
-            <div
-              onMouseEnter={() =>
-                document.activeElement.type === "text"
-                  ? {}
-                  : setTarget(
-                      tableProps.cell.row.index,
-                      tableProps.cell.column.Header
-                    )
-              }
-              onMouseLeave={() =>
-                document.activeElement.type === "text"
-                  ? {}
-                  : setIsHovered(false)
-              }
-              style={{ cursor: "pointer" }}
-            >
-              <EditText
-                name="choice4"
-                onSave={(e) => handleSave(tableProps.row.original, e)}
-                defaultValue={tableProps.cell.value}
-              />
-            </div>
+            <TableCell
+              title="choice4"
+              isHovered={isHovered}
+              HoveredRow={HoveredRow}
+              HoveredColumn={HoveredColumn}
+              setIsHovered={setIsHovered}
+              setTarget={setTarget}
+              tableProps={tableProps}
+              urls={urls}
+              handleSave={handleSave}
+            />
           );
         },
       },
@@ -638,134 +313,61 @@ const MainPage = (props) => {
         accessor: "choice5",
         Header: "선택05",
         Cell: (tableProps) => {
-          if (
-            String(tableProps.cell.value).substring(0, 25) ===
-            "https://summer-program.s3"
-          ) {
-            return (
-              <div
-                onMouseEnter={() =>
-                  document.activeElement.type === "text"
-                    ? {}
-                    : setTarget(
-                        tableProps.cell.row.index,
-                        tableProps.cell.column.Header
-                      )
-                }
-                onMouseLeave={() =>
-                  document.activeElement.type === "text"
-                    ? {}
-                    : setIsHovered(false)
-                }
-                style={{ cursor: "pointer" }}
-              >
-                {isHovered &
-                (HoveredRow === tableProps.cell.row.index) &
-                (HoveredColumn === tableProps.cell.column.Header) ? (
-                  <div style={divHover}>
-                    <header
-                      style={{
-                        backgroundColor: "#f2f2f2",
-                        position: "relative",
-                        borderRadius: "10px",
-                      }}
-                    >
-                      <h3>이미지 미리보기</h3>
-                    </header>
-                    <main
-                      style={{ backgroundColor: "white", marginTop: "10px" }}
-                    >
-                      <img
-                        alt="이미지"
-                        src={tableProps.cell.value}
-                        style={imgStyle}
-                      />
-                    </main>
-                  </div>
-                ) : (
-                  <></>
-                )}
-                <EditText readonly="true" defaultValue="img_url" />
-              </div>
-            );
-          }
+          const urls = getUrls(tableProps.cell.value);
           return (
-            <div
-              onMouseEnter={() =>
-                document.activeElement.type === "text"
-                  ? {}
-                  : setTarget(
-                      tableProps.cell.row.index,
-                      tableProps.cell.column.Header
-                    )
-              }
-              onMouseLeave={() =>
-                document.activeElement.type === "text"
-                  ? {}
-                  : setIsHovered(false)
-              }
-              style={{ cursor: "pointer" }}
-            >
-              <EditText
-                name="choice5"
-                onSave={(e) => handleSave(tableProps.row.original, e)}
-                defaultValue={tableProps.cell.value}
-              />
-            </div>
+            <TableCell
+              title="choice5"
+              isHovered={isHovered}
+              HoveredRow={HoveredRow}
+              HoveredColumn={HoveredColumn}
+              setIsHovered={setIsHovered}
+              setTarget={setTarget}
+              tableProps={tableProps}
+              urls={urls}
+              handleSave={handleSave}
+            />
           );
         },
       },
       {
         accessor: "answer",
         Header: "정답",
-        Cell: (tableProps) => (
-          <div
-            onMouseEnter={() =>
-              document.activeElement.type === "text"
-                ? {}
-                : setTarget(
-                    tableProps.cell.row.index,
-                    tableProps.cell.column.Header
-                  )
-            }
-            onMouseLeave={() =>
-              document.activeElement.type === "text" ? {} : setIsHovered(false)
-            }
-            style={{ cursor: "pointer" }}
-          >
-            <EditText
-              name="answer"
-              onSave={(e) => handleSave(tableProps.row.original, e)}
-              defaultValue={tableProps.cell.value}
+        Cell: (tableProps) => {
+          const urls = getUrls(tableProps.cell.value);
+          return (
+            <TableCell
+              title="answer"
+              isHovered={isHovered}
+              HoveredRow={HoveredRow}
+              HoveredColumn={HoveredColumn}
+              setIsHovered={setIsHovered}
+              setTarget={setTarget}
+              tableProps={tableProps}
+              urls={urls}
+              handleSave={handleSave}
             />
-          </div>
-        ),
+          );
+        },
       },
       {
         accessor: "score",
         Header: "점수",
-        Cell: (tableProps) => (
-          <div
-            onMouseEnter={() =>
-              document.activeElement.type === "text"
-                ? {}
-                : setTarget(
-                    tableProps.cell.row.index,
-                    tableProps.cell.column.Header
-                  )
-            }
-            onMouseLeave={() =>
-              document.activeElement.type === "text" ? {} : setIsHovered(false)
-            }
-            style={{ cursor: "pointer" }}
-          >
-            <EditText
-              name="score"
-              onSave={(e) => handleSave(tableProps.row.original, e)}
-              defaultValue={tableProps.cell.value}
+        Cell: (tableProps) => {
+          const urls = getUrls(tableProps.cell.value);
+          return (
+            <TableCell
+              title="score"
+              isHovered={isHovered}
+              HoveredRow={HoveredRow}
+              HoveredColumn={HoveredColumn}
+              setIsHovered={setIsHovered}
+              setTarget={setTarget}
+              tableProps={tableProps}
+              urls={urls}
+              handleSave={handleSave}
             />
-          </div>
-        ),
+          );
+        },
       },
       {
         Header: "삭제 ",
@@ -809,14 +411,29 @@ const MainPage = (props) => {
         script: quiz.script,
         image: quiz.image,
         score: quiz.score,
+        choice1: [],
+        choice2: [],
+        choice3: [],
+        choice4: [],
+        choice5: [],
+        choice6: [],
+        choice7: [],
+        choice8: [],
+        choice9: [],
       };
-
+      let url_idx = 1;
+      let txt_idx = 1;
       quiz.choices.map((choice, i) => {
-        data_return[`choice${i + 1}`] = choice;
+        if (choice.substring(0, 25) === "https://summer-program.s3") {
+          data_return[`choice${url_idx++}`].push(choice);
+        } else {
+          data_return[`choice${txt_idx++}`].push(choice);
+        }
       });
 
       return data_return;
     });
+    console.log(showed_data);
     return showed_data;
   }, [quizzes]);
 
@@ -869,7 +486,7 @@ const MainPage = (props) => {
       style={{
         backgroundColor: "#f0f8ff",
         width: "100vw",
-        height: "88vh",
+        minHeight: "88vh",
         marginTop: "80px",
         zIndex: "0",
       }}
