@@ -1,8 +1,14 @@
 한국어 | [English](README_en.md)
 
+<<<<<<< HEAD
 ------------------------------------------------------------------------------------------
 
 # **QUIZRIX(허락 필요)**
+=======
+
+
+# System Architecture
+>>>>>>> Update README.md
 
 - 학습지 이미지 데이터에서 문항정보를 추출해 데이터베이스에 저장 후 해당 내용을 사용자의 브라우저에서 접속 가능하도록하는 플랫폼
 
@@ -15,6 +21,7 @@
  <img width="700" alt="quizrix_imageupload" src="https://user-images.githubusercontent.com/52441923/126749134-2e804fb4-e62b-4e68-a1aa-4cdc033409c3.png">
 </p>
 
+<<<<<<< HEAD
 <br>
 
      최종본 gif 추가
@@ -193,3 +200,7 @@ docker-compose up —build
 |   이하영 | Back-end, Deep learning            | API Design, Algorithm                 | [개인 리포로 이동](https://github.com/hayoung1214) |
 | Ryan Lee | Deep learning                      | Algorithm                             | [개인 리포로 이동](https://github.com/printSANO)   |
 |   박근우 | Devops                             | Cloud, Docker, Data Monitoring        | [개인 리포로 이동](https://github.com/Gnu-Kenny)   |
+=======
+# Initialization
+* clone the repository
+>>>>>>> Update README.md
