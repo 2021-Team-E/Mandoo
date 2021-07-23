@@ -172,7 +172,10 @@ def get_img(image):
                                     tensor=det
                                     sorted_choice=tensor.numpy()
                                     choice_number=[1,1,1,1,1]
-                                    mingap=0
+                                    mingap_y=100
+                                    mingap_x=100
+                                    gap_x=0
+                                    gap_y=0
                                     # y축 정렬
                                     for i in range(n):
                                         
@@ -193,15 +196,24 @@ def get_img(image):
                                         for j in range(0, n - i - 1):
                                        
                                             if (abs(sorted_choice[j][1] - sorted_choice[j+1][1])<5) :
+                                                mingap_y =abs(sorted_choice[i][1] - sorted_choice[i+1][1])
 
+                                                gap_x=abs(sorted_choice[i][0] - sorted_choice[i+1][0])
+                                                if gap_x < mingap_x:
+                                                    mingap_x = gap_x
+                                                    
                                                 if (sorted_choice[j][0] > sorted_choice[j+1][0]) :
 
                                                     temp= sorted_choice[j + 1].copy()   
                                                     sorted_choice[j + 1] = sorted_choice[j]
                                                     sorted_choice[j]=temp
                                             else :
-                                                mingap=abs(sorted_choice[j][1] - sorted_choice[j+1][1])
-                                    print("\n\n\nmingap : ",mingap)         
+                                                mingap_x =abs(sorted_choice[i][0] - sorted_choice[i+1][0])
+                                                gap_y=abs(sorted_choice[i][1] - sorted_choice[i+1][1])
+                                                if gap_y < mingap_y:
+                                                    mingap_y = gap_y
+                                    print("\n\n\mingap_x : ",mingap_x)   
+                                    print("\n\n\mingap_y : ",mingap_y)         
                                     print("\n\n\n",sorted_choice) 
                                     # choice 탐지 안된 것들 0으로 표기
                                     
@@ -210,18 +222,18 @@ def get_img(image):
 
                                         for i in range (n-1):
                         
-                                            if (abs(sorted_choice[i][1] - sorted_choice[i+1][1]) > mingap*2) and (abs(sorted_choice[i][0] - sorted_choice[i+1][0])<30): # 중간에 choice 탐지 안 된 경우
+                                            if (abs(sorted_choice[i][1] - sorted_choice[i+1][1]) > mingap_y*2) and (abs(sorted_choice[i][0] - sorted_choice[i+1][0])<30): 
                                                 
                                                 choice_number[i+1]=0
                                         
                                         
                                             
-                                        if (sorted_choice[0][1] > mingap) : 
+                                        if (sorted_choice[0][1] > mingap_y) : 
                                             empty = 5 - n 
                                             for i in range(empty) :
                                                     choice_number[i]=0
                                             
-                                        elif (sorted_choice[n-1][1] < sorted_choice[0][1]+(mingap)*3) : 
+                                        elif (sorted_choice[n-1][1] < sorted_choice[0][1]+(mingap_y)*3) : 
                                             empty = 5 - n 
                                             for i in range(4, n - empty  ,-1 ) :
                                                 choice_number[i]=0
