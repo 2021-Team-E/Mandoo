@@ -124,7 +124,7 @@ def get_img(image):
 
                         text = main(crop_path, APPKEY)
                         text = re.sub(r'[^가-힣a-zA-Zㄱ-ㅎ()0-9.,?![]~%-_/<>\s]:\'\"\+]','', text)
-                        if text =="":
+                        if len(text) == 0 or text.isspace():
                             text = "마우스를 올려 이미지로 확인해주세요"
                         print(text)
                         dict[names[c]].append(text)
@@ -201,12 +201,27 @@ def get_img(image):
                                                     sorted_choice[j]=temp
                                     print("\n\n\n",sorted_choice) 
                                     # choice 탐지 안된 것들 0으로 표기
-                                    for i in range (n-1):
-                    
-                                        if (abs(sorted_choice[i][1] - sorted_choice[i+1][1])>40) and (abs(sorted_choice[i][0] - sorted_choice[i+1][0])<30): # 중간에 choice 탐지 안 된 경우
+                                    
+                                    if n < 5 :                                                              
+                                        for i in range (n-1):
+                        
+                                            if (abs(sorted_choice[i][1] - sorted_choice[i+1][1])>40) and (abs(sorted_choice[i][0] - sorted_choice[i+1][0])<30): # 중간에 choice 탐지 안 된 경우
+                                                
+                                                choice_number[i+1]=0
+                                        
+                                        
                                             
-                                            choice_number[i+1]=0
-                                    print(choice_number) 
+                                            elif (sorted_choice[0][1] > 30 ) : 
+                                                empty = 5 - n 
+                                                for i in range(empty) :
+                                                    choice_number[i]=0
+                                            
+                                            elif (sorted_choice[n-1][1] < 100 ) : 
+                                                empty = 5 - n 
+                                                for i in range(4, n - empty + 1) :
+                                                    choice_number[i]=0
+
+                                        print("\n",choice_number) 
 
                                     # Write results
                                     for *xyxy, conf, cls in (det):
@@ -222,7 +237,7 @@ def get_img(image):
                                    
                                         text = main(answer_save_path, APPKEY)
                                         text = re.sub(r'[^가-힣a-zA-Zㄱ-ㅎ()0-9.,?![]~%-_/<>\s]:\'\"\+]','', text)
-                                        if text =="":
+                                        if len(text) == 0 or text.isspace():
                                             text = "마우스를 올려 이미지로 확인해주세요"
                                         print(text)
                                         dict[names[c]].append(text)
@@ -250,7 +265,7 @@ def get_img(image):
                         isQuestion = 1
                         text = main(crop_path, APPKEY)
                         text = re.sub(r'[^가-힣a-zA-Zㄱ-ㅎ()0-9.,?![]~%-_/<>\s]:\'\"\+]','', text)
-                        if text =="":
+                        if len(text) == 0 or text.isspace():
                             text = "마우스를 올려 이미지로 확인해주세요"
                         dict[names[c]].append(text)
 
