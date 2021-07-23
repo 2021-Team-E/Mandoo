@@ -1,14 +1,8 @@
 한국어 | [English](README_en.md)
 
-<<<<<<< HEAD
-------------------------------------------------------------------------------------------
+---
 
 # **QUIZRIX(허락 필요)**
-=======
-
-
-# System Architecture
->>>>>>> Update README.md
 
 - 학습지 이미지 데이터에서 문항정보를 추출해 데이터베이스에 저장 후 해당 내용을 사용자의 브라우저에서 접속 가능하도록하는 플랫폼
 
@@ -27,7 +21,6 @@
      최종본 gif 추가
 
 > 본 프로젝트는 코드넛 'QUIZRIX' 사업의 일부 프로토타입 제작을 위해 진행되었습니다.
-
 
 ## **System Architecture ->검사 받고 최종 올려둘게요**
 
@@ -200,7 +193,3 @@ docker-compose up —build
 |   이하영 | Back-end, Deep learning            | API Design, Algorithm                 | [개인 리포로 이동](https://github.com/hayoung1214) |
 | Ryan Lee | Deep learning                      | Algorithm                             | [개인 리포로 이동](https://github.com/printSANO)   |
 |   박근우 | Devops                             | Cloud, Docker, Data Monitoring        | [개인 리포로 이동](https://github.com/Gnu-Kenny)   |
-=======
-# Initialization
-* clone the repository
->>>>>>> Update README.md
