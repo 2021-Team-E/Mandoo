@@ -157,49 +157,50 @@ def get_img(image):
                                     for c in det[:, -1].unique():
                                         n = (det[:, -1] == c).sum()  # detections per class
                                         s += f"{n} {names2[int(c)]}{'s' * (n > 1)}, "  # add to string
+                                    
                                     count = 0
                                     n=len(det)
                                     tensor=det
                                     sorted_choice=tensor.numpy()
-                                    
+                                    choice_number=[1,1,1,1,1]
+
+                                    # y축 정렬
                                     for i in range(n):
-                                           
+                                        
                                         for j in range(0, n - i - 1):
-                                                
-                                               
+
+                                
                                             if (sorted_choice[j][1] > sorted_choice[j+1][1]):
+                                                    
+                                                temp= sorted_choice[j + 1].copy() 
                                                 
-                                                temp= sorted_choice[j + 1].copy() # 서로 위치를 변환
-                                            
                                                 sorted_choice[j + 1] = sorted_choice[j]
-                                                 
+                                                    
                                                 sorted_choice[j]=temp
-                                    print("첫 y축 정렬 결과 :\n",sorted_choice)
+                                  
+                                    # 같은 선상의 문제들이 대해 x축 정렬
                                     for i in range (n):
-                                        print("i : ", i)
+                                      
                                         for j in range(0, n - i - 1):
-                                            print("j : ", j)
-                                            print(sorted_choice[j][1] - sorted_choice[j+1][1])
+                                       
                                             if (abs(sorted_choice[j][1] - sorted_choice[j+1][1])<5) :
 
                                                 if (sorted_choice[j][0] > sorted_choice[j+1][0]) :
 
-                                                    temp= sorted_choice[j + 1].copy()   # 서로 위치를 변환
+                                                    temp= sorted_choice[j + 1].copy()   
                                                     sorted_choice[j + 1] = sorted_choice[j]
                                                     sorted_choice[j]=temp
-
-                                                    print("change!")
-                                                    print(sorted_choice)
-                                                
-                                                    
-                                        
-                                       
-                                    print("두번째 랜덤 지그재그 방향 정렬 :\n ", sorted_choice)
+                                    # choice 탐지 안된 것들 0으로 표기
+                                    for i in range (n-1):
+                    
+                                        if (abs(sorted_choice[i][1] - sorted_choice[i+1][1])>40) and (abs(sorted_choice[i][0] - sorted_choice[i+1][0])<30): # 중간에 choice 탐지 안 된 경우
+                                            
+                                            choice_number[i+1]=0
+                                      
 
                                     # Write results
                                     for *xyxy, conf, cls in (det):
                                         
-                                       
                                         c = int(cls)  # integer class
                                         label =  f'{names2[c]} {conf:.2f}'
                                         answer_save_path = str(save_dir / 'crops' / 'answer' /'choice'/ f'{count}{p.stem}.jpg')
@@ -220,8 +221,19 @@ def get_img(image):
                                         s3.put_object(Body=imagetoupload, Bucket=BUCKET_NAME, Key=imagefilename, ContentType="image/jpeg")
                                         img_url = "https://summer-program.s3.ap-northeast-2.amazonaws.com/"+imagefilename
                                         dict[names[c]].append(img_url)   
-
-                      
+                                    
+                                    for i in range(5):
+                                        
+                                        if choice_number[i]==0: # choice_number[i] 번째 선지가 탐지가 안된 경우
+                                    
+                                            dict[names[c]].insert(i*2,"해당 선택지 탐지에 실패하였습니다.")
+                                            dict[names[c]].insert(i*2+1,"no exist url")
+                                            
+                                        
+                                # Save results (image with detections)
+                                if save_img:
+                                    if dataset.mode == 'image':
+                                        cv2.imwrite(answer_save_path, im02)
                     elif names[c] == "question":
 
                         text = main(crop_path, APPKEY)
