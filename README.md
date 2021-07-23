@@ -15,7 +15,6 @@
  <img width="700" alt="quizrix_imageupload" src="https://user-images.githubusercontent.com/52441923/126749134-2e804fb4-e62b-4e68-a1aa-4cdc033409c3.png">
 </p>
 
-<<<<<<< HEAD
 <br>
 
      최종본 gif 추가
@@ -193,3 +192,19 @@ docker-compose up —build
 |   이하영 | Back-end, Deep learning            | API Design, Algorithm                 | [개인 리포로 이동](https://github.com/hayoung1214) |
 | Ryan Lee | Deep learning                      | Algorithm                             | [개인 리포로 이동](https://github.com/printSANO)   |
 |   박근우 | Devops                             | Cloud, Docker, Data Monitoring        | [개인 리포로 이동](https://github.com/Gnu-Kenny)   |
+
+=======
+
+# Initialization
+
+- clone the repository
+  ```
+  $ git clone https://github.com/2021-Team-E/Mandoo.git
+  $ cd Mandoo
+  ```
+
+### 1. Backend: Flask
+
+### 2. Frontend: React
+
+### 3. Docker
