@@ -172,7 +172,7 @@ def get_img(image):
                                     tensor=det
                                     sorted_choice=tensor.numpy()
                                     choice_number=[1,1,1,1,1]
-
+                                    mingap=0
                                     # y축 정렬
                                     for i in range(n):
                                         
@@ -199,27 +199,32 @@ def get_img(image):
                                                     temp= sorted_choice[j + 1].copy()   
                                                     sorted_choice[j + 1] = sorted_choice[j]
                                                     sorted_choice[j]=temp
+                                            else :
+                                                mingap=abs(sorted_choice[j][1] - sorted_choice[j+1][1])
+                                    print("\n\n\nmingap : ",mingap)         
                                     print("\n\n\n",sorted_choice) 
                                     # choice 탐지 안된 것들 0으로 표기
                                     
-                                    if n < 5 :                                                              
+                                    if n < 5 : 
+                                        
+
                                         for i in range (n-1):
                         
-                                            if (abs(sorted_choice[i][1] - sorted_choice[i+1][1])>40) and (abs(sorted_choice[i][0] - sorted_choice[i+1][0])<30): # 중간에 choice 탐지 안 된 경우
+                                            if (abs(sorted_choice[i][1] - sorted_choice[i+1][1]) > mingap*2) and (abs(sorted_choice[i][0] - sorted_choice[i+1][0])<30): # 중간에 choice 탐지 안 된 경우
                                                 
                                                 choice_number[i+1]=0
                                         
                                         
                                             
-                                            elif (sorted_choice[0][1] > 30 ) : 
-                                                empty = 5 - n 
-                                                for i in range(empty) :
+                                        if (sorted_choice[0][1] > mingap) : 
+                                            empty = 5 - n 
+                                            for i in range(empty) :
                                                     choice_number[i]=0
                                             
-                                            elif (sorted_choice[n-1][1] < 130 ) : 
-                                                empty = 5 - n 
-                                                for i in range(4, n - empty  ,-1 ) :
-                                                    choice_number[i]=0
+                                        elif (sorted_choice[n-1][1] < sorted_choice[0][1]+(mingap)*3) : 
+                                            empty = 5 - n 
+                                            for i in range(4, n - empty  ,-1 ) :
+                                                choice_number[i]=0
 
                                         print("\n",choice_number) 
 
