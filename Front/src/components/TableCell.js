@@ -86,7 +86,7 @@ const TableCell = ({
       )}
       {typeof tableProps.cell.value === "object" ? (
         tableProps.cell.value.map((content, i) => {
-          if (content.substring(0, 25) === "https://summer-program.s3") {
+          if (content.substring(0, 25) === "https://summer-program.s3" || content === "no exist url") {
             return <div></div>; //<EditText readonly="true" defaultValue="img_url" />;
           } else {
             return (
