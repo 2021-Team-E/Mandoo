@@ -177,7 +177,8 @@ const MainPage = (props) => {
     () => [
       {
         accessor: "qid", //해당 열을 data 객체의 어느 속성을 읽어야 하는지 명시
-        Header: "문항번호", //테이블 헤더에 보여줄 텍스트 명시
+
+        Header: "번호", //테이블 헤더에 보여줄 텍스트 명시
         Cell: (tableProps) => (
           <EditText
             name="qid"
@@ -189,19 +190,25 @@ const MainPage = (props) => {
       },
       {
         accessor: "title",
-        Header: "문항내용",
+        Header: "질문",
         Cell: (tableProps) => {
           const urls = getUrls(tableProps.cell.value);
           return (
             <div
               name="title"
               onMouseEnter={() =>
-                setTarget(
-                  tableProps.cell.row.index,
-                  tableProps.cell.column.Header
-                )
+                document.activeElement.type === "text"
+                  ? {}
+                  : setTarget(
+                      tableProps.cell.row.index,
+                      tableProps.cell.column.Header
+                    )
               }
-              onMouseLeave={() => setIsHovered(false)}
+              onMouseLeave={() =>
+                document.activeElement.type === "text"
+                  ? {}
+                  : setIsHovered(false)
+              }
               style={{ cursor: "pointer" }}
             >
               {isHovered &
@@ -245,19 +252,25 @@ const MainPage = (props) => {
       },
       {
         accessor: "script",
-        Header: "참고내용",
+        Header: "보기",
         Cell: (tableProps) => {
           const urls = getUrls(tableProps.cell.value);
           return (
             <div
-              name="script"
+              title="script"
               onMouseEnter={() =>
-                setTarget(
-                  tableProps.cell.row.index,
-                  tableProps.cell.column.Header
-                )
+                document.activeElement.type === "text"
+                  ? console.log(document.activeElement.type)
+                  : setTarget(
+                      tableProps.cell.row.index,
+                      tableProps.cell.column.Header
+                    )
               }
-              onMouseLeave={() => setIsHovered(false)}
+              onMouseLeave={() =>
+                document.activeElement.type === "text"
+                  ? {}
+                  : setIsHovered(false)
+              }
               style={{ cursor: "pointer" }}
             >
               {isHovered &
@@ -309,12 +322,18 @@ const MainPage = (props) => {
             return (
               <div
                 onMouseEnter={() =>
-                  setTarget(
-                    tableProps.cell.row.index,
-                    tableProps.cell.column.Header
-                  )
+                  document.activeElement.type === "text"
+                    ? {}
+                    : setTarget(
+                        tableProps.cell.row.index,
+                        tableProps.cell.column.Header
+                      )
                 }
-                onMouseLeave={() => setIsHovered(false)}
+                onMouseLeave={() =>
+                  document.activeElement.type === "text"
+                    ? {}
+                    : setIsHovered(false)
+                }
                 style={{ cursor: "pointer" }}
               >
                 {isHovered &
@@ -348,11 +367,27 @@ const MainPage = (props) => {
             );
           }
           return (
-            <EditText
-              name="choice1"
-              onSave={(e) => handleSave(tableProps.row.original, e)}
-              defaultValue={tableProps.cell.value}
-            />
+            <div
+              onMouseEnter={() =>
+                document.activeElement.type === "text"
+                  ? {}
+                  : setTarget(
+                      tableProps.cell.row.index,
+                      tableProps.cell.column.Header
+                    )
+              }
+              onMouseLeave={() =>
+                document.activeElement.type === "text"
+                  ? {}
+                  : setIsHovered(false)
+              }
+            >
+              <EditText
+                name="choice1"
+                onSave={(e) => handleSave(tableProps.row.original, e)}
+                defaultValue={tableProps.cell.value}
+              />
+            </div>
           );
         },
       },
@@ -367,12 +402,18 @@ const MainPage = (props) => {
             return (
               <div
                 onMouseEnter={() =>
-                  setTarget(
-                    tableProps.cell.row.index,
-                    tableProps.cell.column.Header
-                  )
+                  document.activeElement.type === "text"
+                    ? {}
+                    : setTarget(
+                        tableProps.cell.row.index,
+                        tableProps.cell.column.Header
+                      )
                 }
-                onMouseLeave={() => setIsHovered(false)}
+                onMouseLeave={() =>
+                  document.activeElement.type === "text"
+                    ? {}
+                    : setIsHovered(false)
+                }
                 style={{ cursor: "pointer" }}
               >
                 {isHovered &
@@ -406,11 +447,28 @@ const MainPage = (props) => {
             );
           }
           return (
-            <EditText
-              name="choice2"
-              onSave={(e) => handleSave(tableProps.row.original, e)}
-              defaultValue={tableProps.cell.value}
-            />
+            <div
+              onMouseEnter={() =>
+                document.activeElement.type === "text"
+                  ? {}
+                  : setTarget(
+                      tableProps.cell.row.index,
+                      tableProps.cell.column.Header
+                    )
+              }
+              onMouseLeave={() =>
+                document.activeElement.type === "text"
+                  ? {}
+                  : setIsHovered(false)
+              }
+              style={{ cursor: "pointer" }}
+            >
+              <EditText
+                name="choice2"
+                onSave={(e) => handleSave(tableProps.row.original, e)}
+                defaultValue={tableProps.cell.value}
+              />
+            </div>
           );
         },
       },
@@ -425,12 +483,18 @@ const MainPage = (props) => {
             return (
               <div
                 onMouseEnter={() =>
-                  setTarget(
-                    tableProps.cell.row.index,
-                    tableProps.cell.column.Header
-                  )
+                  document.activeElement.type === "text"
+                    ? {}
+                    : setTarget(
+                        tableProps.cell.row.index,
+                        tableProps.cell.column.Header
+                      )
                 }
-                onMouseLeave={() => setIsHovered(false)}
+                onMouseLeave={() =>
+                  document.activeElement.type === "text"
+                    ? {}
+                    : setIsHovered(false)
+                }
                 style={{ cursor: "pointer" }}
               >
                 {isHovered &
@@ -464,11 +528,28 @@ const MainPage = (props) => {
             );
           }
           return (
-            <EditText
-              name="choice3"
-              onSave={(e) => handleSave(tableProps.row.original, e)}
-              defaultValue={tableProps.cell.value}
-            />
+            <div
+              onMouseEnter={() =>
+                document.activeElement.type === "text"
+                  ? {}
+                  : setTarget(
+                      tableProps.cell.row.index,
+                      tableProps.cell.column.Header
+                    )
+              }
+              onMouseLeave={() =>
+                document.activeElement.type === "text"
+                  ? {}
+                  : setIsHovered(false)
+              }
+              style={{ cursor: "pointer" }}
+            >
+              <EditText
+                name="choice3"
+                onSave={(e) => handleSave(tableProps.row.original, e)}
+                defaultValue={tableProps.cell.value}
+              />
+            </div>
           );
         },
       },
@@ -483,12 +564,18 @@ const MainPage = (props) => {
             return (
               <div
                 onMouseEnter={() =>
-                  setTarget(
-                    tableProps.cell.row.index,
-                    tableProps.cell.column.Header
-                  )
+                  document.activeElement.type === "text"
+                    ? {}
+                    : setTarget(
+                        tableProps.cell.row.index,
+                        tableProps.cell.column.Header
+                      )
                 }
-                onMouseLeave={() => setIsHovered(false)}
+                onMouseLeave={() =>
+                  document.activeElement.type === "text"
+                    ? {}
+                    : setIsHovered(false)
+                }
                 style={{ cursor: "pointer" }}
               >
                 {isHovered &
@@ -522,11 +609,28 @@ const MainPage = (props) => {
             );
           }
           return (
-            <EditText
-              name="choice4"
-              onSave={(e) => handleSave(tableProps.row.original, e)}
-              defaultValue={tableProps.cell.value}
-            />
+            <div
+              onMouseEnter={() =>
+                document.activeElement.type === "text"
+                  ? {}
+                  : setTarget(
+                      tableProps.cell.row.index,
+                      tableProps.cell.column.Header
+                    )
+              }
+              onMouseLeave={() =>
+                document.activeElement.type === "text"
+                  ? {}
+                  : setIsHovered(false)
+              }
+              style={{ cursor: "pointer" }}
+            >
+              <EditText
+                name="choice4"
+                onSave={(e) => handleSave(tableProps.row.original, e)}
+                defaultValue={tableProps.cell.value}
+              />
+            </div>
           );
         },
       },
@@ -541,12 +645,18 @@ const MainPage = (props) => {
             return (
               <div
                 onMouseEnter={() =>
-                  setTarget(
-                    tableProps.cell.row.index,
-                    tableProps.cell.column.Header
-                  )
+                  document.activeElement.type === "text"
+                    ? {}
+                    : setTarget(
+                        tableProps.cell.row.index,
+                        tableProps.cell.column.Header
+                      )
                 }
-                onMouseLeave={() => setIsHovered(false)}
+                onMouseLeave={() =>
+                  document.activeElement.type === "text"
+                    ? {}
+                    : setIsHovered(false)
+                }
                 style={{ cursor: "pointer" }}
               >
                 {isHovered &
@@ -580,11 +690,28 @@ const MainPage = (props) => {
             );
           }
           return (
-            <EditText
-              name="choice5"
-              onSave={(e) => handleSave(tableProps.row.original, e)}
-              defaultValue={tableProps.cell.value}
-            />
+            <div
+              onMouseEnter={() =>
+                document.activeElement.type === "text"
+                  ? {}
+                  : setTarget(
+                      tableProps.cell.row.index,
+                      tableProps.cell.column.Header
+                    )
+              }
+              onMouseLeave={() =>
+                document.activeElement.type === "text"
+                  ? {}
+                  : setIsHovered(false)
+              }
+              style={{ cursor: "pointer" }}
+            >
+              <EditText
+                name="choice5"
+                onSave={(e) => handleSave(tableProps.row.original, e)}
+                defaultValue={tableProps.cell.value}
+              />
+            </div>
           );
         },
       },
@@ -592,22 +719,52 @@ const MainPage = (props) => {
         accessor: "answer",
         Header: "정답",
         Cell: (tableProps) => (
-          <EditText
-            name="answer"
-            onSave={(e) => handleSave(tableProps.row.original, e)}
-            defaultValue={tableProps.cell.value}
-          />
+          <div
+            onMouseEnter={() =>
+              document.activeElement.type === "text"
+                ? {}
+                : setTarget(
+                    tableProps.cell.row.index,
+                    tableProps.cell.column.Header
+                  )
+            }
+            onMouseLeave={() =>
+              document.activeElement.type === "text" ? {} : setIsHovered(false)
+            }
+            style={{ cursor: "pointer" }}
+          >
+            <EditText
+              name="answer"
+              onSave={(e) => handleSave(tableProps.row.original, e)}
+              defaultValue={tableProps.cell.value}
+            />
+          </div>
         ),
       },
       {
         accessor: "score",
         Header: "점수",
         Cell: (tableProps) => (
-          <EditText
-            name="score"
-            onSave={(e) => handleSave(tableProps.row.original, e)}
-            defaultValue={tableProps.cell.value}
-          />
+          <div
+            onMouseEnter={() =>
+              document.activeElement.type === "text"
+                ? {}
+                : setTarget(
+                    tableProps.cell.row.index,
+                    tableProps.cell.column.Header
+                  )
+            }
+            onMouseLeave={() =>
+              document.activeElement.type === "text" ? {} : setIsHovered(false)
+            }
+            style={{ cursor: "pointer" }}
+          >
+            <EditText
+              name="score"
+              onSave={(e) => handleSave(tableProps.row.original, e)}
+              defaultValue={tableProps.cell.value}
+            />
+          </div>
         ),
       },
       {
@@ -714,6 +871,7 @@ const MainPage = (props) => {
         width: "100vw",
         height: "88vh",
         marginTop: "80px",
+        zIndex: "0",
       }}
     >
       <div className="nav">

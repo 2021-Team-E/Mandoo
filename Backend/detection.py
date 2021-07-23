@@ -15,7 +15,7 @@ from pathlib import Path
 
 import cv2
 import torch
-
+import tensorflow as tf
 from models.experimental import attempt_load
 from utils.datasets import LoadImages
 from utils.general import check_img_size, non_max_suppression, scale_coords, set_logging,save_one_box
@@ -53,13 +53,15 @@ weights2 = 'choice5_bestweight.pt'
 # buckets.download_file(key_name, file_path)
 
 
+
+
 def get_img(image):
 
     image_png=image+".jpeg"
     imgsz = 416
     save_dir = Path('result')
     save_crop=True 
-    
+    flag_for_list=0
     # Initialize
     set_logging()
     device = select_device('')
@@ -154,6 +156,7 @@ def get_img(image):
                         flag_for_choice = 0 # 첫번째 choice의 image/text 구분을 하는 순간 1로 변화시킴 
                         flag_for_choice_result = 0 # choice detection 결과 text이면 1, image이면 2
 
+               
                         for path, img, im0s, vid_cap in answerset:
                             answerimg = torch.from_numpy(img).to(device)
                             answerimg = answerimg.half() if half else answerimg.float()  # uint8 to fp16/32
@@ -184,8 +187,48 @@ def get_img(image):
                                         n = (det[:, -1] == c).sum()  # detections per class
                                         s += f"{n} {names2[int(c)]}{'s' * (n > 1)}, "  # add to string
                                     count = 0
+                                    n=len(det)
+                                    tensor=det
+                                    sorted_choice=tensor.numpy()
+                                    
+                                    for i in range(n):
+                                           
+                                        for j in range(0, n - i - 1):
+                                                
+                                               
+                                            if (sorted_choice[j][1] > sorted_choice[j+1][1]):
+                                                
+                                                temp= sorted_choice[j + 1].copy() # 서로 위치를 변환
+                                            
+                                                sorted_choice[j + 1] = sorted_choice[j]
+                                                 
+                                                sorted_choice[j]=temp
+                                    print("첫 y축 정렬 결과 :\n",sorted_choice)
+                                    for i in range (n):
+                                        print("i : ", i)
+                                        for j in range(0, n - i - 1):
+                                            print("j : ", j)
+                                            print(sorted_choice[j][1] - sorted_choice[j+1][1])
+                                            if (abs(sorted_choice[j][1] - sorted_choice[j+1][1])<5) :
+
+                                                if (sorted_choice[j][0] > sorted_choice[j+1][0]) :
+
+                                                    temp= sorted_choice[j + 1].copy()   # 서로 위치를 변환
+                                                    sorted_choice[j + 1] = sorted_choice[j]
+                                                    sorted_choice[j]=temp
+
+                                                    print("change!")
+                                                    print(sorted_choice)
+                                                
+                                                    
+                                        
+                                       
+                                    print("두번째 랜덤 지그재그 방향 정렬 :\n ", sorted_choice)
+
                                     # Write results
-                                    for *xyxy, conf, cls in reversed(det):
+                                    for *xyxy, conf, cls in (det):
+                                        
+                                       
                                         c = int(cls)  # integer class
                                         label =  f'{names2[c]} {conf:.2f}'
                                         answer_save_path = str(save_dir / 'crops' / 'answer' /'choice'/ f'{count}{p.stem}.jpg')
