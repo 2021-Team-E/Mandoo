@@ -126,7 +126,7 @@ def get_img(image):
                     
                     label =  f'{names[c]} {conf:.2f}'
 
-                    labels.append(names[c])
+                    labels.append(names[c])  
                    
                 
                     plot_one_box(xyxy, im0, label=label, color=colors(c, True), line_thickness=3)
@@ -310,32 +310,32 @@ def get_img(image):
 
                     elif names[c] == "question":
 
-                        prediction = CustomImageClassification()
-                        prediction.setModelTypeAsInceptionV3()
+                        # prediction = CustomImageClassification()
+                        # prediction.setModelTypeAsInceptionV3()
                         
-                        prediction.setModelPath('./model_ex-024_acc-1.000000.h5')
-                        prediction.setJsonPath("./model_class.json")
-                        prediction.loadModel(num_objects=2)
+                        # prediction.setModelPath('./model_ex-024_acc-1.000000.h5')
+                        # prediction.setJsonPath("./model_class.json")
+                        # prediction.loadModel(num_objects=2)
 
-                        predictions, probabilities = prediction.classifyImage(image_input=crop_path, result_count=2)    #predictions[0] : 무조건 퍼센트 높은 아이로 지정됨
+                        # predictions, probabilities = prediction.classifyImage(image_input=crop_path, result_count=2)    #predictions[0] : 무조건 퍼센트 높은 아이로 지정됨
                         
-                        if probabilities[0] > probabilities[1]:
-                            print("This is a(n) " + predictions[0])
+                        # if probabilities[0] > probabilities[1]:
+                        #     print("This is a(n) " + predictions[0])
 
-                        # 아래 코드는 text일 경우임
-                        if predictions[0] == "text": #텍스트인 경우            
+                        # # 아래 코드는 text일 경우임
+                        # if predictions[0] == "text": #텍스트인 경우            
                             #text = pytesseract.image_to_string(Image.open(crop_path), lang='kor+eng')
                             text = main(crop_path, APPKEY)
                             text = re.sub(r'[^가-힣a-zA-Zㄱ-ㅎ()0-9.,?![]~%-_/<>\s]:\'\"\+]','', text)
                             dict[names[c]].append(text)
 
-                        else : #이미지인 경우
-                            imagefilename ="result/"+ image + "_" + names[c] + "_"+ str(i) + "_" + str(datetime.datetime.now()).replace("\\","/").replace(" ","").replace(":","")+".jpeg"
-                            imagefilename.replace(" ","")
-                            imagetoupload = open( crop_path , "rb")
-                            s3.put_object(Body=imagetoupload, Bucket=BUCKET_NAME, Key=imagefilename, ContentType="image/jpeg")
-                            img_url = "https://summer-program.s3.ap-northeast-2.amazonaws.com/"+imagefilename
-                            dict[names[c]].append(img_url)
+                        # else : #이미지인 경우
+                        #     imagefilename ="result/"+ image + "_" + names[c] + "_"+ str(i) + "_" + str(datetime.datetime.now()).replace("\\","/").replace(" ","").replace(":","")+".jpeg"
+                        #     imagefilename.replace(" ","")
+                        #     imagetoupload = open( crop_path , "rb")
+                        #     s3.put_object(Body=imagetoupload, Bucket=BUCKET_NAME, Key=imagefilename, ContentType="image/jpeg")
+                        #     img_url = "https://summer-program.s3.ap-northeast-2.amazonaws.com/"+imagefilename
+                        #     dict[names[c]].append(img_url)
 
                     #image text 분류 yolov5버전
                     # elif names[c] == "question":
