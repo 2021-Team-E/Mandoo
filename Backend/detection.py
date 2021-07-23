@@ -216,9 +216,9 @@ def get_img(image):
                                                 for i in range(empty) :
                                                     choice_number[i]=0
                                             
-                                            elif (sorted_choice[n-1][1] < 100 ) : 
+                                            elif (sorted_choice[n-1][1] < 130 ) : 
                                                 empty = 5 - n 
-                                                for i in range(4, n - empty + 1) :
+                                                for i in range(4, n - empty  ,-1 ) :
                                                     choice_number[i]=0
 
                                         print("\n",choice_number) 
