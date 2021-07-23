@@ -26,6 +26,7 @@ weights1 = 'modelv2.0.pt' # question/content/answer 구분 모델
 weights2 = 'choice5_bestweight.pt' # choice 구분 모델
 
 
+
 def get_img(image):
 
     image_png=image+".jpeg"
@@ -43,6 +44,7 @@ def get_img(image):
     model2 = attempt_load(weights2, map_location=device)  # load FP32 model
 
     imgsz = check_img_size(imgsz, s=model1.stride.max())  # check img_size
+
     if half:
         model1.half()  # to FP16
         model2.half()
@@ -58,6 +60,8 @@ def get_img(image):
 
     # return 형식
     dict = {"question": [], "content" :[], "answer" : []}
+
+    
 
     # Run inference
     if device.type != 'cpu':
@@ -77,7 +81,10 @@ def get_img(image):
 
         # Process detections
         for i, det in enumerate(pred):  # detections per image
-            
+            # content안에 객관식 있는 문제의 경우 탐지하기 위해 사용
+            isContent = 0
+            isQuestion = 0
+            isAnswer=0
             p, s, im0, frame = Path(path), '', im0s, getattr(dataset, 'frame', 0)
 
             save_path = str(save_dir / p.name)
@@ -99,9 +106,6 @@ def get_img(image):
                     
                     label =  f'{names[c]} {conf:.2f}'
 
-                     
-                   
-                
                     plot_one_box(xyxy, im0, label=label, color=colors(c, True), line_thickness=3)
                     if save_crop:
                         crop_path = save_dir / 'crops' / names[c] / f'{p.stem}.jpg'
@@ -109,6 +113,8 @@ def get_img(image):
                         
 
                     if names[c] == "content" : # content로 판별시 이미지 여부 판단 모델 들어가지 않고 이미지 자체를 return 데이터에 담음
+                        
+                        isContent=1
                         imagefilename ="result/"+ image + "_" + names[c] + "_"+ str(i) + "_" + str(datetime.datetime.now()).replace("\\","/").replace(" ","").replace(":","")+".jpeg"
                         imagefilename.replace(" ","")
                         imagetoupload = open( crop_path , "rb")
@@ -127,6 +133,7 @@ def get_img(image):
 
 
                     elif names[c] == "answer":
+                        isAnswer=1
                         answerset = LoadImages(crop_path, img_size=imgsz)
                         names2 = model2.module.names if hasattr(model2, 'module') else model2.names
                                    
@@ -198,7 +205,7 @@ def get_img(image):
                                         if (abs(sorted_choice[i][1] - sorted_choice[i+1][1])>40) and (abs(sorted_choice[i][0] - sorted_choice[i+1][0])<30): # 중간에 choice 탐지 안 된 경우
                                             
                                             choice_number[i+1]=0
-                                      
+                                    print(choice_number) 
 
                                     # Write results
                                     for *xyxy, conf, cls in (det):
@@ -239,7 +246,7 @@ def get_img(image):
                                     if dataset.mode == 'image':
                                         cv2.imwrite(answer_save_path, im02)
                     elif names[c] == "question":
-
+                        isQuestion = 1
                         text = main(crop_path, APPKEY)
                         text = re.sub(r'[^가-힣a-zA-Zㄱ-ㅎ()0-9.,?![]~%-_/<>\s]:\'\"\+]','', text)
                         if text =="":
@@ -253,7 +260,10 @@ def get_img(image):
                         s3.put_object(Body=imagetoupload, Bucket=BUCKET_NAME, Key=imagefilename, ContentType="image/jpeg")
                         img_url = "https://summer-program.s3.ap-northeast-2.amazonaws.com/"+imagefilename
                         dict[names[c]].append(img_url)
+                        
+                    
 
+                            
                     
 
             # Save results (image with detections)
@@ -263,7 +273,18 @@ def get_img(image):
                     
 
        
-
+    if isQuestion == 1 and isContent == 1 and isAnswer == 0 :  
+                       
+        dict["answer"].append("①")
+        dict["answer"].append("no exist url")
+        dict["answer"].append("②")
+        dict["answer"].append("no exist url")
+        dict["answer"].append("③")
+        dict["answer"].append("no exist url")
+        dict["answer"].append("④")
+        dict["answer"].append("no exist url")
+        dict["answer"].append("⑤")
+        dict["answer"].append("no exist url")
     #shutil.rmtree('./result/') # 결과 확인 필요 없을 때 주석 풀고 써주기 (result/ 폴더 삭제해주는 기능)
     print(dict)
     title=dict["question"]
