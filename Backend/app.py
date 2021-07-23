@@ -16,10 +16,38 @@ import boto3
 from s3 import AWS_SECRET_KEY, AWS_ACCESS_KEY, BUCKET_NAME
 import io
 import datetime
+#redis / prometheus
+# import redis
+# import time
+# from random import random
+# from prometheus_flask_exporter import PrometheusMetrics
 
 app = Flask(__name__)
 api = Api(app)  # Flask 객체에 Api 객체 등록
+#prometheus
+# metrics = PrometheusMetrics(app)
+# metrics.info("flask_app_info", "App Info, this can be anything you want", version="1.0.0")
 
+# cache = redis.Redis(host='redis', port=6379)
+
+# # custom metric to be applied to multiple endpoints
+# common_counter = metrics.counter(
+#     'flask_by_endpoint_counter', 'Request count by endpoints',
+#     labels={'endpoint': lambda: request.endpoint}
+# )
+
+# def get_hit_count():
+#     time.sleep(random() * 0.5)
+#     retries = 5
+#     while True:
+#         try:
+#             return cache.incr('hits')
+#         except redis.exceptions.ConnectionError as exc:
+#             if retries == 0:
+#                 raise exc
+#             retries -= 1
+#             time.sleep(0.5)
+#####
 app.secret_key=SECRET_KEY
 CORS(app, supports_credentials=True)
 
@@ -60,8 +88,10 @@ class HelloWorld(Resource):
     @api.expect(parser)
     @api.response(200, 'Success')
     @api.response(400, 'Bad Request')
+    @common_counter
     def get(self):  
-        return "hello"
+        count = get_hit_count()
+        return "hello. I have been seen {} times.\n".format(count)
 
 
 @api.route('/api/signup')
@@ -74,7 +104,7 @@ class Signup(Resource):
     @api.response(201, '회원가입 성공')
     @api.response(400, 'Bad Request')
     @api.response(403, "아이디가 이미 있습니다")
-
+    #@common_counter
     def post(self):
         
         new_user = request.json
@@ -123,7 +153,7 @@ class login(Resource):
     @api.response(201, '로그인 성공')
     @api.response(400, 'Bad Request')
     @api.response(403, "해당 아이디가 없습니다\n 비밀번호가 틀렸습니다")
- 
+    #@common_counter
     def post(self):  
         login_user = request.json
         id = login_user['id']
@@ -177,7 +207,7 @@ class logout(Resource):
     @api.expect(logout_parser)
     @api.response(200, '로그아웃 성공')
     @api.response(400, 'Bad Request')
-
+    #@common_counter
     def get(self):  
         session.pop('id',None)
         if request.cookies.get("jwt"):
@@ -432,7 +462,13 @@ class Quizdelete(Resource):
             response.status_code = 403 
             return response
 
-           
+# register additional default metrics
+# metrics.register_default(
+#     metrics.counter(
+#         'flask_by_path_counter', 'Request count by request paths',
+#         labels={'path': lambda: request.path}
+#     )
+# )
 
 #app.run(host='0.0.0.0',debug=True)
 if __name__ =="__main__":
