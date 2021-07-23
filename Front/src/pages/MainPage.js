@@ -200,7 +200,6 @@ const MainPage = (props) => {
               HoveredRow={HoveredRow}
               HoveredColumn={HoveredColumn}
               setIsHovered={setIsHovered}
-              setHoveredRow={setHoveredRow}
               setTarget={setTarget}
               tableProps={tableProps}
               urls={urls}
@@ -424,7 +423,10 @@ const MainPage = (props) => {
       let url_idx = 1;
       let txt_idx = 1;
       quiz.choices.map((choice, i) => {
-        if (choice.substring(0, 25) === "https://summer-program.s3") {
+        if (
+          choice.substring(0, 25) === "https://summer-program.s3" ||
+          choice === "no exist url"
+        ) {
           data_return[`choice${url_idx++}`].push(choice);
         } else {
           data_return[`choice${txt_idx++}`].push(choice);
