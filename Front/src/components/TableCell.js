@@ -1,5 +1,6 @@
 import React from "react";
 import { EditText } from "react-edit-text";
+import styled from "styled-components";
 
 const divBorder = {
   marginBottom: "40px",
@@ -15,17 +16,17 @@ const imgStyle = {
 };
 
 // hover 관련 div css
-const divHover = {
-  position: "absolute",
-  alignItems: "center",
-  justifyContent: "center",
-  //left: "25%",
-  //top: "12%",
-  backgroundColor: "#f2f2f2",
-  borderRadius: "10px",
-  paddingTop: "0px",
-  marginTop: "35px",
-};
+const DivHover = styled.div`
+  position: absolute;
+  align-items: center;
+  justify-content: center;
+  //left: 25%;
+  //top: 12%;
+  background-color: #f2f2f2;
+  border-radius: 10px;
+  padding-top: 0px;
+  margin-top: 30px;
+`;
 
 const TableCell = ({
   title,
@@ -33,6 +34,7 @@ const TableCell = ({
   HoveredRow,
   HoveredColumn,
   setIsHovered,
+  setHoveredRow,
   setTarget,
   tableProps,
   urls,
@@ -41,7 +43,7 @@ const TableCell = ({
   return (
     <div
       title={title}
-      onMouseEnter={() =>
+      onMouseOver={() =>
         document.activeElement.type === "text"
           ? console.log(document.activeElement.type)
           : setTarget(tableProps.cell.row.index, tableProps.cell.column.Header)
@@ -49,13 +51,21 @@ const TableCell = ({
       onMouseLeave={() =>
         document.activeElement.type === "text" ? {} : setIsHovered(false)
       }
-      style={{ cursor: "pointer" }}
+      style={{
+        cursor: "pointer",
+        width: "90%",
+        height: "90%",
+        textAlign: "center",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+      }}
     >
       {isHovered &
         (HoveredRow === tableProps.cell.row.index) &
         (HoveredColumn === tableProps.cell.column.Header) &
         (typeof urls === "object") && urls.length !== 0 ? (
-        <div style={divHover}>
+        <DivHover>
           <header
             style={{
               backgroundColor: "#f2f2f2",
@@ -70,22 +80,23 @@ const TableCell = ({
               <img alt="이미지" src={url} style={imgStyle} />
             ))}
           </main>
-        </div>
+        </DivHover>
       ) : (
         <></>
       )}
       {typeof tableProps.cell.value === "object" ? (
         tableProps.cell.value.map((content, i) => {
           if (content.substring(0, 25) === "https://summer-program.s3") {
-            return <>img_url</>; //<EditText readonly="true" defaultValue="img_url" />;
+            return <div></div>; //<EditText readonly="true" defaultValue="img_url" />;
+          } else {
+            return (
+              <EditText
+                name={`${title},${i}`}
+                onSave={(e) => handleSave(tableProps.row.original, e)}
+                defaultValue={content}
+              />
+            );
           }
-          return (
-            <EditText
-              name={`${title},${i}`}
-              onSave={(e) => handleSave(tableProps.row.original, e)}
-              defaultValue={content}
-            />
-          );
         })
       ) : tableProps.cell.value.substring(0, 25) ===
         "https://summer-program.s3" ? (

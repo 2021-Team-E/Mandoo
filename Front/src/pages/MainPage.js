@@ -178,7 +178,6 @@ const MainPage = (props) => {
     () => [
       {
         accessor: "qid", //해당 열을 data 객체의 어느 속성을 읽어야 하는지 명시
-
         Header: "번호", //테이블 헤더에 보여줄 텍스트 명시
         Cell: (tableProps) => (
           <EditText
@@ -201,6 +200,7 @@ const MainPage = (props) => {
               HoveredRow={HoveredRow}
               HoveredColumn={HoveredColumn}
               setIsHovered={setIsHovered}
+              setHoveredRow={setHoveredRow}
               setTarget={setTarget}
               tableProps={tableProps}
               urls={urls}
@@ -336,7 +336,7 @@ const MainPage = (props) => {
           const urls = getUrls(tableProps.cell.value);
           return (
             <TableCell
-              title="choice1"
+              title="answer"
               isHovered={isHovered}
               HoveredRow={HoveredRow}
               HoveredColumn={HoveredColumn}
@@ -356,7 +356,7 @@ const MainPage = (props) => {
           const urls = getUrls(tableProps.cell.value);
           return (
             <TableCell
-              title="choice1"
+              title="score"
               isHovered={isHovered}
               HoveredRow={HoveredRow}
               HoveredColumn={HoveredColumn}
@@ -411,14 +411,29 @@ const MainPage = (props) => {
         script: quiz.script,
         image: quiz.image,
         score: quiz.score,
+        choice1: [],
+        choice2: [],
+        choice3: [],
+        choice4: [],
+        choice5: [],
+        choice6: [],
+        choice7: [],
+        choice8: [],
+        choice9: [],
       };
-
+      let url_idx = 1;
+      let txt_idx = 1;
       quiz.choices.map((choice, i) => {
-        data_return[`choice${i + 1}`] = choice;
+        if (choice.substring(0, 25) === "https://summer-program.s3") {
+          data_return[`choice${url_idx++}`].push(choice);
+        } else {
+          data_return[`choice${txt_idx++}`].push(choice);
+        }
       });
 
       return data_return;
     });
+    console.log(showed_data);
     return showed_data;
   }, [quizzes]);
 
@@ -471,7 +486,7 @@ const MainPage = (props) => {
       style={{
         backgroundColor: "#f0f8ff",
         width: "100vw",
-        height: "88vh",
+        minHeight: "88vh",
         marginTop: "80px",
         zIndex: "0",
       }}
