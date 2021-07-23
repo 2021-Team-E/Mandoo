@@ -118,6 +118,8 @@ def get_img(image):
 
                         text = main(crop_path, APPKEY)
                         text = re.sub(r'[^가-힣a-zA-Zㄱ-ㅎ()0-9.,?![]~%-_/<>\s]:\'\"\+]','', text)
+                        if text =="":
+                            text = "마우스를 올려 이미지로 확인해주세요"
                         print(text)
                         dict[names[c]].append(text)
                      
@@ -212,6 +214,8 @@ def get_img(image):
                                    
                                         text = main(answer_save_path, APPKEY)
                                         text = re.sub(r'[^가-힣a-zA-Zㄱ-ㅎ()0-9.,?![]~%-_/<>\s]:\'\"\+]','', text)
+                                        if text =="":
+                                            text = "마우스를 올려 이미지로 확인해주세요"
                                         print(text)
                                         dict[names[c]].append(text)
 
@@ -238,6 +242,8 @@ def get_img(image):
 
                         text = main(crop_path, APPKEY)
                         text = re.sub(r'[^가-힣a-zA-Zㄱ-ㅎ()0-9.,?![]~%-_/<>\s]:\'\"\+]','', text)
+                        if text =="":
+                            text = "마우스를 올려 이미지로 확인해주세요"
                         dict[names[c]].append(text)
 
                         
