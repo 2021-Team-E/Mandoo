@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import { EditText } from "react-edit-text";
 import styled from "styled-components";
 
@@ -18,14 +18,14 @@ const imgStyle = {
 // hover 관련 div css
 const DivHover = styled.div`
   position: absolute;
+  top: ${(props) => props.top || 0}px;
+  left: ${(props) => props.left || 0}px;
   align-items: center;
   justify-content: center;
   //left: 25%;
   //top: 12%;
   background-color: #f2f2f2;
   border-radius: 10px;
-  padding-top: 0px;
-  margin-top: 30px;
 `;
 
 const TableCell = ({
@@ -34,7 +34,6 @@ const TableCell = ({
   HoveredRow,
   HoveredColumn,
   setIsHovered,
-  setHoveredRow,
   setTarget,
   tableProps,
   urls,
@@ -86,7 +85,10 @@ const TableCell = ({
       )}
       {typeof tableProps.cell.value === "object" ? (
         tableProps.cell.value.map((content, i) => {
-          if (content.substring(0, 25) === "https://summer-program.s3" || content === "no exist url") {
+          if (
+            content.substring(0, 25) === "https://summer-program.s3" ||
+            content === "no exist url"
+          ) {
             return <div></div>; //<EditText readonly="true" defaultValue="img_url" />;
           } else {
             return (
