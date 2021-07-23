@@ -104,11 +104,13 @@ const MainPage = (props) => {
 
   // 바뀌는 value값 저장
   const handleSave = async (quiz, e) => {
+    console.log(e.name);
     const tmp = e.name.split(",");
     const name = tmp[0];
     let idx = 0;
     if (tmp.length === 2) idx = tmp[1];
     const changedValue = await changeQuiz(name, idx, e.value, quiz);
+    console.log(changedValue);
     try {
       const request = await axios
         .put(`${USER_SERVER}/api/quizmodify`, changedValue)
@@ -122,6 +124,7 @@ const MainPage = (props) => {
   };
 
   const changeQuiz = async (name, idx, value, quiz) => {
+    console.log(name);
     let arr = quiz[`${name}`];
     let tmp_arr = [];
     if (typeof arr === "object") {
@@ -146,7 +149,9 @@ const MainPage = (props) => {
       score: quiz.score,
     };
     let tmp_arr2 = [];
-    [1, 2, 3, 4, 5].map((num) => tmp_arr2.push(quiz[`choice${num}`] || ""));
+    [1, 2, 3, 4, 5].map((num) =>
+      quiz[`choice${num}`]?.map((choice) => tmp_arr2.push(choice))
+    );
     quiz_to_return.choices = tmp_arr2;
     return quiz_to_return;
   };
@@ -435,7 +440,6 @@ const MainPage = (props) => {
 
       return data_return;
     });
-    console.log(showed_data);
     return showed_data;
   }, [quizzes]);
 
