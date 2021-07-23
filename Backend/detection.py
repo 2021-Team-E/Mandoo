@@ -233,7 +233,7 @@ def get_img(image):
                                             for i in range(empty) :
                                                     choice_number[i]=0
                                             
-                                        elif (sorted_choice[n-1][1] < sorted_choice[0][1]+(mingap_y)*3) : 
+                                        elif (sorted_choice[n-1][1] < sorted_choice[0][1]+(mingap_y)*4) : 
                                             empty = 5 - n 
                                             for i in range(4, n - empty  ,-1 ) :
                                                 choice_number[i]=0
