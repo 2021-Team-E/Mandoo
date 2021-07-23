@@ -199,6 +199,7 @@ def get_img(image):
                                                     temp= sorted_choice[j + 1].copy()   
                                                     sorted_choice[j + 1] = sorted_choice[j]
                                                     sorted_choice[j]=temp
+                                    print("\n\n\n",sorted_choice) 
                                     # choice 탐지 안된 것들 0으로 표기
                                     for i in range (n-1):
                     
@@ -237,7 +238,7 @@ def get_img(image):
                                         
                                         if choice_number[i]==0: # choice_number[i] 번째 선지가 탐지가 안된 경우
                                     
-                                            dict[names[c]].insert(i*2,"해당 선택지 탐지에 실패하였습니다.")
+                                            dict[names[c]].insert(i*2,"직접 입력해주세요")
                                             dict[names[c]].insert(i*2+1,"no exist url")
                                             
                                         
