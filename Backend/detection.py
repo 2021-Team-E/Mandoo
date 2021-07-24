@@ -8,7 +8,6 @@ import re
 from pathlib import Path
 import cv2
 import torch
-import tensorflow as tf
 from models.experimental import attempt_load
 from utils.datasets import LoadImages
 from utils.general import check_img_size, non_max_suppression, scale_coords, set_logging,save_one_box
@@ -128,10 +127,7 @@ def get_img(image):
                             text = "마우스를 올려 이미지로 확인해주세요"
                         print(text)
                         dict[names[c]].append(text)
-                     
-
-
-
+         
                     elif names[c] == "answer":
                         isAnswer=1
                         answerset = LoadImages(crop_path, img_size=imgsz)
@@ -169,8 +165,7 @@ def get_img(image):
                                     
                                     count = 0
                                     n=len(det)
-                                    tensor=det
-                                    sorted_choice=tensor.numpy()
+                                    sorted_choice=det.numpy()
                                     choice_number=[1,1,1,1,1]
                                     mingap_y=100
                                     mingap_x=100
@@ -216,18 +211,14 @@ def get_img(image):
                                     print("\n\n\mingap_y : ",mingap_y)         
                                     print("\n\n\n",sorted_choice) 
                                     # choice 탐지 안된 것들 0으로 표기
-                                    
                                     if n < 5 : 
                                         
-
                                         for i in range (n-1):
                         
                                             if (abs(sorted_choice[i][1] - sorted_choice[i+1][1]) > mingap_y*2) and (abs(sorted_choice[i][0] - sorted_choice[i+1][0])<30): 
                                                 
                                                 choice_number[i+1]=0
                                         
-                                        
-                                            
                                         if (sorted_choice[0][1] > mingap_y) : 
                                             empty = 5 - n 
                                             for i in range(empty) :
@@ -295,19 +286,14 @@ def get_img(image):
                         dict[names[c]].append(img_url)
                         
                     
-
-                            
-                    
-
             # Save results (image with detections)
             if save_img:
                 if dataset.mode == 'image':
                     cv2.imwrite(save_path, im0)
                     
 
-       
+    # content안에 answer있는 문제의 경우
     if isQuestion == 1 and isContent == 1 and isAnswer == 0 :  
-                       
         dict["answer"].append("①")
         dict["answer"].append("no exist url")
         dict["answer"].append("②")
@@ -318,6 +304,7 @@ def get_img(image):
         dict["answer"].append("no exist url")
         dict["answer"].append("⑤")
         dict["answer"].append("no exist url")
+
     #shutil.rmtree('./result/') # 결과 확인 필요 없을 때 주석 풀고 써주기 (result/ 폴더 삭제해주는 기능)
     print(dict)
     title=dict["question"]
