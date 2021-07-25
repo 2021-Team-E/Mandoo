@@ -207,30 +207,32 @@ def get_img(image):
                                                 gap_y=abs(sorted_choice[i][1] - sorted_choice[i+1][1])
                                                 if gap_y < mingap_y:
                                                     mingap_y = gap_y
-                                    print("\n\n\mingap_x : ",mingap_x)   
-                                    print("\n\n\mingap_y : ",mingap_y)         
-                                    print("\n\n\n",sorted_choice) 
+                                   
+
                                     # choice 탐지 안된 것들 0으로 표기
                                     if n < 5 : 
                                         
                                         for i in range (n-1):
                         
-                                            if (abs(sorted_choice[i][1] - sorted_choice[i+1][1]) > mingap_y*2) and (abs(sorted_choice[i][0] - sorted_choice[i+1][0])<30): 
+                                            if ((abs(sorted_choice[i][1] - sorted_choice[i+1][1]) > mingap_y*2) and (abs(sorted_choice[i][0] - sorted_choice[i+1][0]) >= mingap_x) ): 
                                                 
                                                 choice_number[i+1]=0
-                                        
-                                        if (sorted_choice[0][1] > mingap_y) : 
-                                            empty = 5 - n 
-                                            for i in range(empty) :
-                                                    choice_number[i]=0
-                                            
-                                        elif (sorted_choice[n-1][1] < sorted_choice[0][1]+(mingap_y)*4) : 
-                                            empty = 5 - n 
-                                            for i in range(4, n - empty  ,-1 ) :
+                                                n=n+1
+                                      
+                                        empty = 5 - n
+                                        for i in range(empty) :
+                                             
+                                            if n<5 and (sorted_choice[0][1] > mingap_y) : 
                                                 choice_number[i]=0
+                                                n=n+1
+                                        empty = 5 - n
+                                        for i in range(4, n - empty  ,-1 ) :    
+                                            
+                                            if  n<5 and (sorted_choice[n-1][1] < sorted_choice[0][1]+(mingap_y)*4) : 
+                                                choice_number[i]=0
+                                                n=n+1
 
-                                        print("\n",choice_number) 
-
+                                        
                                     # Write results
                                     for *xyxy, conf, cls in (det):
                                         
