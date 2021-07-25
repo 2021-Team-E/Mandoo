@@ -24,7 +24,7 @@ import datetime
 
 app = Flask(__name__)
 api = Api(app)  # Flask 객체에 Api 객체 등록
-#prometheus
+# #prometheus
 # metrics = PrometheusMetrics(app)
 # metrics.info("flask_app_info", "App Info, this can be anything you want", version="1.0.0")
 
@@ -73,7 +73,7 @@ qshow_parser = reqparse.RequestParser()
 qmodify_parser = reqparse.RequestParser()
 qdelete_parser = reqparse.RequestParser()
 
-mongo = MongoClient('localhost', 27017) # 나중에 localhost를 mongo_db 로 바꾸기
+mongo = MongoClient('mongo_db', 27017) # 나중에 localhost를 mongo_db 로 바꾸기
 #mongo = MongoClient('localhost', 27017)
 
 db = mongo.Mandoo #Mandoo database
@@ -88,7 +88,7 @@ class HelloWorld(Resource):
     @api.expect(parser)
     @api.response(200, 'Success')
     @api.response(400, 'Bad Request')
-    @common_counter
+    # @common_counter
     def get(self):  
         count = get_hit_count()
         return "hello. I have been seen {} times.\n".format(count)
@@ -104,7 +104,7 @@ class Signup(Resource):
     @api.response(201, '회원가입 성공')
     @api.response(400, 'Bad Request')
     @api.response(403, "아이디가 이미 있습니다")
-    #@common_counter
+    # @common_counter
     def post(self):
         
         new_user = request.json
@@ -153,7 +153,7 @@ class login(Resource):
     @api.response(201, '로그인 성공')
     @api.response(400, 'Bad Request')
     @api.response(403, "해당 아이디가 없습니다\n 비밀번호가 틀렸습니다")
-    #@common_counter
+    # @common_counter
     def post(self):  
         login_user = request.json
         id = login_user['id']
@@ -207,7 +207,7 @@ class logout(Resource):
     @api.expect(logout_parser)
     @api.response(200, '로그아웃 성공')
     @api.response(400, 'Bad Request')
-    #@common_counter
+    # @common_counter
     def get(self):  
         session.pop('id',None)
         if request.cookies.get("jwt"):
@@ -230,7 +230,7 @@ class Image(Resource):
     @api.response(201, '이미지 등록 성공')
     @api.response(400, 'Bad Request')
     @api.response(401, '로그인 필요')
-
+    # @common_counter
     def post(self):
         args = image_parser.parse_args()
         id = request.cookies.get('jwt')
@@ -295,7 +295,7 @@ class Showquiz(Resource):
     @api.response(200, '퀴즈 리스트를 모두 가져옴', showquiz_fields)
     @api.response(400, 'Bad Request')
     @api.response(401, '로그인 필요')
-
+    # @common_counter
     def get(self):
         
         id = request.cookies.get('jwt')
@@ -347,6 +347,7 @@ class Quizmodify(Resource):
     @api.response(201, '퀴즈 수정 성공')
     @api.response(400, 'Bad Request')
     @api.response(401, '로그인 필요')
+    # @common_counter
     def put(self):
         
         id = request.cookies.get('jwt')
@@ -398,6 +399,7 @@ class Quizdelete(Resource):
     @api.response(400, 'Bad Request')
     @api.response(401, '로그인 필요')
     @api.response(403, '해당 퀴즈가 퀴즈 테이블에 없습니다\n퀴즈를 소유하고 있지 않습니다')
+    # @common_counter
     def delete(self):
         
         id = request.cookies.get('jwt')
