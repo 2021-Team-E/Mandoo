@@ -6,7 +6,7 @@
   <p>
    <img width="700" alt="quizrix_imageupload" src="https://user-images.githubusercontent.com/52441923/126748956-5bf7503e-575a-4008-83e1-9632de129c2c.png">
 	 </p> 
-2. 학습지 이미지 데이터에서 딥러닝을 이용하여 문항정보를 추출한다.  <br> The components of the problem are classified through a deep-learning model. (모델 완성 후 수정)
+2. 학습지 이미지 데이터에서 딥러닝을 이용하여 문항정보를 추출한다. <br>  The components of the problem are classified through a deep-learning model. (모델 완성 후 수정)
   <p>
    <img width="700" alt="quizrix_imageupload" src="https://user-images.githubusercontent.com/52441923/126749134-2e804fb4-e62b-4e68-a1aa-4cdc033409c3.png">
 	</p> 
