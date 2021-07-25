@@ -28,7 +28,7 @@
 ## **Description**
 
 웹페이지에 문제 이미지를 첨부하면 문항 / 보기 / 선지로 세분화하여 데이터베이스에 저장합니다.
-Once the problem is uploaded, the problem is classified and separated into three components; question, content, and answer, then is saved into the database.
+When the problem is uploaded, the problem is classified and separated into three components; question, content, and answer, then is saved into the database.
 
 > 현재 개발 중에 있습니다.
 
