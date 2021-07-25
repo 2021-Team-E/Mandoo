@@ -16,7 +16,7 @@
 	 최종본 gif 추가
 
 
-> 본 프로젝트는 코드넛 'QUIZRIX' 사업의 일부 프로토타입 제작을 위해 진행되었습니다. This project was acarried out for building a prototype for "Quizrix" of Codnut.
+> 본 프로젝트는 코드넛 'QUIZRIX' 사업의 일부 프로토타입 제작을 위해 진행되었습니다. This project was carried out for building a prototype for "Quizrix" of Codnut.
   
   
 ## **System Architecture ->검사 받고 최종 올려둘게요**
