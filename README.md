@@ -2,7 +2,7 @@
 
 * 학습지 이미지 데이터에서 문항정보를 추출해 데이터베이스에 저장 후 해당 내용을 사용자의 브라우저에서 접속 가능하도록하는 플랫폼 
 * Quizrix is a platform with a user-friendly interface designed to upload and view workbook problems via classifying different components of the question from a problem image and saving them to a database. 
-1. 학습 문제의 이미지를 업로드 방식으로 등록한다. The user uploads the problem image.
+1. 학습 문제의 이미지를 업로드 방식으로 등록한다. The user uploads the image of the problem.
   <p>
    <img width="700" alt="quizrix_imageupload" src="https://user-images.githubusercontent.com/52441923/126748956-5bf7503e-575a-4008-83e1-9632de129c2c.png">
 	 </p> 
