@@ -68,12 +68,13 @@ services:
       - redis
     networks:
       - app-tier
-      #   aliases:
-      #     - flask-app
+        aliases:
+          - flask-app
     restart: always
 
   prometheus:
     image: prom/prometheus:latest
+    user: root
     volumes:
       - ./prometheus/:/etc/prometheus/
       - ./prometheus/data:/prometheus
@@ -105,7 +106,7 @@ services:
       - --collector.filesystem.ignored-mount-points
       - "^/(sys|proc|dev|host|etc|rootfs/var/lib/docker/containers|rootfs/var/lib/docker/overlay2|rootfs/run/docker/netns|rootfs/var/lib/docker/aufs)($$|/)"
     ports:
-      - 9100:9100
+      - 9101:9101
     networks:
       - app-tier
     restart: always
@@ -144,7 +145,7 @@ services:
 
   grafana:
     image: grafana/grafana
-    user: "472"
+    user: root
     depends_on:
       - prometheus
     ports:
