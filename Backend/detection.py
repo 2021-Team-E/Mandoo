@@ -208,17 +208,21 @@ def get_img(image):
                                                 if gap_y < mingap_y:
                                                     mingap_y = gap_y
                                    
-
+                                    print("\n mingap_x: ",mingap_x)
+                                    print("\n mingap_y: ",mingap_y)
+                                    print("\n sorted_choice: \n",sorted_choice)
                                     # choice 탐지 안된 것들 0으로 표기
                                     if n < 5 : 
                                         
                                         for i in range (n-1):
                         
-                                            if ((abs(sorted_choice[i][1] - sorted_choice[i+1][1]) > mingap_y*2) and (abs(sorted_choice[i][0] - sorted_choice[i+1][0]) >= mingap_x) ): 
+                                            if ((abs(sorted_choice[i][1] - sorted_choice[i+1][1]) > mingap_y*2))  :
                                                 
                                                 choice_number[i+1]=0
                                                 n=n+1
-                                      
+                                            elif (abs(sorted_choice[i][0] - sorted_choice[i+1][0]) >= mingap_x*2) :
+                                                choice_number[i+1]=0
+                                                n=n+1
                                         empty = 5 - n
                                         for i in range(empty) :
                                              
@@ -231,7 +235,8 @@ def get_img(image):
                                             if  n<5 and (sorted_choice[n-1][1] < sorted_choice[0][1]+(mingap_y)*4) : 
                                                 choice_number[i]=0
                                                 n=n+1
-
+                                    print("\n choice_number: ",choice_number)
+                                    print("n: ",n)
                                         
                                     # Write results
                                     for *xyxy, conf, cls in (det):
