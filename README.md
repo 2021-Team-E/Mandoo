@@ -1,8 +1,10 @@
 한국어 | [English](README_en.md)
 
-------------------------------------------------------------------------------------------
+<br>
 
-# **QUIZRIX(허락 필요)**
+# **QUIZRIX**
+
+> 본 프로젝트는 코드넛 'QUIZRIX' 사업의 일부 프로토타입 제작을 위해 진행되었습니다.
 
 - 학습지 이미지 데이터에서 문항정보를 추출해 데이터베이스에 저장 후 해당 내용을 사용자의 브라우저에서 접속 가능하도록하는 플랫폼
 
@@ -10,6 +12,7 @@
 <p>
  <img width="700" alt="quizrix_imageupload" src="https://user-images.githubusercontent.com/52441923/126748956-5bf7503e-575a-4008-83e1-9632de129c2c.png">
  </p>
+
 2. 학습지 이미지 데이터에서 딥러닝을 이용하여 문항정보를 추출한다.
 <p>
  <img width="700" alt="quizrix_imageupload" src="https://user-images.githubusercontent.com/52441923/126749134-2e804fb4-e62b-4e68-a1aa-4cdc033409c3.png">
@@ -19,20 +22,11 @@
 
      최종본 gif 추가
 
-> 본 프로젝트는 코드넛 'QUIZRIX' 사업의 일부 프로토타입 제작을 위해 진행되었습니다.
-
-
-## **System Architecture ->검사 받고 최종 올려둘게요**
+## **System Architecture**
 
 <p align="center">  
   <img src="https://user-images.githubusercontent.com/52441923/126756283-16c5dd0b-8f84-4aab-81f1-b7e4ea4cc171.jpg">
 </p>
-
-## **Description**
-
-웹페이지에 문제 이미지를 첨부하면 문항 / 보기 / 선지로 세분화하여 데이터베이스에 저장합니다.
-
-> 현재 개발 중에 있습니다.
 
 <br>
 
@@ -40,14 +34,16 @@
 
 <br>
 
-| 분류          | 기술                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
-| :------------ | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 개발환경      | ![NHN](https://img.shields.io/badge/NHN_Cloud_Ubuntu-20.04-blue?logo=ubuntu) ![S3](https://img.shields.io/badge/S3-green?logo=AmazonS3) ![Docker](https://img.shields.io/badge/docker-blue?logo=docker)                                                                                                                                                                                                                                                                                                                                                                                                    |
-| Front-end     | ![react](https://img.shields.io/badge/react-9cf?logo=react) ![Javascript](https://img.shields.io/badge/javascript-ES6+-yellow?logo=javascript) ![Bootstrap](https://img.shields.io/badge/bootstrap-9cf?logo=bootstrap) ![axios](https://img.shields.io/badge/axios-9cf?color=purple) ![Styled-components](https://img.shields.io/badge/styled_components-DB7093?logo=styled-components)                                                                                                                                                                                                                    |
-| Back-end      | ![Flask](https://img.shields.io/badge/flask-1.1.2-green?logo=flask) ![Python](https://img.shields.io/badge/python-3.7.6-skyblue?logo=python) ![Gunicorn](https://img.shields.io/badge/gunicorn-darkgreen?logo=gunicorn) ![Postman](https://img.shields.io/badge/postman-pink?logo=postman) ![Swagger](https://img.shields.io/badge/swagger-darkgreen?logo=swagger)                                                                                                                                                                                                                                         |
-| DB            | ![MongoDB](https://img.shields.io/badge/mongodb-blue?logo=mongodb)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
-| Deep learning | ![Pytorch](https://img.shields.io/badge/pytorch-blue?logo=pytorch) ![Colab](https://img.shields.io/badge/colab-darkgreen?logo=GoogleColab)                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
-| Etc           | ![Nginx](https://img.shields.io/badge/Nginx-brightgreen?logo=nginx) ![github](https://img.shields.io/badge/github-gray?logo=github) ![VScode](https://img.shields.io/badge/VScode-blue?logo=visual-studio-code) ![Google Cloud Platform](https://img.shields.io/badge/Google_Cloud_Platform-VM_instance-red?logo=gcp) ![AWS](https://img.shields.io/badge/AWS-EC2_instance-orange?logo=aws) ![Prometheus](https://img.shields.io/badge/Prometheus-green?logo=Prometheus) ![Grafana](https://img.shields.io/badge/Grafana-green?logo=Grafana) ![Redis](https://img.shields.io/badge/Redis-green?logo=redis) |
+| 분류          | 기술                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| :------------ | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 개발환경      | ![NHN](https://img.shields.io/badge/NHN_Cloud_Ubuntu-20.04-blue?logo=ubuntu) ![S3](https://img.shields.io/badge/S3-gray?logo=AmazonS3) ![Docker](https://img.shields.io/badge/docker-gray?logo=docker)                                                                                                                                                                                                                                                                                     |
+| Front-end     | ![react](https://img.shields.io/badge/react-gray?logo=react) ![Javascript](https://img.shields.io/badge/javascript-ES6+-yellow?logo=javascript) ![Bootstrap](https://img.shields.io/badge/bootstrap-gray?logo=bootstrap) ![axios](https://img.shields.io/badge/axios-gray?logo=axios) ![Styled-components](https://img.shields.io/badge/styled_components-gray?logo=styled-components)                                                                                                     |
+| Back-end      | ![Flask](https://img.shields.io/badge/flask-1.1.2-green?logo=flask) ![Python](https://img.shields.io/badge/python-3.7.6-skyblue?logo=python) ![Gunicorn](https://img.shields.io/badge/gunicorn-gray?logo=gunicorn) ![Postman](https://img.shields.io/badge/postman-gray?logo=postman) ![Swagger](https://img.shields.io/badge/swagger-gray?logo=swagger)                                                                                                                                   |
+| DB            | ![MongoDB](https://img.shields.io/badge/mongodb-gray?logo=mongodb)                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| Deep learning | ![Pytorch](https://img.shields.io/badge/pytorch-gray?logo=pytorch) ![Colab](https://img.shields.io/badge/colab-gray?logo=GoogleColab) ![Yolov5](https://img.shields.io/badge/yolov5-gray?logo=yolov5)                                                                                                                                                                                                                                                                                      |
+| Etc           | ![Nginx](https://img.shields.io/badge/Nginx-gray?logo=nginx) ![github](https://img.shields.io/badge/github-gray?logo=github) ![VScode](https://img.shields.io/badge/VScode-gray?logo=visual-studio-code) ![AWS](https://img.shields.io/badge/AWS-EC2_instance-orange?logo=aws) ![Prometheus](https://img.shields.io/badge/Prometheus-gray?logo=Prometheus) ![Grafana](https://img.shields.io/badge/Grafana-gray?logo=Grafana) ![Redis](https://img.shields.io/badge/Redis-gray?logo=redis) |
+
+<br>
 
 ## **PORTS**
 
@@ -68,27 +64,76 @@
 
 ### flow
 
-<img width="476" alt="AI Flow" src="https://user-images.githubusercontent.com/80239146/126749561-c724903b-9bf2-4975-968b-6a6f1fe41a71.png">
+<img width="597" alt="flow" src="https://user-images.githubusercontent.com/80239146/126985473-cae4a4f7-6e58-4a26-b7d5-538a32a361d1.PNG">
 
+<br>
 <br>
 
 ### 결과
 
 - Model 1
+
   <img width="532" alt="model1" src="https://user-images.githubusercontent.com/80239146/126751834-81adeca3-36f7-48c4-9ea4-e360042f7551.PNG">
 
-- Model 2  
+- Model 2
+
   <img width="571" alt="model2" src="https://user-images.githubusercontent.com/80239146/126751880-3cc7c43f-ee20-4f38-a72e-87b80769dfa7.PNG">
-
-## **Frontend: React**
-
-#### file tree install
 
 <br>
 
-## **Backend: Flask**
+## **File Tree**
 
-#### file tree install
+```
+📦frontend
+ ┣ 📂node_modules
+ ┣ 📂public
+ ┣ 📂src
+ ┃ ┣ 📂components
+ ┃ ┃ ┣ 📂Modals
+ ┃ ┃ ┃ ┣ 📜Modal.css
+ ┃ ┃ ┃ ┗ 📜Modal.js
+ ┃ ┃ ┣ 📜BlankTop.js
+ ┃ ┃ ┣ 📜Button.js
+ ┃ ┃ ┣ 📜Header.css
+ ┃ ┃ ┣ 📜Header.js
+ ┃ ┃ ┣ 📜logo.PNG
+ ┃ ┃ ┣ 📜Search.js
+ ┃ ┃ ┗ 📜Table.js
+ ┃ ┣ 📂pages
+ ┃ ┃ ┣ 📜imgIcon.png
+ ┃ ┃ ┣ 📜Loader.js
+ ┃ ┃ ┣ 📜Login.js
+ ┃ ┃ ┣ 📜loginLogo.PNG
+ ┃ ┃ ┣ 📜MainPage.js
+ ┃ ┃ ┣ 📜noLogin.PNG
+ ┃ ┃ ┗ 📜Signup.js
+ ┃ ┣ 📜App.js
+ ┃ ┣ 📜config.js
+ ┃ ┣ 📜index.css
+ ┃ ┗ 📜index.js
+ ┣ 📜Dockerfile
+ ┗ 📜README.md
+```
+
+```
+📦backend
+┣ 📂models
+ ┃ ┣ 📂hub
+ ┣ 📂utils
+ ┃ ┣ 📂aws
+ ┃ ┣ 📂flask_rest_api
+ ┃ ┣ 📂google_app_engine
+ ┃ ┣ 📂wandb_logging
+ ┣ 📜Dockerfile
+ ┣ 📜README.md
+ ┣ 📜app.py
+ ┣ 📜choice5_bestweight.pt
+ ┣ 📜detection.py
+ ┣ 📜development.py
+ ┣ 📜kakaoOcr.py
+ ┣ 📜modelv2.0.pt
+ ┗ 📜requirements.txt
+```
 
 <br>
 
@@ -171,25 +216,15 @@
 docker-compose up —build
 ```
 
-### Docker
-
-### 배포
-
-## API
-
-## gif 이미지 넣는거/ 수정하는거
-
-## 멤버 소개
-
 <br>
 
 ## **Members**
 
-|     이름 | 개발분야                           | 담당                                  | 소개페이지                                         |
-| -------: | ---------------------------------- | ------------------------------------- | -------------------------------------------------- |
+|     이름 | 개발분야                           | 담당                                         | 소개페이지                                         |
+| -------: | ---------------------------------- | -------------------------------------------- | -------------------------------------------------- |
 |   최윤재 | Front-end, Back-end, Deep learning | Web development,API Design, Data Engineering | [개인 리포로 이동](https://github.com/yunyun3599)  |
-|   이채림 | Front-end, Devops                  | Web development, Docker               | [개인 리포로 이동](https://github.com/leecr1215)   |
-|   박신영 | Front-end, Deep learning           | Web development, Algorithm            | [개인 리포로 이동](https://github.com/shxnyoung)   |
+|   이채림 | Front-end, Devops                  | Web development, Docker                      | [개인 리포로 이동](https://github.com/leecr1215)   |
+|   박신영 | Front-end, Deep learning           | Web development, Algorithm                   | [개인 리포로 이동](https://github.com/shxnyoung)   |
 |   이하영 | Back-end, Deep learning            | API Design, Data Engineering                 | [개인 리포로 이동](https://github.com/hayoung1214) |
-| Ryan Lee | Deep learning                      | Algorithm                             | [개인 리포로 이동](https://github.com/printSANO)   |
-|   박근우 | Devops                             | Cloud, Docker, Data Monitoring        | [개인 리포로 이동](https://github.com/Gnu-Kenny)   |
+| Ryan Lee | Deep learning                      | Algorithm                                    | [개인 리포로 이동](https://github.com/printSANO)   |
+|   박근우 | Devops                             | Cloud, Docker, Data Monitoring               | [개인 리포로 이동](https://github.com/Gnu-Kenny)   |
