@@ -1,13 +1,12 @@
 # **QUIZRIX(허락 필요)**
 
 - 학습지 이미지 데이터에서 문항정보를 추출해 데이터베이스에 저장 후 해당 내용을 사용자의 브라우저에서 접속 가능하도록하는 플랫폼
-- Quizrix is a platform with a user-friendly interface designed to upload and view workbook problems via classifying different components of the question from a problem image and saving them to a database.
 
-1. 학습 문제의 이미지를 업로드 방식으로 등록한다. <br> The user uploads the image of the problem.
+1. 학습 문제의 이미지를 업로드 방식으로 등록한다.
 <p>
  <img width="700" alt="quizrix_imageupload" src="https://user-images.githubusercontent.com/52441923/126748956-5bf7503e-575a-4008-83e1-9632de129c2c.png">
  </p>
-2. 학습지 이미지 데이터에서 딥러닝을 이용하여 문항정보를 추출한다. <br> The components of the problem are classified through a deep-learning model. (모델 완성 후 수정)
+2. 학습지 이미지 데이터에서 딥러닝을 이용하여 문항정보를 추출한다.
 <p>
  <img width="700" alt="quizrix_imageupload" src="https://user-images.githubusercontent.com/52441923/126749134-2e804fb4-e62b-4e68-a1aa-4cdc033409c3.png">
 </p>
@@ -17,9 +16,7 @@
      최종본 gif 추가
 
 > 본 프로젝트는 코드넛 'QUIZRIX' 사업의 일부 프로토타입 제작을 위해 진행되었습니다.
-> <br>
 
-> This project was carried out for building a prototype for "Quizrix" of Codnut.
 
 ## **System Architecture ->검사 받고 최종 올려둘게요**
 
@@ -30,8 +27,6 @@
 ## **Description**
 
 웹페이지에 문제 이미지를 첨부하면 문항 / 보기 / 선지로 세분화하여 데이터베이스에 저장합니다.
-<br>
-The problem is classified and separated into three components; question, content, and answer, and then they save into the database.
 
 > 현재 개발 중에 있습니다.
 
@@ -73,7 +68,7 @@ The problem is classified and separated into three components; question, content
 
 <br>
 
-### 결과 Results
+### 결과
 
 - Model 1
   <img width="532" alt="model1" src="https://user-images.githubusercontent.com/80239146/126751834-81adeca3-36f7-48c4-9ea4-e360042f7551.PNG">
