@@ -1,0 +1,72 @@
+flask == 1.1.2
+redis
+pymysql
+pymongo
+flask-mysql
+jsonify
+requests
+
+gunicorn
+bcrypt
+PyJWT
+flask_cors
+flask_restx
+werkzeug
+
+
+#tensorflow==2.2
+#keras==2.4.3 
+# numpy==1.19.3 
+# pillow==7.0.0 
+# scipy==1.4.1 
+#h5py==2.10.0 
+# matplotlib==3.3.2 
+# opencv-python 
+#keras-resnet==0.2.0
+#imageai #doesn't have to install this when use Dockerfile
+awscli
+
+#tesseract 
+# tesseract-ocr #doesn't have to install this when use Dockerfile
+# image
+#pytesseract #doesn't have to install this when use Dockerfile
+
+boto3
+#opencv-contrib-python
+
+#Yolo v5 requirements.txt
+# base ----------------------------------------
+# matplotlib>=3.2.2
+# numpy>=1.18.5
+opencv-python>=4.1.2
+# Pillow
+PyYAML>=5.3.1
+# scipy>=1.4.1
+torch>=1.7.0
+torchvision>=0.8.1
+tqdm>=4.41.0
+cv
+# logging -------------------------------------
+# tensorboard>=2.4.1
+# wandb
+
+# plotting ------------------------------------
+seaborn>=0.11.0
+pandas
+
+# export --------------------------------------
+# coremltools>=4.1
+# onnx>=1.9.0
+# scikit-learn==0.19.2  # for coreml quantization
+
+# extras --------------------------------------
+# Cython  # for pycocotools https://github.com/cocodataset/cocoapi/issues/172
+# pycocotools>=2.0  # COCO mAP
+# albumentations>=1.0.3
+thop  # FLOPs computation
+
+wheel
+prometheus-flask-exporter
+#KAKAO OCR
+requests
+
