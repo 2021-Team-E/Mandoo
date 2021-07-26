@@ -187,8 +187,8 @@ docker-compose up —build
 |  Name     | Developement Field          | Skills in Charge                | Personal Bio                  |
 | -------: | ------------------------------- | --------------------------------- | --------------------------------------- |
 | Laura Yoonjae Choi | Front-end, Back-end, Deep learning | Web development,API Design, Algorithm | [Move to Personal Bio](https://github.com/yunyun3599)  |
-| CheLim Lee | Front-end, Devops                  | Web development, Docker               | [Move to Personal Bio](https://github.com/leecr1215)   |
+| Julia CheLim Lee | Front-end, Devops                  | Web development, Docker               | [Move to Personal Bio](https://github.com/leecr1215)   |
 | Claire ShinYoung Park | Front-end, Deep learning           | Web development, Algorithm            | [Move to Personal Bio](https://github.com/shxnyoung)   |
-| Hayoung Lee | Back-end, Deep learning            | API Design, Algorithm                 | [Move to Personal Bio](https://github.com/hayoung1214) |
-| Ryan Lee | Deep learning                      | Algorithm                             | [Move to Personal Bio](https://github.com/printSANO)   |
+|Julie Hayoung Lee | Back-end, Deep learning            | API Design, Algorithm                 | [Move to Personal Bio](https://github.com/hayoung1214) |
+| Ryan H. Lee | Deep learning                      | Algorithm                             | [Move to Personal Bio](https://github.com/printSANO)   |
 | Kenny Geunwoo Park | Devops                             | Cloud, Docker, Data Monitoring        | [Move to Personal Bio](https://github.com/Gnu-Kenny)   |
