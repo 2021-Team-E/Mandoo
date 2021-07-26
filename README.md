@@ -66,7 +66,9 @@
 
 ### ✔flow
 
+<p align="center">
 <img width="597" alt="flow" src="https://user-images.githubusercontent.com/80239146/126985473-cae4a4f7-6e58-4a26-b7d5-538a32a361d1.PNG">
+</p>
 
 <br>
 <br>
@@ -119,7 +121,7 @@
 
 ```
 📦backend
-┣ 📂models
+ ┣ 📂models
  ┃ ┣ 📂hub
  ┣ 📂utils
  ┃ ┣ 📂aws
@@ -219,6 +221,106 @@
 docker-compose up —-build
 ```
 
+<br>
+
+## **📑 Swagger**
+
+<p align="center">
+<img width="581" alt="swagger" src="https://user-images.githubusercontent.com/80239146/127004473-8f2d92cf-6903-4540-9775-58ce8b196d93.PNG">
+</p>
+<br>
+
+## **Git Convention**
+
+### Git-Flow
+
+- master : 제품으로 출시될 수 있는 브랜치
+- develop : 다음 출시 버전을 개발하는 브랜치
+- feature : 기능을 개발하는 브랜치
+- release : 이번 출시 버전을 준비하는 브랜치
+- hotfix : 출시 버전에서 발생한 버그를 수정 하는 브랜치
+
+### Process
+
+- 새로운 기능 개발을 위한 `feature` 브랜치를 생성할 때 브랜치 이름은 다음과 같은 규칙으로 생성합니다.
+- `feature` 브랜치는 마지막 `develop` 브랜치로부터 생성합니다.
+- 꼭 브랜치를 생성하기 전에 `develop` 브랜치를 `pull` 받습니다.
+
+### Branches 명 example
+
+- feature-user (사용자 관련 기능을 구현하는 feature branch)  
+  <br>
+
+## ✔Commit message
+
+커밋 메세지를 작성할 때는 다음과 같은 규칙으로 일관성 있게 작성합니다.
+
+### 1. Commit Message Structure
+
+기본적으로 커밋 메세지는 아래와 같이 제목 / 본문 / 꼬리말로 구성합니다.
+
+```xml
+type : subject
+
+body
+
+```
+
+### 2. Commit Type
+
+- feat : 새로운 기능 추가
+- fix : 버그 수정, 기능 수정
+- docs : 문서 수정
+- refactor : 코드 리팩토링 (변수명 수정 등)
+- test : 테스트 코드, 리팩토링 테스트 코드 추가
+- style : 코드 스타일 변경, 코드 자체 변경이 없는 경우, 주석 추가
+- remove : 파일 또는 코드, 리소스 제거
+- resource : 이미지 리소스, prefab 등의 코드와 상관없는 리소스 추가
+
+### 3. Subject
+
+- 제목은 50자를 넘기지 않고, 대문자로 작성하고 마침표를 붙이지 않습니다.
+- 과거시제를 사용하지 않고 명령어로 작성합니다.
+
+예시
+
+```xml
+feat : Add translation to missing strings
+feat : Disable publishing
+feat : Sort list context menu
+feat : Resize minimize/delete handle icons so they take up the entire topbar
+fix : Fix typo in cleanup.sh file
+```
+
+### 4. Body
+
+- 선택사항이기 때문에 모든 커밋에 본문내용을 작성할 필요는 없습니다.
+- 부연설명이 필요하거나 커밋의 이유를 설명할 경우 작성합니다.
+- 제목과 구분되기 위해 한칸을 띄워 작성합니다.
+- 각 줄은 72자를 넘기지 않습니다.
+- **본문은 꼭 영어로 작성할 필요는 없습니다.**
+
+## ✔git rebase
+
+원격 저장소에 Pull Request하기 전 프로젝트의 히스토리를 다듬습니다.  
+`rebase` 를 시행하기 전 원격저장소에서 `develop` 브랜치를 `pull` 받아 원격 저장소에 그동안 반영된 커밋을 가져옵니다.
+
+```bash
+git checkout develop
+git pull
+```
+
+### 현재 작업중인 feature 브랜치의 커밋을 develop 에 rebase 하기
+
+```bash
+git rebase develop feature/feature1
+```
+
+💡**주의**
+
+이미 원격 저장소에 push한 커밋은 절대 rebase하면 안됩니다.
+
+Rebase는 기존의 커밋을 그대로 사용하는 것이 아니라 내용은 같지만 다른 커밋을 새로 만듭니다.  
 <br>
 
 ## **👪 Members**
