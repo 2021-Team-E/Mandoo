@@ -208,12 +208,13 @@
   AWS_ACCESS_KEY = <AWS ACCESS KEY>
   AWS_SECRET_KEY = <AWS SECRET KEY>
   BUCKET_NAME = <AWS S3 bucket name>
+  APPKEY = <Kakao API>
   ```
 
 ### **🐳 Docker**
 
 ```bash
-docker-compose up —build
+docker-compose up —-build
 ```
 
 <br>
