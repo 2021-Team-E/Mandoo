@@ -8,13 +8,13 @@
 
 - 학습지 이미지 데이터에서 문항정보를 추출해 데이터베이스에 저장 후 해당 내용을 사용자의 브라우저에서 접속 가능하도록하는 플랫폼
 
-1️⃣. 학습 문제의 이미지를 업로드 방식으로 등록한다.
+1️⃣ 학습 문제의 이미지를 업로드 방식으로 등록한다.
 
 <p>
  <img width="700" alt="quizrix_imageupload" src="https://user-images.githubusercontent.com/52441923/126748956-5bf7503e-575a-4008-83e1-9632de129c2c.png">
  </p>
 
-2️⃣. 학습지 이미지 데이터에서 딥러닝을 이용하여 문항정보를 추출한다.
+2️⃣ 학습지 이미지 데이터에서 딥러닝을 이용하여 문항정보를 추출한다.
 
 <p>
  <img width="700" alt="quizrix_imageupload" src="https://user-images.githubusercontent.com/52441923/126749134-2e804fb4-e62b-4e68-a1aa-4cdc033409c3.png">
@@ -67,7 +67,7 @@
 ### ✔flow
 
 <p align="center">
-<img width="597" alt="flow" src="https://user-images.githubusercontent.com/80239146/126985473-cae4a4f7-6e58-4a26-b7d5-538a32a361d1.PNG">
+<img alt="flow" src="https://user-images.githubusercontent.com/80239146/126985473-cae4a4f7-6e58-4a26-b7d5-538a32a361d1.PNG">
 </p>
 
 <br>
@@ -226,11 +226,11 @@ docker-compose up —-build
 ## **📑 Swagger**
 
 <p align="center">
-<img width="581" alt="swagger" src="https://user-images.githubusercontent.com/80239146/127004473-8f2d92cf-6903-4540-9775-58ce8b196d93.PNG">
+<img alt="swagger" src="https://user-images.githubusercontent.com/80239146/127004473-8f2d92cf-6903-4540-9775-58ce8b196d93.PNG">
 </p>
 <br>
 
-## **Git Convention**
+## **🎡 Git Convention**
 
 ### Git-Flow
 
@@ -251,7 +251,7 @@ docker-compose up —-build
 - feature-user (사용자 관련 기능을 구현하는 feature branch)  
   <br>
 
-## ✔Commit message
+### **✔Commit message**
 
 커밋 메세지를 작성할 때는 다음과 같은 규칙으로 일관성 있게 작성합니다.
 
@@ -300,7 +300,7 @@ fix : Fix typo in cleanup.sh file
 - 각 줄은 72자를 넘기지 않습니다.
 - **본문은 꼭 영어로 작성할 필요는 없습니다.**
 
-## ✔git rebase
+### **✔git rebase**
 
 원격 저장소에 Pull Request하기 전 프로젝트의 히스토리를 다듬습니다.  
 `rebase` 를 시행하기 전 원격저장소에서 `develop` 브랜치를 `pull` 받아 원격 저장소에 그동안 반영된 커밋을 가져옵니다.
@@ -316,7 +316,7 @@ git pull
 git rebase develop feature/feature1
 ```
 
-💡**주의**
+💡 **주의**
 
 이미 원격 저장소에 push한 커밋은 절대 rebase하면 안됩니다.
 
