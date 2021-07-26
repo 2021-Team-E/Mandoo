@@ -2,7 +2,7 @@
 
 <br>
 
-# **QUIZRIX**
+# **✍ QUIZRIX**
 
 > 본 프로젝트는 코드넛 'QUIZRIX' 사업의 일부 프로토타입 제작을 위해 진행되었습니다.
 
@@ -22,7 +22,7 @@
 
      최종본 gif 추가
 
-## **System Architecture**
+## **📌System Architecture**
 
 <p align="center">  
   <img src="https://user-images.githubusercontent.com/52441923/126756283-16c5dd0b-8f84-4aab-81f1-b7e4ea4cc171.jpg">
@@ -30,7 +30,7 @@
 
 <br>
 
-## **Tech Stack**
+## **👀 Tech Stack**
 
 <br>
 
@@ -45,7 +45,7 @@
 
 <br>
 
-## **PORTS**
+## **🧿 PORTS**
 
 | Name             | Port       | Description                                                                                                                                   |
 | ---------------- | ---------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -60,16 +60,16 @@
 
 <br>
 
-## **AI**
+## **🦾 AI**
 
-### flow
+### ✔flow
 
 <img width="597" alt="flow" src="https://user-images.githubusercontent.com/80239146/126985473-cae4a4f7-6e58-4a26-b7d5-538a32a361d1.PNG">
 
 <br>
 <br>
 
-### 결과
+### ✔결과
 
 - Model 1
 
@@ -81,7 +81,7 @@
 
 <br>
 
-## **File Tree**
+## **📋 File Tree**
 
 ```
 📦frontend
@@ -137,7 +137,7 @@
 
 <br>
 
-## **Installation**
+## **🔑 Installation**
 
 > ### Deploy
 
@@ -210,7 +210,7 @@
   BUCKET_NAME = <AWS S3 bucket name>
   ```
 
-### **Docker** 🐳
+### **🐳 Docker**
 
 ```bash
 docker-compose up —build
@@ -218,13 +218,13 @@ docker-compose up —build
 
 <br>
 
-## **Members**
+## **👪 Members**
 
-| 이름     | 개발분야                           | 담당                                         | 소개페이지                                         |
-| -------- | ---------------------------------- | -------------------------------------------- | -------------------------------------------------- |
-| 최윤재   | Front-end, Back-end, Deep learning | Web development,API Design, Data Engineering | [개인 리포로 이동](https://github.com/yunyun3599)  |
-| 이채림   | Front-end, Devops                  | Web development, Docker                      | [개인 리포로 이동](https://github.com/leecr1215)   |
-| 박신영   | Front-end, Deep learning           | Web development, Algorithm                   | [개인 리포로 이동](https://github.com/shxnyoung)   |
-| 이하영   | Back-end, Deep learning            | API Design, Data Engineering                 | [개인 리포로 이동](https://github.com/hayoung1214) |
-| Ryan Lee | Deep learning                      | Algorithm                                    | [개인 리포로 이동](https://github.com/printSANO)   |
-| 박근우   | Devops                             | Cloud, Docker, Data Monitoring               | [개인 리포로 이동](https://github.com/Gnu-Kenny)   |
+| 이름       | 개발분야                           | 담당                                         | 소개페이지                                         |
+| ---------- | ---------------------------------- | -------------------------------------------- | -------------------------------------------------- |
+| 🦦최윤재   | Front-end, Back-end, Deep learning | Web development,API Design, Data Engineering | [개인 리포로 이동](https://github.com/yunyun3599)  |
+| 🐥이채림   | Front-end, Devops                  | Web development, Docker                      | [개인 리포로 이동](https://github.com/leecr1215)   |
+| 🦩박신영   | Front-end, Deep learning           | Web development, Algorithm                   | [개인 리포로 이동](https://github.com/shxnyoung)   |
+| 🐹이하영   | Back-end, Deep learning            | API Design, Data Engineering                 | [개인 리포로 이동](https://github.com/hayoung1214) |
+| 🦉Ryan Lee | Deep learning                      | Algorithm                                    | [개인 리포로 이동](https://github.com/printSANO)   |
+| 🦕박근우   | Devops                             | Cloud, Docker, Data Monitoring               | [개인 리포로 이동](https://github.com/Gnu-Kenny)   |
