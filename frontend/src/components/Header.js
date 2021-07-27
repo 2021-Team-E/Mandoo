@@ -13,7 +13,7 @@ const Header = () => {
 
   // 로그아웃
   const logout = async () => {
-    const response = await axios.get(`${USER_SERVER}/api/logout`);
+    const response = await axios.get(`${USER_SERVER}/api/v1/user/logout`);
     console.log(response);
     window.localStorage.setItem('isAuth', 'false');
     setIsAuth(false);

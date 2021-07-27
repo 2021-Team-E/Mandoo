@@ -56,7 +56,7 @@ const MainPage = (props) => {
 
   const getQuiz = async () => {
     try {
-      const response = await axios.get(`${USER_SERVER}/api/showquiz`);
+      const response = await axios.get(`${USER_SERVER}/api/v1/quiz/show`);
       console.log(response);
       if (response.data.success) {
         setQuizzes(response.data.quiz_list);
@@ -113,7 +113,7 @@ const MainPage = (props) => {
     console.log(changedValue);
     try {
       const request = await axios
-        .put(`${USER_SERVER}/api/quizmodify`, changedValue)
+        .put(`${USER_SERVER}/api/v1/quiz/modify`, changedValue)
         .then(() => {
           alert("수정되었습니다.");
           window.location.replace("/");
@@ -444,7 +444,7 @@ const MainPage = (props) => {
     } else {
       try {
         const request = axios
-          .post(`${USER_SERVER}/api/imageupload`, formData, {
+          .post(`${USER_SERVER}/api/v1/quiz/imageupload`, formData, {
             withCredentials: true,
           })
           .then(function (response) {
@@ -468,7 +468,7 @@ const MainPage = (props) => {
     const deletedquiz = { quiz_id: quiz_id };
     try {
       const request = await axios
-        .delete(`${USER_SERVER}/api/quizdelete`, { data: deletedquiz })
+        .delete(`${USER_SERVER}/api/v1/quiz/delete`, { data: deletedquiz })
         .then((response) => window.location.replace("/"));
       alert("문제가 삭제되었습니다.");
     } catch {

@@ -24,8 +24,8 @@ import datetime, os
 app = Flask(__name__)
 api = Api(app, version='1.0', title='QUIZRIX API',
           description='퀴즈릭스 REST API 문서')
-ns = api.namespace('api/user', description='user 관련 API 목록')
-ns2 = api.namespace('api/quiz', description='quiz 관련 API 목록')
+ns = api.namespace('api/v1/user', description='user 관련 API 목록')
+ns2 = api.namespace('api/v1/quiz', description='quiz 관련 API 목록')
 # #prometheus
 # metrics = PrometheusMetrics(app)
 # metrics.info("flask_app_info", "App Info, this can be anything you want", version="1.0.0")
@@ -293,7 +293,7 @@ class Image(Resource):
         
 
 
-@ns2.route('/showquiz')
+@ns2.route('/show')
 class Showquiz(Resource):
 
     @ns2.expect(qshow_parser)
@@ -338,7 +338,7 @@ class Showquiz(Resource):
 
 
 
-@ns2.route('/quizmodify')
+@ns2.route('/modify')
 class Quizmodify(Resource):
 
     qmodify_parser.add_argument('_id', required=True, location='json',type=str, help="quiz 아이디")
@@ -395,7 +395,7 @@ class Quizmodify(Resource):
         return response
         
 
-@ns2.route('/quizdelete')
+@ns2.route('/delete')
 class Quizdelete(Resource):
 
     qdelete_parser.add_argument('quiz_id', required=True, location='json',type=str, help="quiz 아이디")

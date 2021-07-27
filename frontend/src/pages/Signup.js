@@ -80,7 +80,7 @@ const SignUp = () => {
       password: user.password1,
     };
     try {
-      const response = await axios.post(`${USER_SERVER}/api/signup`, data);
+      const response = await axios.post(`${USER_SERVER}/api/v1/user/signup`, data);
       console.log(response);
       if (response.data.success) {
         history.push(`/`);
