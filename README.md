@@ -243,9 +243,9 @@ docker-compose up —-build
 <br>
 
 ## **📑 Swagger**
-
+[QUIZRIX Swagger Hub link](https://app.swaggerhub.com/apis/mandoo/QUIZRIX/1.0.0)
 <p align="center">
-<img alt="swagger" src="https://user-images.githubusercontent.com/80239146/127004473-8f2d92cf-6903-4540-9775-58ce8b196d93.PNG">
+<img alt="swagger" src="https://user-images.githubusercontent.com/55429156/127174047-172723ce-e143-4494-bdbb-c94732ef473d.PNG">
 </p>
 <br>
 
