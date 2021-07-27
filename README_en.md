@@ -1,16 +1,21 @@
 [한국어](README.md) | English
 
-------------------------------------------------------------------------------------------
+<br>
 
-# **QUIZRIX(허락 필요)**
+# **✍ QUIZRIX**
+
+> This project was carried out for building a prototype for "Quizrix" of Codnut.
 
 - Quizrix is a platform with a user-friendly interface designed to upload and view workbook problems via classifying different components of the question from a problem image and saving them to a database.
 
-1. The user uploads the image of the problem.
+1️⃣ The user uploads the image of the problem.
+
 <p>
  <img width="700" alt="quizrix_imageupload" src="https://user-images.githubusercontent.com/52441923/126748956-5bf7503e-575a-4008-83e1-9632de129c2c.png">
  </p>
-2. The components of the problem are classified through a deep-learning model. (모델 완성 후 수정)
+
+2️⃣ The components of the problem are classified through a deep-learning model.
+
 <p>
  <img width="700" alt="quizrix_imageupload" src="https://user-images.githubusercontent.com/52441923/126749134-2e804fb4-e62b-4e68-a1aa-4cdc033409c3.png">
 </p>
@@ -19,36 +24,30 @@
 
      최종본 gif 추가
 
-> This project was carried out for building a prototype for "Quizrix" of Codnut.
-
-## **System Architecture ->검사 받고 최종 올려둘게요**
+## **📌System Architecture**
 
 <p align="center">  
   <img src="https://user-images.githubusercontent.com/52441923/126756283-16c5dd0b-8f84-4aab-81f1-b7e4ea4cc171.jpg">
 </p>
 
-## **Description**
+<br>
 
-The problem is classified and separated into three components; question, content, and answer, and then they save into the database.
-
-> 현재 개발 중에 있습니다.
+## **🛠 Tech Stack**
 
 <br>
 
-## **Tech Stack**
+| Category         | Tools/Frameworks                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| :------------ | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Dev. Environment     | ![NHN](https://img.shields.io/badge/NHN_Cloud_Ubuntu-20.04-blue?logo=ubuntu) ![S3](https://img.shields.io/badge/S3-gray?logo=AmazonS3) ![Docker](https://img.shields.io/badge/docker-gray?logo=docker)                                                                                                                                                                                                                                                                                     |
+| Front-end     | ![react](https://img.shields.io/badge/react-gray?logo=react) ![Javascript](https://img.shields.io/badge/javascript-ES6+-yellow?logo=javascript) ![Bootstrap](https://img.shields.io/badge/bootstrap-gray?logo=bootstrap) ![axios](https://img.shields.io/badge/axios-gray?logo=axios) ![Styled-components](https://img.shields.io/badge/styled_components-gray?logo=styled-components)                                                                                                     |
+| Back-end      | ![Flask](https://img.shields.io/badge/flask-1.1.2-green?logo=flask) ![Python](https://img.shields.io/badge/python-3.7.6-skyblue?logo=python) ![Gunicorn](https://img.shields.io/badge/gunicorn-gray?logo=gunicorn) ![Postman](https://img.shields.io/badge/postman-gray?logo=postman) ![Swagger](https://img.shields.io/badge/swagger-gray?logo=swagger)                                                                                                                                   |
+| DB            | ![MongoDB](https://img.shields.io/badge/mongodb-gray?logo=mongodb)                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| Deep learning | ![Pytorch](https://img.shields.io/badge/pytorch-gray?logo=pytorch) ![Colab](https://img.shields.io/badge/colab-gray?logo=GoogleColab) ![Yolov5](https://img.shields.io/badge/yolov5-gray?logo=yolov5)                                                                                                                                                                                                                                                                                      |
+| Etc           | ![Nginx](https://img.shields.io/badge/Nginx-gray?logo=nginx) ![github](https://img.shields.io/badge/github-gray?logo=github) ![VScode](https://img.shields.io/badge/VScode-gray?logo=visual-studio-code) ![AWS](https://img.shields.io/badge/AWS-EC2_instance-orange?logo=aws) ![Prometheus](https://img.shields.io/badge/Prometheus-gray?logo=Prometheus) ![Grafana](https://img.shields.io/badge/Grafana-gray?logo=Grafana) ![Redis](https://img.shields.io/badge/Redis-gray?logo=redis) |
 
 <br>
 
-| Category          | Tools                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
-| :------------ | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Dev. Environment| ![NHN](https://img.shields.io/badge/NHN_Cloud_Ubuntu-20.04-blue?logo=ubuntu) ![S3](https://img.shields.io/badge/S3-green?logo=AmazonS3) ![Docker](https://img.shields.io/badge/docker-blue?logo=docker)                                                                                                                                                                                                                                                                                                                                                                                                    |
-| Front-end     | ![react](https://img.shields.io/badge/react-9cf?logo=react) ![Javascript](https://img.shields.io/badge/javascript-ES6+-yellow?logo=javascript) ![Bootstrap](https://img.shields.io/badge/bootstrap-9cf?logo=bootstrap) ![axios](https://img.shields.io/badge/axios-9cf?color=purple) ![Styled-components](https://img.shields.io/badge/styled_components-DB7093?logo=styled-components)                                                                                                                                                                                                                    |
-| Back-end      | ![Flask](https://img.shields.io/badge/flask-1.1.2-green?logo=flask) ![Python](https://img.shields.io/badge/python-3.7.6-skyblue?logo=python) ![Gunicorn](https://img.shields.io/badge/gunicorn-darkgreen?logo=gunicorn) ![Postman](https://img.shields.io/badge/postman-pink?logo=postman) ![Swagger](https://img.shields.io/badge/swagger-darkgreen?logo=swagger)                                                                                                                                                                                                                                         |
-| DB            | ![MongoDB](https://img.shields.io/badge/mongodb-blue?logo=mongodb)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
-| Deep learning | ![Pytorch](https://img.shields.io/badge/pytorch-blue?logo=pytorch) ![Colab](https://img.shields.io/badge/colab-darkgreen?logo=GoogleColab)                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
-| Etc           | ![Nginx](https://img.shields.io/badge/Nginx-brightgreen?logo=nginx) ![github](https://img.shields.io/badge/github-gray?logo=github) ![VScode](https://img.shields.io/badge/VScode-blue?logo=visual-studio-code) ![Google Cloud Platform](https://img.shields.io/badge/Google_Cloud_Platform-VM_instance-red?logo=gcp) ![AWS](https://img.shields.io/badge/AWS-EC2_instance-orange?logo=aws) ![Prometheus](https://img.shields.io/badge/Prometheus-green?logo=Prometheus) ![Grafana](https://img.shields.io/badge/Grafana-green?logo=Grafana) ![Redis](https://img.shields.io/badge/Redis-green?logo=redis) |
-
-## **PORTS**
+## **🧿 PORTS**
 
 | Name             | Port       | Description                                                                                                                                   |
 | ---------------- | ---------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -60,42 +59,111 @@ The problem is classified and separated into three components; question, content
 | cAdvisor         | 8080       | Measures resource usage by the docker containers and returns it as a time series data.         |
 | Prometheus       | 9090       | Monitors and alerts based on the time series data collected from cAdvisor and NodeExporter  |
 | Node Exporter    | 9100       | Collects host-related data such as, CPU, memory, disk, and network, and reveals it to the API.          |
-
 <br>
 
-## **AI**
+## **🦾 AI**
 
-### flow
+### ✔flow
 
-<img width="476" alt="AI Flow" src="https://user-images.githubusercontent.com/80239146/126749561-c724903b-9bf2-4975-968b-6a6f1fe41a71.png">
+<p align="center">
+<img alt="flow" src="https://user-images.githubusercontent.com/80239146/126985473-cae4a4f7-6e58-4a26-b7d5-538a32a361d1.PNG">
+</p>
 
 <br>
+<br>
 
-### Results
+### ✔Results
 
-- Model 1 <br>
+- Model 1
+
   <img width="532" alt="model1" src="https://user-images.githubusercontent.com/80239146/126751834-81adeca3-36f7-48c4-9ea4-e360042f7551.PNG">
 
-- Model 2  
+- Model 2
+
   <img width="571" alt="model2" src="https://user-images.githubusercontent.com/80239146/126751880-3cc7c43f-ee20-4f38-a72e-87b80769dfa7.PNG">
 
-## **Frontend: React**
+<br>
 
-#### file tree install
+## **📋 File Tree**
+
+```
+📦Mandoo
+┣ 📂alertmanager
+┃ ┗ 📜config.yml
+┣ 📂backend
+┃ ┣ 📂models
+┃ ┃ ┣ 📂hub
+┃ ┣ 📂utils
+┃ ┃ ┣ 📂aws
+┃ ┃ ┣ 📂flask_rest_api
+┃ ┃ ┣ 📂google_app_engine
+┃ ┃ ┣ 📂wandb_logging
+┃ ┣ 📜Dockerfile
+┃ ┣ 📜README.md
+┃ ┣ 📜app.py
+┃ ┣ 📜choice5_bestweight.pt
+┃ ┣ 📜detection.py
+┃ ┣ 📜development.py
+┃ ┣ 📜kakaoOcr.py
+┃ ┣ 📜modelv2.0.pt
+┃ ┗ 📜requirements.txt
+┣ 📂frontend
+┃ ┣ 📂node_modules
+┃ ┣ 📂public
+┃ ┣ 📂src
+┃ ┃ ┣ 📂components
+┃ ┃ ┃ ┣ 📂Modals
+┃ ┃ ┃ ┃ ┣ 📜Modal.css
+┃ ┃ ┃ ┃ ┗ 📜Modal.js
+┃ ┃ ┃ ┣ 📜BlankTop.js
+┃ ┃ ┃ ┣ 📜Button.js
+┃ ┃ ┃ ┣ 📜Header.css
+┃ ┃ ┃ ┣ 📜Header.js
+┃ ┃ ┃ ┣ 📜logo.PNG
+┃ ┃ ┃ ┣ 📜Search.js
+┃ ┃ ┃ ┗ 📜Table.js
+┃ ┃ ┣ 📂pages
+┃ ┃ ┃ ┣ 📜imgIcon.png
+┃ ┃ ┃ ┣ 📜Loader.js
+┃ ┃ ┃ ┣ 📜Login.js
+┃ ┃ ┃ ┣ 📜loginLogo.PNG
+┃ ┃ ┃ ┣ 📜MainPage.js
+┃ ┃ ┃ ┣ 📜noLogin.PNG
+┃ ┃ ┃ ┗ 📜Signup.js
+┃ ┃ ┃ ┣ 📜App.js
+┃ ┃ ┃ ┣ 📜config.js
+┃ ┃ ┣ 📜index.css
+┃ ┃ ┗ 📜index.js
+┃ ┣ 📜Dockerfile
+┃ ┗ 📜README.md
+┣ 📂grafana
+┃ ┣ 📂provisioning
+┃ ┃ ┣ 📂dashboards
+┃ ┃ ┃ ┣ 📜dashboard.yml
+┃ ┃ ┃ ┣ 📜Docker Prometheus Monitoring.json
+┃ ┃ ┃ ┗ 📜FlaskApp_Monitoring.json
+┃ ┃ ┗ 📂datasources
+┃ ┃ ┃ ┗ 📜datasource.yml
+┃ ┗ 📜config.monitoring
+┣ 📂nginx
+┃ ┗ 📜nginx.conf
+┣ 📂prometheus
+┃ ┣ 📜alert.rules
+┃ ┗ 📜prometheus.yml
+┣ 📜.gitignore
+┣ 📜docker-compose.yml
+┣ 📜LICENSE
+┣ 📜README.md
+┗ 📜README_en.md
+```
 
 <br>
 
-## **Backend: Flask**
-
-#### file tree install
-
-<br>
-
-## **Installation**
+## **🔑 Installation**
 
 > ### Deploy
 
-### **Github**
+### **🎡 Github**
 
 - Clone Repository
 
@@ -105,7 +173,7 @@ The problem is classified and separated into three components; question, content
 
 <br>
 
-### **Front-end** setting
+### **❄ Front-end** setting
 
 - package.json
 
@@ -127,7 +195,7 @@ The problem is classified and separated into three components; question, content
 
 <br>
 
-### **Back-end** Setting
+### **🌶 Back-end** Setting
 
 - app.py
 
@@ -138,7 +206,7 @@ The problem is classified and separated into three components; question, content
 - detection.py
 
   ```python
-  #Create directory for tesseract.exe in server env.
+  #서버 환경에서의 tesseract.exe 경로로 설정
   pytesseract.pytesseract.tesseract_cmd="/usr/bin/tesseract"
   ```
 
@@ -162,33 +230,125 @@ The problem is classified and separated into three components; question, content
   AWS_ACCESS_KEY = <AWS ACCESS KEY>
   AWS_SECRET_KEY = <AWS SECRET KEY>
   BUCKET_NAME = <AWS S3 bucket name>
+  APPKEY = <Kakao API>
   ```
 
-### **Docker** 🐳
+### **🐳 Docker**
 
 ```bash
-docker-compose up —build
+docker-compose up —-build
 ```
-
-### Docker
-
-### 배포
-
-## API
-
-## gif 이미지 넣는거/ 수정하는거
-
-## Team Members
 
 <br>
 
-## **Members**
+## **📑 Swagger**
 
-|  Name     | Developement Field          | Skills in Charge                | Personal Bio                  |
-| ------- | ------------------------------- | --------------------------------- | --------------------------------------- |
-| Laura Y. Choi | Front-end, Back-end, Deep learning | Web development,API Design, Data Engineering | [Move to Personal Bio](https://github.com/yunyun3599)  |
-| Julia C. Lee | Front-end, Devops                  | Web development, Docker               | [Move to Personal Bio](https://github.com/leecr1215)   |
-| Claire S. Park | Front-end, Deep learning           | Web development, Algorithm            | [Move to Personal Bio](https://github.com/shxnyoung)   |
-|Julie H. Lee | Back-end, Deep learning            | API Design, Data Engineering                | [Move to Personal Bio](https://github.com/hayoung1214) |
-| Ryan H. Lee | Deep learning                      | Algorithm                             | [Move to Personal Bio](https://github.com/printSANO)   |
-| Kenny G. Park | Devops                             | Cloud, Docker, Data Monitoring        | [Move to Personal Bio](https://github.com/Gnu-Kenny)   |
+<p align="center">
+<img alt="swagger" src="https://user-images.githubusercontent.com/80239146/127004473-8f2d92cf-6903-4540-9775-58ce8b196d93.PNG">
+</p>
+<br>
+
+## **🎡 Git Convention**
+
+### Git-Flow
+
+- master : Branch for final product version
+- develop : Branch for next version of the product
+- feature : Branch for adding features
+- release : Branch for preparing the release of current version
+- hotfix : Branch for fixing issues in current version
+
+### Process
+
+- The following rules are applied whem creating a  `feature` branch for new features.
+- `feature` branch is created from the last `develop` branch.
+- The `develop` branch is `pulled` before creating the new branch.
+
+### Branches name example
+
+- feature-user (feature branch for user related features)  
+  <br>
+
+### **✔Commit message**
+
+The following rules are applied when creating a commit message.
+
+### 1. Commit Message Structure
+
+Commit messages are typically in title/ content/ footer structure.
+
+```xml
+type : subject
+
+body
+
+```
+
+### 2. Commit Type
+
+- feat : add new feature
+- fix : fix features and bugs
+- docs : fix document
+- refactor : refactoring codes (ex. changing variable name)
+- test : test code or adding refactoring codes
+- style : change code styles. Use comment form if the code itself is not changed.
+- remove : remove code file and/or resources
+- resource : adding image resources or other resources unrelated to prefab.
+
+### 3. Subject
+
+- Keep it less than 50 characters followed by a capital letter. Do not add a period in the end.
+- Do not use past tense and keep it as a command sentence.
+
+Example:
+
+```xml
+feat : Add translation to missing strings
+feat : Disable publishing
+feat : Sort list context menu
+feat : Resize minimize/delete handle icons so they take up the entire topbar
+fix : Fix typo in cleanup.sh file
+```
+
+### 4. Body
+
+- It is optional to include a body and a commit may not include a body.
+- A body is included when explaning the reason for a commit is necessary.
+- Include a space to differentiate from the title.
+- Each line should now exceed 72 characters.
+- **DOES NOT HAVE TO WRITTEN IN ENGLISH**
+
+### **✔git rebase**
+
+Cleans the project's history beofore requesting a pull from the remote server. 
+Before running `rebase`, `pull` from the `develop` branch to apply the commits done in the remote server.
+
+```bash
+git checkout develop
+git pull
+```
+
+### Rebase the currently working feature branch into the develop branch.
+
+```bash
+git rebase develop feature/feature1
+```
+
+💡 **Caution**
+
+Do not rebase commits that has already been pushed into the remote server.
+
+Rebase creates a new commit with same content, not using the existing commit.
+<br>
+
+## **👪 Members**
+
+| Name       | Developement Field                           | Skills in Charge                                        | Personal Bio                                        |
+| ---------- | ---------------------------------- | -------------------------------------------- | -------------------------------------------------- |
+| 🦦Laura Yoonjae Choi   | Front-end, Back-end, Deep learning | Web development,API Design, Data Engineering | [Move to Personal Bio](https://github.com/yunyun3599)  |
+| 🐥Julia CheLim Lee   | Front-end, Devops                  | Web development, Docker                      | [Move to Personal Bio](https://github.com/leecr1215)   |
+| 🦩Claire ShinYoung Park   | Front-end, Deep learning           | Web development, Algorithm                   | [Move to Personal Bio](https://github.com/shxnyoung)   |
+| 🐹Julie Hayoung Lee   | Back-end, Deep learning            | API Design, Data Engineering                 | [Move to Personal Bio](https://github.com/hayoung1214) |
+| 🦉Ryan H. Lee | Deep learning                      | Algorithm                                    | [Move to Personal Bio](https://github.com/printSANO)   |
+| 🐢Kenny Geunwoo Park   | Devops                             | Cloud, Docker, Data Monitoring               | [Move to Personal Bio](https://github.com/Gnu-Kenny)   |
+
