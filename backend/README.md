@@ -63,7 +63,7 @@ run
 
 > - 문제(Quiz) 관련 API
 > 
->   |  HTTP |  Path  |  Permission |  목적 |
+>   |  Method |  Path  |  Permission |  목적 |
 >   | --- | --- | --- | --- |
 >   |**POST** |/api/imageupload | Jwt Token |퀴즈 이미지 업로드|
 >   |**GET** |/api/showquiz | Jwt Token |User의 퀴즈 호출|
