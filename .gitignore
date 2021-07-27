@@ -8,6 +8,7 @@ upload/
 result/
 s3.py
 *.h5
+development.py
 
 prometheus/data
 grafana/data
