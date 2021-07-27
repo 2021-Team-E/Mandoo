@@ -5,6 +5,7 @@ pymongo
 flask-mysql
 jsonify
 requests
+flask_restplus
 
 gunicorn
 bcrypt
