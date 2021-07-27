@@ -1,5 +1,5 @@
 import React from "react";
-import { useTable, useGlobalFilter, useSortBy } from "react-table";
+import { useTable, useGlobalFilter } from "react-table";
 import Search from "./Search";
 
 function Table({ columns, data }) {
@@ -10,7 +10,7 @@ function Table({ columns, data }) {
     rows, // <tbody>에서 랜더링할 데이터
     prepareRow, //렌더링 할 데이터 준비하는 함수
     setGlobalFilter, //<search> 컴포넌트에 prop으로 전달
-  } = useTable({ columns, data }, useGlobalFilter, useSortBy); //useGlobalFilter(): 전체 데이터 검색, useSortBy(): 정렬
+  } = useTable({ columns, data }, useGlobalFilter); //useGlobalFilter(): 전체 데이터 검색
 
   return (
     <>
@@ -44,9 +44,7 @@ function Table({ columns, data }) {
                 (
                   column //각 칸에 Header map
                 ) => (
-                  <th {...column.getHeaderProps(column.getSortByToggleProps())}>
-                    {" "}
-                    {/* 테이블 헤더 클릭하여 데이터 정렬 */}
+                  <th {...column.getHeaderProps()}>
                     {column.render("Header")}
                   </th>
                 )
