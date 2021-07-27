@@ -306,9 +306,9 @@ def get_img(image):
     print(dict)
     title=dict["question"]
     choices=dict["answer"]
-    answer="1"
+    answer="-"
     script=dict["content"]
-    score = "2"       
+    score = "-"       
 
     return title, choices, answer, script, score
     

@@ -88,55 +88,74 @@
 ## **📋 File Tree**
 
 ```
-📦frontend
- ┣ 📂node_modules
- ┣ 📂public
- ┣ 📂src
- ┃ ┣ 📂components
- ┃ ┃ ┣ 📂Modals
- ┃ ┃ ┃ ┣ 📜Modal.css
- ┃ ┃ ┃ ┗ 📜Modal.js
- ┃ ┃ ┣ 📜BlankTop.js
- ┃ ┃ ┣ 📜Button.js
- ┃ ┃ ┣ 📜Header.css
- ┃ ┃ ┣ 📜Header.js
- ┃ ┃ ┣ 📜logo.PNG
- ┃ ┃ ┣ 📜Search.js
- ┃ ┃ ┗ 📜Table.js
- ┃ ┣ 📂pages
- ┃ ┃ ┣ 📜imgIcon.png
- ┃ ┃ ┣ 📜Loader.js
- ┃ ┃ ┣ 📜Login.js
- ┃ ┃ ┣ 📜loginLogo.PNG
- ┃ ┃ ┣ 📜MainPage.js
- ┃ ┃ ┣ 📜noLogin.PNG
- ┃ ┃ ┗ 📜Signup.js
- ┃ ┣ 📜App.js
- ┃ ┣ 📜config.js
- ┃ ┣ 📜index.css
- ┃ ┗ 📜index.js
- ┣ 📜Dockerfile
- ┗ 📜README.md
-```
-
-```
-📦backend
- ┣ 📂models
- ┃ ┣ 📂hub
- ┣ 📂utils
- ┃ ┣ 📂aws
- ┃ ┣ 📂flask_rest_api
- ┃ ┣ 📂google_app_engine
- ┃ ┣ 📂wandb_logging
- ┣ 📜Dockerfile
- ┣ 📜README.md
- ┣ 📜app.py
- ┣ 📜choice5_bestweight.pt
- ┣ 📜detection.py
- ┣ 📜development.py
- ┣ 📜kakaoOcr.py
- ┣ 📜modelv2.0.pt
- ┗ 📜requirements.txt
+📦Mandoo
+┣ 📂alertmanager
+┃ ┗ 📜config.yml
+┣ 📂backend
+┃ ┣ 📂models
+┃ ┃ ┣ 📂hub
+┃ ┣ 📂utils
+┃ ┃ ┣ 📂aws
+┃ ┃ ┣ 📂flask_rest_api
+┃ ┃ ┣ 📂google_app_engine
+┃ ┃ ┣ 📂wandb_logging
+┃ ┣ 📜Dockerfile
+┃ ┣ 📜README.md
+┃ ┣ 📜app.py
+┃ ┣ 📜choice5_bestweight.pt
+┃ ┣ 📜detection.py
+┃ ┣ 📜development.py
+┃ ┣ 📜kakaoOcr.py
+┃ ┣ 📜modelv2.0.pt
+┃ ┗ 📜requirements.txt
+┣ 📂frontend
+┃ ┣ 📂node_modules
+┃ ┣ 📂public
+┃ ┣ 📂src
+┃ ┃ ┣ 📂components
+┃ ┃ ┃ ┣ 📂Modals
+┃ ┃ ┃ ┃ ┣ 📜Modal.css
+┃ ┃ ┃ ┃ ┗ 📜Modal.js
+┃ ┃ ┃ ┣ 📜BlankTop.js
+┃ ┃ ┃ ┣ 📜Button.js
+┃ ┃ ┃ ┣ 📜Header.css
+┃ ┃ ┃ ┣ 📜Header.js
+┃ ┃ ┃ ┣ 📜logo.PNG
+┃ ┃ ┃ ┣ 📜Search.js
+┃ ┃ ┃ ┗ 📜Table.js
+┃ ┃ ┣ 📂pages
+┃ ┃ ┃ ┣ 📜imgIcon.png
+┃ ┃ ┃ ┣ 📜Loader.js
+┃ ┃ ┃ ┣ 📜Login.js
+┃ ┃ ┃ ┣ 📜loginLogo.PNG
+┃ ┃ ┃ ┣ 📜MainPage.js
+┃ ┃ ┃ ┣ 📜noLogin.PNG
+┃ ┃ ┃ ┗ 📜Signup.js
+┃ ┃ ┃ ┣ 📜App.js
+┃ ┃ ┃ ┣ 📜config.js
+┃ ┃ ┣ 📜index.css
+┃ ┃ ┗ 📜index.js
+┃ ┣ 📜Dockerfile
+┃ ┗ 📜README.md
+┣ 📂grafana
+┃ ┣ 📂provisioning
+┃ ┃ ┣ 📂dashboards
+┃ ┃ ┃ ┣ 📜dashboard.yml
+┃ ┃ ┃ ┣ 📜Docker Prometheus Monitoring.json
+┃ ┃ ┃ ┗ 📜FlaskApp_Monitoring.json
+┃ ┃ ┗ 📂datasources
+┃ ┃ ┃ ┗ 📜datasource.yml
+┃ ┗ 📜config.monitoring
+┣ 📂nginx
+┃ ┗ 📜nginx.conf
+┣ 📂prometheus
+┃ ┣ 📜alert.rules
+┃ ┗ 📜prometheus.yml
+┣ 📜.gitignore
+┣ 📜docker-compose.yml
+┣ 📜LICENSE
+┣ 📜README.md
+┗ 📜README_en.md
 ```
 
 <br>
@@ -332,4 +351,4 @@ Rebase는 기존의 커밋을 그대로 사용하는 것이 아니라 내용은 
 | 🦩박신영   | Front-end, Deep learning           | Web development, Algorithm                   | [개인 리포로 이동](https://github.com/shxnyoung)   |
 | 🐹이하영   | Back-end, Deep learning            | API Design, Data Engineering                 | [개인 리포로 이동](https://github.com/hayoung1214) |
 | 🦉Ryan Lee | Deep learning                      | Algorithm                                    | [개인 리포로 이동](https://github.com/printSANO)   |
-| 🦕박근우   | Devops                             | Cloud, Docker, Data Monitoring               | [개인 리포로 이동](https://github.com/Gnu-Kenny)   |
+| 🐢박근우   | Devops                             | Cloud, Docker, Data Monitoring               | [개인 리포로 이동](https://github.com/Gnu-Kenny)   |

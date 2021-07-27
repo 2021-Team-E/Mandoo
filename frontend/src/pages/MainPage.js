@@ -182,18 +182,6 @@ const MainPage = (props) => {
   const columns = useMemo(
     () => [
       {
-        accessor: "qid", //해당 열을 data 객체의 어느 속성을 읽어야 하는지 명시
-        Header: "번호", //테이블 헤더에 보여줄 텍스트 명시
-        Cell: (tableProps) => (
-          <EditText
-            name="qid"
-            readonly="true"
-            onSave={(e) => handleSave(tableProps.row.original, e)}
-            defaultValue={tableProps.cell.value}
-          />
-        ),
-      },
-      {
         accessor: "title",
         Header: "질문",
         Cell: (tableProps) => {
@@ -382,6 +370,8 @@ const MainPage = (props) => {
           return (
             <span
               style={{
+                display: "inline-block",
+                width: "40px",
                 cursor: "pointer",
                 color: "blue",
                 textDecoration: "underline",
@@ -409,7 +399,6 @@ const MainPage = (props) => {
     const showed_data = quizzes?.map((quiz) => {
       let data_return = {
         _id: quiz._id,
-        qid: "0001",
         title: quiz.title,
         answer: quiz.answer,
         script: quiz.script,
