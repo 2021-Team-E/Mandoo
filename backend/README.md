@@ -55,9 +55,9 @@ run
 > 
 >   |  Method |  Path  |  Permission |  목적 |
 >   | --- | --- | --- | --- |
->   |**POST** |/api/signup | None |하나의 User 생성|
->   |**POST** |/api/login | None |하나의 User 접속|
->   |**GET** |/api/logout | Jwt Token |하나의 User 로그아웃|
+>   |**POST** |/api/v1/user/signup | None |하나의 User 생성|
+>   |**POST** |/api/v1/user/login | None |하나의 User 접속|
+>   |**GET** |/api/v1/user/logout | Jwt Token |하나의 User 로그아웃|
 
 <br>
 
@@ -65,7 +65,7 @@ run
 > 
 >   |  Method |  Path  |  Permission |  목적 |
 >   | --- | --- | --- | --- |
->   |**POST** |/api/imageupload | Jwt Token |퀴즈 이미지 업로드|
->   |**GET** |/api/showquiz | Jwt Token |User의 퀴즈 호출|
->   |**DELETE** |/api/quizdelete | Jwt Token |퀴즈 삭제|
->   |**PUT** |/api/quizmodify | Jwt Token |퀴즈 수정|
+>   |**POST** |/api/v1/quiz/imageupload | Jwt Token |퀴즈 이미지 업로드|
+>   |**GET** |/api/v1/quiz/show | Jwt Token |User의 퀴즈 호출|
+>   |**DELETE** |/api/v1/quiz/delete | Jwt Token |퀴즈 삭제|
+>   |**PUT** |/api/v1/quiz/modify | Jwt Token |퀴즈 수정|
