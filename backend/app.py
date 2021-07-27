@@ -15,7 +15,7 @@ from werkzeug.utils import secure_filename
 import boto3
 from s3 import AWS_SECRET_KEY, AWS_ACCESS_KEY, BUCKET_NAME
 import io
-import datetime
+import datetime, os
 #prometheus
 # import time
 # from random import random
@@ -232,6 +232,9 @@ class Image(Resource):
 
         img = args['image']
         
+        if not os.path.exists('upload'):
+            os.makedirs('upload')
+
         imagefilename = id + ".jpeg" # 서버 디렉토리에 저장하는 과정 (혹시 몰라서 추가)
         img.save('./upload/{0}'.format(secure_filename(imagefilename)))
         imagetoupload  = open('./upload/{0}'.format(secure_filename(imagefilename)), 'rb')
