@@ -3,19 +3,19 @@ from flask.helpers import make_response
 from werkzeug.utils import secure_filename
 from pymongo import MongoClient
 from development import SECRET_KEY, ALGORITHM
-from bson.json_util import dumps, json
+from bson.json_util import json
 from bson import json_util, ObjectId
 import jwt
 import bcrypt
-from flask_restx import Resource, Api, fields, reqparse, marshal
+from flask_restx import Resource, Api, fields, reqparse
 from flask_cors import CORS
 from detection import get_img
 from werkzeug.datastructures import FileStorage
 from werkzeug.utils import secure_filename
 import boto3
 from s3 import AWS_SECRET_KEY, AWS_ACCESS_KEY, BUCKET_NAME
-import io
-import datetime
+import datetime, os
+
 #prometheus
 # import time
 # from random import random
@@ -70,16 +70,21 @@ s3 = boto3.client('s3', aws_access_key_id = AWS_ACCESS_KEY, aws_secret_access_ke
 
 @api.route('/hello')
 class HelloWorld(Resource):
+
     @api.expect(parser)
     @api.response(200, 'Success')
     @api.response(400, 'Bad Request')
+
     # @common_counter
+
     def get(self):  
+
         return "hello"
 
 
 @api.route('/api/signup')
 class Signup(Resource):
+
     signup_parser.add_argument('id', required=True, location='json',type=str, help='아이디')
     signup_parser.add_argument('name', required= True, location='json',type=str, help='사용자명')
     signup_parser.add_argument('password', required=True, location='json',type=str, help="비밀번호")
@@ -88,7 +93,9 @@ class Signup(Resource):
     @api.response(201, '회원가입 성공')
     @api.response(400, 'Bad Request')
     @api.response(403, "아이디가 이미 있습니다")
+
     # @common_counter
+
     def post(self):
         
         new_user = request.json
@@ -138,7 +145,9 @@ class login(Resource):
     @api.response(400, 'Bad Request')
     @api.response(403, "해당 아이디가 없습니다\n 비밀번호가 틀렸습니다")
     # @common_counter
+
     def post(self):  
+
         login_user = request.json
         id = login_user['id']
        
@@ -191,8 +200,11 @@ class logout(Resource):
     @api.expect(logout_parser)
     @api.response(200, '로그아웃 성공')
     @api.response(400, 'Bad Request')
+
     # @common_counter
+
     def get(self):  
+
         session.pop('id',None)
         if request.cookies.get("jwt"):
             data = {
@@ -214,11 +226,13 @@ class Image(Resource):
     @api.response(201, '이미지 등록 성공')
     @api.response(400, 'Bad Request')
     @api.response(401, '로그인 필요')
+
     # @common_counter
+
     def post(self):
+
         args = image_parser.parse_args()
         id = request.cookies.get('jwt')
-        
         
         result = user.find_one({ "id" : id })   #user table에서 일치하는 아이디 검색
     
@@ -232,6 +246,9 @@ class Image(Resource):
 
         img = args['image']
         
+        if not os.path.exists('upload'):
+            os.makedirs('upload')
+
         imagefilename = id + ".jpeg" # 서버 디렉토리에 저장하는 과정 (혹시 몰라서 추가)
         img.save('./upload/{0}'.format(secure_filename(imagefilename)))
         imagetoupload  = open('./upload/{0}'.format(secure_filename(imagefilename)), 'rb')
@@ -275,11 +292,14 @@ class Image(Resource):
 
 @api.route('/api/showquiz')
 class Showquiz(Resource):
+
     @api.expect(qshow_parser)
     @api.response(200, '퀴즈 리스트를 모두 가져옴', showquiz_fields)
     @api.response(400, 'Bad Request')
     @api.response(401, '로그인 필요')
+
     # @common_counter
+
     def get(self):
         
         id = request.cookies.get('jwt')
@@ -294,7 +314,6 @@ class Showquiz(Resource):
             response = jsonify(data)
             response.status_code = 401
             return response
-
 
         user_id = session.get('id')
         author = user.find_one({"id":user_id}) # user테이블에서 퀴즈 가져오고자하는 사용자 찾음
@@ -331,7 +350,9 @@ class Quizmodify(Resource):
     @api.response(201, '퀴즈 수정 성공')
     @api.response(400, 'Bad Request')
     @api.response(401, '로그인 필요')
+
     # @common_counter
+
     def put(self):
         
         id = request.cookies.get('jwt')
@@ -348,9 +369,7 @@ class Quizmodify(Resource):
             return response
         
         args = qmodify_parser.parse_args()
-        print(args)
         
-
         quiz_id = args['_id']   #str 타입으로 req 요청된 상태
         title = args['title']
         choices = args['choices']
@@ -383,7 +402,9 @@ class Quizdelete(Resource):
     @api.response(400, 'Bad Request')
     @api.response(401, '로그인 필요')
     @api.response(403, '해당 퀴즈가 퀴즈 테이블에 없습니다\n퀴즈를 소유하고 있지 않습니다')
+
     # @common_counter
+
     def delete(self):
         
         id = request.cookies.get('jwt')
@@ -398,7 +419,6 @@ class Quizdelete(Resource):
             response = jsonify(data)
             response.status_code = 401 
             return response
-
         
         args = qdelete_parser.parse_args()
         quiz_id = args['quiz_id']   #str 타입으로 req 요청된 상태
@@ -412,7 +432,6 @@ class Quizdelete(Resource):
             response.status_code = 403 
             return response
 
-            
         user_id = session.get('id')
         author = user.find_one({"id":user_id})  #quiz 삭제를 요청한 사용자의 아이디 author로 얻음
         check_quiz_id = 0
@@ -437,7 +456,6 @@ class Quizdelete(Resource):
             response = jsonify(data)
             response.status_code = 201
             return response
-
 
         if check_quiz_id == 0:              # 유저가 해당 quiz를 소유하고 있지 않다면
 

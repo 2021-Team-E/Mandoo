@@ -1,4 +1,3 @@
-from PIL import Image
 import os
 import boto3
 from s3 import AWS_SECRET_KEY, AWS_ACCESS_KEY, BUCKET_NAME, APPKEY
@@ -21,10 +20,8 @@ resource = boto3.resource('s3', aws_access_key_id = AWS_ACCESS_KEY, aws_secret_a
 buckets = resource.Bucket(name=BUCKET_NAME)
 
 ##모델 로드 부분
-weights1 = 'modelv2.0.pt' # question/content/answer 구분 모델
-weights2 = 'choice5_bestweight.pt' # choice 구분 모델
-
-
+weights1 = 'modelv2.0.pt'           # question/content/answer 구분 모델
+weights2 = 'choice5_bestweight.pt'  # choice 구분 모델
 
 def get_img(image):
 
@@ -59,8 +56,6 @@ def get_img(image):
 
     # return 형식
     dict = {"question": [], "content" :[], "answer" : []}
-
-    
 
     # Run inference
     if device.type != 'cpu':
@@ -110,7 +105,6 @@ def get_img(image):
                         crop_path = save_dir / 'crops' / names[c] / f'{p.stem}.jpg'
                         save_one_box(xyxy, imc, file=crop_path, BGR=True)
                         
-
                     if names[c] == "content" : # content로 판별시 이미지 여부 판단 모델 들어가지 않고 이미지 자체를 return 데이터에 담음
                         
                         isContent=1
@@ -125,7 +119,7 @@ def get_img(image):
                         text = re.sub(r'[^가-힣a-zA-Zㄱ-ㅎ()0-9.,?![]~%-_/<>\s]:\'\"\+]','', text)
                         if len(text) == 0 or text.isspace():
                             text = "마우스를 올려 이미지로 확인해주세요"
-                        print(text)
+                      
                         dict[names[c]].append(text)
          
                     elif names[c] == "answer":
@@ -171,6 +165,7 @@ def get_img(image):
                                     mingap_x=100
                                     gap_x=0
                                     gap_y=0
+
                                     # y축 정렬
                                     for i in range(n):
                                         
@@ -208,9 +203,6 @@ def get_img(image):
                                                 if gap_y < mingap_y:
                                                     mingap_y = gap_y
                                    
-                                    print("\n mingap_x: ",mingap_x)
-                                    print("\n mingap_y: ",mingap_y)
-                                    print("\n sorted_choice: \n",sorted_choice)
                                     # choice 탐지 안된 것들 0으로 표기
                                     if n < 5 : 
                                         
@@ -235,9 +227,7 @@ def get_img(image):
                                             if  n<5 and (sorted_choice[n-1][1] < sorted_choice[0][1]+(mingap_y)*4) : 
                                                 choice_number[i]=0
                                                 n=n+1
-                                    print("\n choice_number: ",choice_number)
-                                    print("n: ",n)
-                                        
+                                  
                                     # Write results
                                     for *xyxy, conf, cls in (det):
                                         
@@ -254,7 +244,6 @@ def get_img(image):
                                         text = re.sub(r'[^가-힣a-zA-Zㄱ-ㅎ()0-9.,?![]~%-_/<>\s]:\'\"\+]','', text)
                                         if len(text) == 0 or text.isspace():
                                             text = "마우스를 올려 이미지로 확인해주세요"
-                                        print(text)
                                         dict[names[c]].append(text)
 
                                         imagefilename ="result/"+ image + "_" + "answer" + "_"+ str(i) + "_" + str(datetime.datetime.now()).replace("\\","/").replace(" ","").replace(":","")+".jpeg"
@@ -276,6 +265,7 @@ def get_img(image):
                                 if save_img:
                                     if dataset.mode == 'image':
                                         cv2.imwrite(answer_save_path, im02)
+                                        
                     elif names[c] == "question":
                         isQuestion = 1
                         text = main(crop_path, APPKEY)
