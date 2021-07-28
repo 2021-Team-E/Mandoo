@@ -60,6 +60,18 @@
 | Prometheus       | 9090       | cAdvisor, node exporter의 시계열 매트릭 데이터를 수집하여 시스템 모니터링 및 경고합니다.                                                      |
 | Node Exporter    | 9100       | 서버의 cpu, 메모리, 디스크, 네트워크 사용량등 호스트 관련 매트릭 데이터를 수집하여 api로 노출시킵니다.                                        |
 
+
+<br>
+
+## **📑 Swagger**
+
+[QUIZRIX Swagger Hub link](https://app.swaggerhub.com/apis/mandoo/QUIZRIX/1.0.0)
+
+<p align="center">
+<img alt="swagger" src="https://user-images.githubusercontent.com/55429156/127174047-172723ce-e143-4494-bdbb-c94732ef473d.PNG">
+</p>
+
+
 <br>
 
 ## **🦾 AI**
@@ -235,15 +247,7 @@
 docker-compose up —-build
 ```
 
-<br>
 
-## **📑 Swagger**
-
-[QUIZRIX Swagger Hub link](https://app.swaggerhub.com/apis/mandoo/QUIZRIX/1.0.0)
-
-<p align="center">
-<img alt="swagger" src="https://user-images.githubusercontent.com/55429156/127174047-172723ce-e143-4494-bdbb-c94732ef473d.PNG">
-</p>
 <br>
 
 ## **🎡 Git Convention**
