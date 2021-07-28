@@ -92,9 +92,9 @@
 ┣ 📂alertmanager
 ┃ ┗ 📜config.yml              // alert manager config file
 ┣ 📂backend
-┃ ┣ 📂models      // YOLO v5
+┃ ┣ 📂models                  // YOLO v5
 ┃ ┃ ┣ 📂hub
-┃ ┣ 📂utils       // YOLO v5
+┃ ┣ 📂utils                   // YOLO v5
 ┃ ┃ ┣ 📂aws
 ┃ ┃ ┣ 📂flask_rest_api
 ┃ ┃ ┣ 📂google_app_engine
