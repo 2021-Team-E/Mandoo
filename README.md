@@ -91,22 +91,22 @@
 📦Mandoo
 ┣ 📂alertmanager
 ┃ ┗ 📜config.yml
-┣ 📂backend
-┃ ┣ 📂models
+┣ 📂backend 
+┃ ┣ 📂models      // YOLO v5
 ┃ ┃ ┣ 📂hub
-┃ ┣ 📂utils
+┃ ┣ 📂utils       // YOLO v5
 ┃ ┃ ┣ 📂aws
 ┃ ┃ ┣ 📂flask_rest_api
 ┃ ┃ ┣ 📂google_app_engine
 ┃ ┃ ┣ 📂wandb_logging
-┃ ┣ 📜Dockerfile
+┃ ┣ 📜Dockerfile 
 ┃ ┣ 📜README.md
-┃ ┣ 📜app.py
-┃ ┣ 📜choice5_bestweight.pt
-┃ ┣ 📜detection.py
+┃ ┣ 📜app.py                  // Flask server
+┃ ┣ 📜choice5_bestweight.pt   // Pretrained Pytorch weights (answer to 5 choices)
+┃ ┣ 📜detection.py            // Detect input image
 ┃ ┣ 📜development.py
-┃ ┣ 📜kakaoOcr.py
-┃ ┣ 📜modelv2.0.pt
+┃ ┣ 📜kakaoOcr.py             // extract text
+┃ ┣ 📜modelv2.0.pt            // Pretrained Pytorch weights (image to question/content/answer)
 ┃ ┗ 📜requirements.txt
 ┣ 📂frontend
 ┃ ┣ 📂node_modules
