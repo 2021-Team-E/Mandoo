@@ -10,7 +10,7 @@ function Search({ onSubmit }) {
     <form onSubmit={handleSubmit} align="left">
       <input style={{ marginLeft: "5px" }} name="filter" />
       <button
-        style={{ color: "#D77373", margin: "5px", backgroundColor: "white" }}
+        style={{ color: "black", margin: "5px", backgroundColor: "white" }}
       >
         Search
       </button>

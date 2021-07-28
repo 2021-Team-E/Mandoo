@@ -479,7 +479,7 @@ const MainPage = (props) => {
   return (
     <div
       style={{
-        backgroundColor: "#FFF5F3",
+        backgroundColor: "#f5f6f7",
         width: "100vw",
         minHeight: "88vh",
         marginTop: "80px",
