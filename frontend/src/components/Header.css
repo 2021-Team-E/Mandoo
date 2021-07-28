@@ -1,47 +1,47 @@
 /*네비게이션 전체 div관련 css
 상단에 고정, div 좌우로 붙도록 조정*/
 .nav {
-    width: auto;
-    height: 80px;
-    display: flex;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    background-color: white;
-    align-items: center;
-    margin-bottom: 80px;
+  width: auto;
+  height: 80px;
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: white;
+  align-items: center;
+  margin-bottom: 80px;
 }
 
 /*logo 크기 조절 css*/
 img {
-    object-fit: cover;
-    width: 230px;
-    margin-left: 15px;
+  object-fit: cover;
+  width: 230px;
+  margin-left: 15px;
 }
 
 /*Main, Signup, Login 세개의 메뉴에 대한 css*/
 .nav-items {
-    display: flex;
-    margin-left: auto;
+  display: flex;
+  margin-left: auto;
 }
 
 /*메뉴의 밑줄 사라지게 + 각 메뉴 사이 공간*/
 .nav-item {
-    right: 0;
-    margin-right: 50px;
-    text-decoration: none;
-    color: black;
+  right: 0;
+  margin-right: 50px;
+  text-decoration: none;
+  color: black;
 }
 
 /*메뉴의 오른쪽 공간 만들기*/
 .nav-items-right {
-    margin-right: 150px;
+  margin-right: 150px;
 }
 
 /*메뉴에 마우스 올리면 하늘색으로*/
 .nav-item:hover {
-    color: #add8e6;
+  color: #fd8773;
 }
 
 /*로그아웃 버튼: 다른 메뉴와 달리 얘만 버튼이어서 따로 css*/
