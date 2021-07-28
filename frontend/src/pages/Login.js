@@ -7,7 +7,7 @@ import { useHistory, Link } from "react-router-dom";
 import axios from "axios";
 import { USER_SERVER } from "../config";
 import Header from "../components/Header";
-import logo from "../assets/HS_default_logo_name.png";
+import logo from "../assets/logo_white.png";
 
 const Fix = styled.div`
   background-color: #ffffff;

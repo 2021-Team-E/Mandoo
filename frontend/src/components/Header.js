@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import logo from "../assets/HS_default_logo_name.png";
+import logo from "../assets/logo_red.png";
 import { Link } from "react-router-dom";
 import "./Header.css";
 import axios from "axios";

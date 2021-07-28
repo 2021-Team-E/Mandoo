@@ -7,7 +7,7 @@ import axios from "axios";
 import { USER_SERVER } from "../config";
 import Modal from "../components/Modals/Modal.js";
 import addImg from "../assets/upload.png";
-import noLoginImg from "./noLogin.PNG";
+import noLoginImg from "../assets/blocked.PNG";
 import { useHistory } from "react-router-dom";
 import { EditText } from "react-edit-text";
 import TableCell from "../components/TableCell";
