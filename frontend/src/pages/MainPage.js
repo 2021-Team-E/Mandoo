@@ -373,7 +373,7 @@ const MainPage = (props) => {
                 display: "inline-block",
                 width: "40px",
                 cursor: "pointer",
-                color: "blue",
+                color: "#FD745D",
                 textDecoration: "underline",
               }}
               onClick={() => {
