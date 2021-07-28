@@ -81,7 +81,7 @@
 
 - Model 2
 
-  <img width="571" alt="model2" src="https://user-images.githubusercontent.com/80239146/126751880-3cc7c43f-ee20-4f38-a72e-87b80769dfa7.PNG">
+  <img width="571" alt="model2" src="https://user-images.githubusercontent.com/55429156/127285868-5baff6b0-1ed3-41e2-89c7-11fc61d3ee6e.PNG">
 
 <br>
 
