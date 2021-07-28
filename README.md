@@ -27,7 +27,7 @@
 ## **📌System Architecture**
 
 <p align="center">  
-  <img src="https://user-images.githubusercontent.com/52441923/126756283-16c5dd0b-8f84-4aab-81f1-b7e4ea4cc171.jpg">
+  <img src="https://user-images.githubusercontent.com/55429156/127281109-0e145109-4bec-4925-9aaf-812a1f58b424.jpg">
 </p>
 
 <br>
@@ -77,11 +77,11 @@
 
 - Model 1
 
-  <img width="532" alt="model1" src="https://user-images.githubusercontent.com/80239146/126751834-81adeca3-36f7-48c4-9ea4-e360042f7551.PNG">
+  <img width="532" alt="model1" src="https://user-images.githubusercontent.com/55429156/127284510-e5d7e958-bb16-4e69-95fc-f0b3f652ebe7.PNG">
 
 - Model 2
 
-  <img width="571" alt="model2" src="https://user-images.githubusercontent.com/80239146/126751880-3cc7c43f-ee20-4f38-a72e-87b80769dfa7.PNG">
+  <img width="571" alt="model2" src="https://user-images.githubusercontent.com/55429156/127285868-5baff6b0-1ed3-41e2-89c7-11fc61d3ee6e.PNG">
 
 <br>
 
@@ -92,9 +92,9 @@
 ┣ 📂alertmanager
 ┃ ┗ 📜config.yml              // alert manager config file
 ┣ 📂backend
-┃ ┣ 📂models      // YOLO v5
+┃ ┣ 📂models                  // YOLO v5
 ┃ ┃ ┣ 📂hub
-┃ ┣ 📂utils       // YOLO v5
+┃ ┣ 📂utils                   // YOLO v5
 ┃ ┃ ┣ 📂aws
 ┃ ┃ ┣ 📂flask_rest_api
 ┃ ┃ ┣ 📂google_app_engine
@@ -205,12 +205,6 @@
   mongo = MongoClient('mongo_db', 27017)
   ```
 
-- detection.py
-
-  ```python
-  #서버 환경에서의 tesseract.exe 경로로 설정
-  pytesseract.pytesseract.tesseract_cmd="/usr/bin/tesseract"
-  ```
 
 - requirements.txt  
   Dockerfile에서 따로 설치하는 라이브러리를 주석처리합니다.
