@@ -2,7 +2,6 @@ import os
 import boto3
 from s3 import AWS_SECRET_KEY, AWS_ACCESS_KEY, BUCKET_NAME, APPKEY
 import datetime
-import shutil
 import re
 from pathlib import Path
 import cv2
@@ -105,7 +104,7 @@ def get_img(image):
                         crop_path = save_dir / 'crops' / names[c] / f'{p.stem}.jpg'
                         save_one_box(xyxy, imc, file=crop_path, BGR=True)
                         
-                    if names[c] == "content" : # content로 판별시 이미지 여부 판단 모델 들어가지 않고 이미지 자체를 return 데이터에 담음
+                    if names[c] == "content" or names[c] == "question" : # content로 판별시 이미지 여부 판단 모델 들어가지 않고 이미지 자체를 return 데이터에 담음
                         
                         isContent=1
                         imagefilename ="result/"+ image + "_" + names[c] + "_"+ str(i) + "_" + str(datetime.datetime.now()).replace("\\","/").replace(" ","").replace(":","")+".jpeg"
@@ -121,7 +120,8 @@ def get_img(image):
                             text = "마우스를 올려 이미지로 확인해주세요"
                       
                         dict[names[c]].append(text)
-         
+                   
+
                     elif names[c] == "answer":
                         isAnswer=1
                         answerset = LoadImages(crop_path, img_size=imgsz)
@@ -266,22 +266,7 @@ def get_img(image):
                                     if dataset.mode == 'image':
                                         cv2.imwrite(answer_save_path, im02)
                                         
-                    elif names[c] == "question":
-                        isQuestion = 1
-                        text = main(crop_path, APPKEY)
-                        text = re.sub(r'[^가-힣a-zA-Zㄱ-ㅎ()0-9.,?![]~%-_/<>\s]:\'\"\+]','', text)
-                        if len(text) == 0 or text.isspace():
-                            text = "마우스를 올려 이미지로 확인해주세요"
-                        dict[names[c]].append(text)
-
-                        
-                        imagefilename ="result/"+ image + "_" + names[c] + "_"+ str(i) + "_" + str(datetime.datetime.now()).replace("\\","/").replace(" ","").replace(":","")+".jpeg"
-                        imagefilename.replace(" ","")
-                        imagetoupload = open( crop_path , "rb")
-                        s3.put_object(Body=imagetoupload, Bucket=BUCKET_NAME, Key=imagefilename, ContentType="image/jpeg")
-                        img_url = "https://summer-program.s3.ap-northeast-2.amazonaws.com/"+imagefilename
-                        dict[names[c]].append(img_url)
-                        
+                       
                     
             # Save results (image with detections)
             if save_img:
@@ -302,7 +287,6 @@ def get_img(image):
         dict["answer"].append("⑤")
         dict["answer"].append("no exist url")
 
-    #shutil.rmtree('./result/') # 결과 확인 필요 없을 때 주석 풀고 써주기 (result/ 폴더 삭제해주는 기능)
     print(dict)
     title=dict["question"]
     choices=dict["answer"]
