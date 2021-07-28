@@ -11,19 +11,22 @@
 1️⃣ 학습 문제의 이미지를 업로드 방식으로 등록한다.
 
 <p>
- <img width="700" alt="quizrix_imageupload" src="https://user-images.githubusercontent.com/52441923/126748956-5bf7503e-575a-4008-83e1-9632de129c2c.png">
+ <img width="700" alt="quizmaker_imageupload" src="https://user-images.githubusercontent.com/52441923/127331969-c3697793-e664-43c4-8a53-1d96ebe565f7.PNG">
  </p>
 
 2️⃣ 학습지 이미지 데이터에서 딥러닝을 이용하여 문항정보를 추출한다.
 
 <p>
- <img width="700" alt="quizrix_imageupload" src="https://user-images.githubusercontent.com/52441923/126749134-2e804fb4-e62b-4e68-a1aa-4cdc033409c3.png">
+ <img width="700" alt="quizmaker_imageupload" src="https://user-images.githubusercontent.com/52441923/127332101-0407783f-a212-4f6f-a795-204dc318d1e4.PNG">
 </p>
 
+▶⏩ 결과
+
+<p>
+ <img width="700" alt="quizmaker_gif" src="https://user-images.githubusercontent.com/52441923/127335666-f18d0780-faa9-482d-8aa1-4870e295e95c.gif">
+</p>
+     
 <br>
-
-     최종본 gif 추가
-
 ## **📌System Architecture**
 
 <p align="center">  
@@ -60,7 +63,6 @@
 | Prometheus       | 9090       | cAdvisor, node exporter의 시계열 매트릭 데이터를 수집하여 시스템 모니터링 및 경고합니다.                                                      |
 | Node Exporter    | 9100       | 서버의 cpu, 메모리, 디스크, 네트워크 사용량등 호스트 관련 매트릭 데이터를 수집하여 api로 노출시킵니다.                                        |
 
-
 <br>
 
 ## **📑 Swagger**
@@ -70,7 +72,6 @@
 <p align="center">
 <img alt="swagger" src="https://user-images.githubusercontent.com/55429156/127174047-172723ce-e143-4494-bdbb-c94732ef473d.PNG">
 </p>
-
 
 <br>
 
@@ -151,7 +152,7 @@
 ┃ ┣ 📜Dockerfile              // react container included in docker-compose.yml
 ┃ ┗ 📜README.md
 ┣ 📂grafana
-┃ ┣ 📂provisioning            
+┃ ┣ 📂provisioning
 ┃ ┃ ┣ 📂dashboards
 ┃ ┃ ┃ ┣ 📜dashboard.yml       // dashboard provider config file
 ┃ ┃ ┃ ┣ 📜Docker Prometheus Monitoring.json  // monitoring general information
@@ -217,7 +218,6 @@
   mongo = MongoClient('mongo_db', 27017)
   ```
 
-
 - requirements.txt  
   Dockerfile에서 따로 설치하는 라이브러리를 주석처리합니다.
 
@@ -246,7 +246,6 @@
 ```bash
 docker-compose up —-build
 ```
-
 
 <br>
 
