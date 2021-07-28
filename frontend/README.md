@@ -1,35 +1,35 @@
 ## **📋 File Tree**
-
+📦
 ```
 📦frontend
  ┣ 📂node_modules
  ┣ 📂public
  ┣ 📂src
  ┃ ┣ 📂components
- ┃ ┃ ┣ 📂Modals
+ ┃ ┃ ┣ 📂Modals                 // image select modal
  ┃ ┃ ┃ ┣ 📜Modal.css
  ┃ ┃ ┃ ┗ 📜Modal.js
- ┃ ┃ ┣ 📜BlankTop.js
- ┃ ┃ ┣ 📜Button.js
+ ┃ ┃ ┣ 📜BlankTop.js            // Margin between components
+ ┃ ┃ ┣ 📜Button.js              // Button component
  ┃ ┃ ┣ 📜Header.css
- ┃ ┃ ┣ 📜Header.js
- ┃ ┃ ┣ 📜logo.PNG
- ┃ ┃ ┣ 📜Search.js
- ┃ ┃ ┣ 📜Table.js
- ┃ ┃ ┗ 📜TableCell.js
+ ┃ ┃ ┣ 📜Header.js              // Page Header
+ ┃ ┃ ┣ 📜logo.PNG               // Project Logo
+ ┃ ┃ ┣ 📜Search.js              // Table Search Function
+ ┃ ┃ ┣ 📜Table.js               // Main Page Table
+ ┃ ┃ ┗ 📜TableCell.js           // Tabel Cell hover
  ┃ ┣ 📂pages
- ┃ ┃ ┣ 📜imgIcon.png
- ┃ ┃ ┣ 📜Loader.js
- ┃ ┃ ┣ 📜Login.js
- ┃ ┃ ┣ 📜loginLogo.PNG
- ┃ ┃ ┣ 📜MainPage.js
- ┃ ┃ ┣ 📜noLogin.PNG
- ┃ ┃ ┗ 📜Signup.js
- ┃ ┣ 📜App.js
+ ┃ ┃ ┣ 📜imgIcon.png            // Modal Icon
+ ┃ ┃ ┣ 📜Loader.js              // Loading Page
+ ┃ ┃ ┣ 📜Login.js               // Login Page
+ ┃ ┃ ┣ 📜loginLogo.PNG          // Project Logo
+ ┃ ┃ ┣ 📜MainPage.js            // MainPage
+ ┃ ┃ ┣ 📜noLogin.PNG            // noLogin Page
+ ┃ ┃ ┗ 📜Signup.js              // Signup Page
+ ┃ ┣ 📜App.js                   // pages components manage
  ┃ ┣ 📜config.js
  ┃ ┣ 📜index.css
  ┃ ┗ 📜index.js
- ┣ 📜Dockerfile
+ ┣ 📜Dockerfile                 // react container included in 
  ┗ 📜README.md
 ```
 
