@@ -12,6 +12,7 @@ import logo from "./mylogo.PNG";
 const Fix = styled.div`
   background-color: #f5f6f7;
   text-align: center;
+  height: 93vh;
 `;
 
 const Wrapper = styled.div`
@@ -22,10 +23,12 @@ const Wrapper = styled.div`
   margin-left: auto;
   margin-right: auto;
   margin-top: 55px;
+  padding-bottom: 0px;
 `;
 
 const GrayCard = styled.div`
   width: 610px;
+  margin-bottom: 30px;
   margin-left: auto;
   margin-right: auto;
   font-family: "NanumSquare";
@@ -129,7 +132,12 @@ const Login = () => {
 
             <Link
               to="/signup"
-              style={{ fontSize: "20px", color: "#000000", marginTop: "40px" }}
+              style={{
+                fontSize: "20px",
+                color: "#000000",
+                marginTop: "40px",
+                marginBottom: "0px",
+              }}
             >
               회원가입
             </Link>
