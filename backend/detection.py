@@ -105,8 +105,10 @@ def get_img(image):
                         save_one_box(xyxy, imc, file=crop_path, BGR=True)
                        
                     if names[c] == "content" or names[c] == "question" : # content로 판별시 이미지 여부 판단 모델 들어가지 않고 이미지 자체를 return 데이터에 담음
-                        
-                        isContent=1
+                        if names[c] == "content": 
+                            isContent=1
+                        else :
+                            isQuestion=1
                         imagefilename ="result/"+ image + "_" + names[c] + "_"+ str(i) + "_" + str(datetime.datetime.now()).replace("\\","/").replace(" ","").replace(":","")+".jpeg"
                         imagefilename.replace(" ","")
                         imagetoupload = open( crop_path , "rb")
@@ -225,7 +227,7 @@ def get_img(image):
                                                 print("n : ", n)
                                         
                                         #뭉텅이로 탐지 안된 경우
-                                        if (mingap_y < 10)  : # x축방향으로 나열된 경우
+                                        if (mingap_y < 10 and mingap_x > 10)  : # x축방향으로 나열된 경우
                                             empty = 5 - n
                                             for i in range(empty) :
                                                 if n<5 and (sorted_choice[0][0] > mingap_x) : 
@@ -234,11 +236,11 @@ def get_img(image):
                                                     print("case 2_1")
                                             empty = 5 - n
                                             for i in range(4, n - empty  ,-1 ) :    
-                                                if  n<5 and (sorted_choice[n-1][0] < sorted_choice[0][0]+(mingap_x)*4) : 
+                                                if  n<5 and (sorted_choice[len(det)-1][0] < sorted_choice[0][0]+(mingap_x)*4) : 
                                                     choice_number[i]=0
                                                     n=n+1
                                                     print("case 2_2")
-                                        if (mingap_x < 10)  :   # y축방향으로 나열된 경우
+                                        if (mingap_x < 10 and mingap_y > 10)  :   # y축방향으로 나열된 경우
                                             empty = 5 - n
                                             for i in range(empty) :
                                                 if n<5 and (sorted_choice[0][1] > mingap_y) : 
@@ -247,7 +249,7 @@ def get_img(image):
                                                     print("case 3_1")
                                             empty = 5 - n
                                             for i in range(4, n - empty  ,-1 ) :    
-                                                if  n<5 and (sorted_choice[n-1][1] < sorted_choice[0][1]+(mingap_y)*4) : 
+                                                if  n<5 and (sorted_choice[len(det)-1][1] < sorted_choice[0][1]+(mingap_y)*4) : 
                                                     choice_number[i]=0
                                                     n=n+1
                                                     print("case 3_2")
@@ -289,7 +291,7 @@ def get_img(image):
                                 if save_img:
                                     if dataset.mode == 'image':
                                         cv2.imwrite(save_path, im02)
-                                        
+                                        cv2.imwrite('./result/crops/answer/choicecrop.jpg', im02)
                                         
                        
                     
@@ -297,8 +299,7 @@ def get_img(image):
             if save_img:
                 if dataset.mode == 'image':
                     cv2.imwrite(save_path, im0)
-                    cv2.imwrite('./result/crops/answer/choicecrop.jpg', im02)
-
+                   
     # content안에 answer있는 문제의 경우
     if isQuestion == 1 and isContent == 1 and isAnswer == 0 :  
         dict["answer"].append("①")
