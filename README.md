@@ -27,6 +27,7 @@
 </p>
      
 <br>
+
 ## **📌System Architecture**
 
 <p align="center">  
