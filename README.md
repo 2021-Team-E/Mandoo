@@ -11,20 +11,24 @@
 1️⃣ 학습 문제의 이미지를 업로드 방식으로 등록한다.
 
 <p>
- <img width="700" alt="quizrix_imageupload" src="https://user-images.githubusercontent.com/52441923/126748956-5bf7503e-575a-4008-83e1-9632de129c2c.png">
+ <img width="700" alt="quizmaker_imageupload" src="https://user-images.githubusercontent.com/52441923/127331969-c3697793-e664-43c4-8a53-1d96ebe565f7.PNG">
  </p>
 
 2️⃣ 학습지 이미지 데이터에서 딥러닝을 이용하여 문항정보를 추출한다.
 
 <p>
- <img width="700" alt="quizrix_imageupload" src="https://user-images.githubusercontent.com/52441923/126749134-2e804fb4-e62b-4e68-a1aa-4cdc033409c3.png">
+ <img width="700" alt="quizmaker_imageupload" src="https://user-images.githubusercontent.com/52441923/127332101-0407783f-a212-4f6f-a795-204dc318d1e4.PNG">
 </p>
 
+▶ 결과
+
+<p>
+ <img width="700" alt="quizmaker_gif" src="https://user-images.githubusercontent.com/52441923/127335666-f18d0780-faa9-482d-8aa1-4870e295e95c.gif">
+</p>
+     
 <br>
 
-     최종본 gif 추가
-
-## **📌System Architecture**
+## **📌 System Architecture**
 
 <p align="center">  
   <img src="https://user-images.githubusercontent.com/55429156/127281109-0e145109-4bec-4925-9aaf-812a1f58b424.jpg">
@@ -60,7 +64,6 @@
 | Prometheus       | 9090       | cAdvisor, node exporter의 시계열 매트릭 데이터를 수집하여 시스템 모니터링 및 경고합니다.                                                      |
 | Node Exporter    | 9100       | 서버의 cpu, 메모리, 디스크, 네트워크 사용량등 호스트 관련 매트릭 데이터를 수집하여 api로 노출시킵니다.                                        |
 
-
 <br>
 
 ## **📑 Swagger**
@@ -71,21 +74,19 @@
 <img alt="swagger" src="https://user-images.githubusercontent.com/55429156/127174047-172723ce-e143-4494-bdbb-c94732ef473d.PNG">
 </p>
 
-
 <br>
 
 ## **🦾 AI**
 
-### ✔flow
+### ✔ flow
 
 <p align="center">
-<img alt="flow" src="https://user-images.githubusercontent.com/80239146/126985473-cae4a4f7-6e58-4a26-b7d5-538a32a361d1.PNG">
+<img alt="flow" src="https://user-images.githubusercontent.com/52441923/127337947-e350e9cb-ff86-4322-9c1d-df96c9c1af70.PNG">
 </p>
 
 <br>
-<br>
 
-### ✔결과
+### ✔ 결과
 
 - Model 1
 
@@ -151,7 +152,7 @@
 ┃ ┣ 📜Dockerfile              // react container included in docker-compose.yml
 ┃ ┗ 📜README.md
 ┣ 📂grafana
-┃ ┣ 📂provisioning            
+┃ ┣ 📂provisioning
 ┃ ┃ ┣ 📂dashboards
 ┃ ┃ ┃ ┣ 📜dashboard.yml       // dashboard provider config file
 ┃ ┃ ┃ ┣ 📜Docker Prometheus Monitoring.json  // monitoring general information
@@ -217,7 +218,6 @@
   mongo = MongoClient('mongo_db', 27017)
   ```
 
-
 - requirements.txt  
   Dockerfile에서 따로 설치하는 라이브러리를 주석처리합니다.
 
@@ -247,7 +247,6 @@
 docker-compose up —-build
 ```
 
-
 <br>
 
 ## **🎡 Git Convention**
@@ -271,7 +270,7 @@ docker-compose up —-build
 - feature-user (사용자 관련 기능을 구현하는 feature branch)  
   <br>
 
-### **✔Commit message**
+### **✔ Commit message**
 
 커밋 메세지를 작성할 때는 다음과 같은 규칙으로 일관성 있게 작성합니다.
 
@@ -320,7 +319,7 @@ fix : Fix typo in cleanup.sh file
 - 각 줄은 72자를 넘기지 않습니다.
 - **본문은 꼭 영어로 작성할 필요는 없습니다.**
 
-### **✔git rebase**
+### **✔ git rebase**
 
 원격 저장소에 Pull Request하기 전 프로젝트의 히스토리를 다듬습니다.  
 `rebase` 를 시행하기 전 원격저장소에서 `develop` 브랜치를 `pull` 받아 원격 저장소에 그동안 반영된 커밋을 가져옵니다.
