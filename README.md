@@ -91,7 +91,7 @@
 📦Mandoo
 ┣ 📂alertmanager
 ┃ ┗ 📜config.yml
-┣ 📂backend 
+┣ 📂backend
 ┃ ┣ 📂models      // YOLO v5
 ┃ ┃ ┣ 📂hub
 ┃ ┣ 📂utils       // YOLO v5
@@ -99,7 +99,7 @@
 ┃ ┃ ┣ 📂flask_rest_api
 ┃ ┃ ┣ 📂google_app_engine
 ┃ ┃ ┣ 📂wandb_logging
-┃ ┣ 📜Dockerfile 
+┃ ┣ 📜Dockerfile
 ┃ ┣ 📜README.md
 ┃ ┣ 📜app.py                  // Flask server
 ┃ ┣ 📜choice5_bestweight.pt   // Pretrained Pytorch weights (answer to 5 choices)
@@ -113,25 +113,26 @@
 ┃ ┣ 📂public
 ┃ ┣ 📂src
 ┃ ┃ ┣ 📂components
-┃ ┃ ┃ ┣ 📂Modals
+┃ ┃ ┃ ┣ 📂Modals              // image select modal
 ┃ ┃ ┃ ┃ ┣ 📜Modal.css
 ┃ ┃ ┃ ┃ ┗ 📜Modal.js
-┃ ┃ ┃ ┣ 📜BlankTop.js
-┃ ┃ ┃ ┣ 📜Button.js
+┃ ┃ ┃ ┣ 📜BlankTop.js         // Margin between components
+┃ ┃ ┃ ┣ 📜Button.js           // Button component
 ┃ ┃ ┃ ┣ 📜Header.css
-┃ ┃ ┃ ┣ 📜Header.js
-┃ ┃ ┃ ┣ 📜logo.PNG
-┃ ┃ ┃ ┣ 📜Search.js
-┃ ┃ ┃ ┗ 📜Table.js
+┃ ┃ ┃ ┣ 📜Header.js           // Page Header
+┃ ┃ ┃ ┣ 📜logo.PNG            // Project Logo
+┃ ┃ ┃ ┣ 📜Search.js           // Table Search Function
+┃ ┃ ┃ ┣ 📜Table.js            // Main Page Table
+┃ ┃ ┃ ┗ 📜TableCell.js        // Tabel Cell hover
 ┃ ┃ ┣ 📂pages
-┃ ┃ ┃ ┣ 📜imgIcon.png
-┃ ┃ ┃ ┣ 📜Loader.js
-┃ ┃ ┃ ┣ 📜Login.js
-┃ ┃ ┃ ┣ 📜loginLogo.PNG
-┃ ┃ ┃ ┣ 📜MainPage.js
-┃ ┃ ┃ ┣ 📜noLogin.PNG
-┃ ┃ ┃ ┗ 📜Signup.js
-┃ ┃ ┃ ┣ 📜App.js
+┃ ┃ ┃ ┣ 📜imgIcon.png         // Modal Icon
+┃ ┃ ┃ ┣ 📜Loader.js           // Loading Page
+┃ ┃ ┃ ┣ 📜Login.js            // Login Page
+┃ ┃ ┃ ┣ 📜loginLogo.PNG       // Project Logo
+┃ ┃ ┃ ┣ 📜MainPage.js         // MainPage
+┃ ┃ ┃ ┣ 📜noLogin.PNG         // noLogin Page
+┃ ┃ ┃ ┗ 📜Signup.js           // Signup Page
+┃ ┃ ┃ ┣ 📜App.js              // pages components manage
 ┃ ┃ ┃ ┣ 📜config.js
 ┃ ┃ ┣ 📜index.css
 ┃ ┃ ┗ 📜index.js
@@ -243,7 +244,9 @@ docker-compose up —-build
 <br>
 
 ## **📑 Swagger**
+
 [QUIZRIX Swagger Hub link](https://app.swaggerhub.com/apis/mandoo/QUIZRIX/1.0.0)
+
 <p align="center">
 <img alt="swagger" src="https://user-images.githubusercontent.com/55429156/127174047-172723ce-e143-4494-bdbb-c94732ef473d.PNG">
 </p>
