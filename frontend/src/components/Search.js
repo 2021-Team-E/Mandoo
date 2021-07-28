@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 function Search({ onSubmit }) {
   const handleSubmit = (event) => {
@@ -8,8 +8,12 @@ function Search({ onSubmit }) {
 
   return (
     <form onSubmit={handleSubmit} align="left">
-      <input style={{ marginLeft: '5px' }} name="filter" />
-      <button style={{ color: '#369', margin: '5px', backgroundColor: 'white' }}>Search</button>
+      <input style={{ marginLeft: "5px" }} name="filter" />
+      <button
+        style={{ color: "black", margin: "5px", backgroundColor: "white" }}
+      >
+        Search
+      </button>
     </form>
   );
 }

@@ -1,15 +1,15 @@
-import styled from 'styled-components';
-import BlankTop from '../components/BlankTop';
-import Button from '../components/Button';
-import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
-import axios from 'axios';
-import { USER_SERVER } from '../config';
-import Header from '../components/Header';
+import styled from "styled-components";
+import BlankTop from "../components/BlankTop";
+import Button from "../components/Button";
+import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
+import axios from "axios";
+import { USER_SERVER } from "../config";
+import Header from "../components/Header";
 
 const Fix = styled.div`
   min-height: 100vh;
-  background-color: #f0f8ff;
+  background-color: #f5f6f7;
   text-align: center;
 `;
 
@@ -25,8 +25,8 @@ const Wrapper = styled.div`
 
 const LargeP = styled.div`
   font-size: 30px;
-  color: 'black';
-  font-family: 'NanumSquare';
+  color: "black";
+  font-family: "NanumSquare";
   margin-left: auto;
   margin-right: auto;
 `;
@@ -36,7 +36,7 @@ const GrayCard = styled.div`
   margin-bottom: 30px;
   margin-left: auto;
   margin-right: auto;
-  font-family: 'NanumSquare';
+  font-family: "NanumSquare";
   padding: 2vw 2vw 2vw 2vw;
   text-align: center;
 `;
@@ -45,17 +45,17 @@ const Input = styled.input`
   height: 40px;
   background-color: #ffffff;
   margin-top: 20px;
-  font-family: 'NanumSquare';
+  font-family: "NanumSquare";
   font-size: 20px;
 `;
 
 const SignUp = () => {
   const history = useHistory();
   const [user, setUser] = useState({
-    id: '',
-    name: '',
-    password1: '',
-    password2: '',
+    id: "",
+    name: "",
+    password1: "",
+    password2: "",
   });
   const onInputChange = async (e) => {
     const { name, value } = e.target;
@@ -65,10 +65,15 @@ const SignUp = () => {
     });
   };
   const pwdCheck = (evt) => {
-    if (user.id === '' || user.name === '' || user.password1 === '' || user.password2 === '') {
-      alert('모든 항목의 값을 채워주세요.');
+    if (
+      user.id === "" ||
+      user.name === "" ||
+      user.password1 === "" ||
+      user.password2 === ""
+    ) {
+      alert("모든 항목의 값을 채워주세요.");
     } else if (user.password1 !== user.password2) {
-      alert('비밀번호가 동일하지 않습니다.');
+      alert("비밀번호가 동일하지 않습니다.");
     } else formSubmit(evt);
   };
 
@@ -80,11 +85,14 @@ const SignUp = () => {
       password: user.password1,
     };
     try {
-      const response = await axios.post(`${USER_SERVER}/api/v1/user/signup`, data);
+      const response = await axios.post(
+        `${USER_SERVER}/api/v1/user/signup`,
+        data
+      );
       console.log(response);
       if (response.data.success) {
         history.push(`/`);
-        alert('회원가입 되었습니다.');
+        alert("회원가입 되었습니다.");
       }
     } catch (error) {
       if (error.response.status === 403) {
@@ -109,14 +117,14 @@ const SignUp = () => {
             <Input placeholder="  이름" name="name" onChange={onInputChange} />
             <Input placeholder="  아이디" name="id" onChange={onInputChange} />
             <Input
-              style={{ fontFamily: 'Roboto' }}
+              style={{ fontFamily: "Roboto" }}
               type="password"
               placeholder="  비밀번호"
               name="password1"
               onChange={onInputChange}
             />
             <Input
-              style={{ fontFamily: 'Roboto' }}
+              style={{ fontFamily: "Roboto" }}
               type="password"
               placeholder="  비밀번호 확인"
               name="password2"
@@ -125,17 +133,17 @@ const SignUp = () => {
           </form>
           <div
             style={{
-              clear: 'both',
-              textAlign: 'center',
-              marginTop: '30px',
-              marginLeft: 'auto',
-              marginRight: 'auto',
+              clear: "both",
+              textAlign: "center",
+              marginTop: "30px",
+              marginLeft: "auto",
+              marginRight: "auto",
             }}
           >
             <Button
               width="100"
               font="20"
-              background="#80B2E0"
+              background="#F7A29B"
               color="#ffffff"
               marginTop="30"
               marginRight="30"
@@ -147,7 +155,7 @@ const SignUp = () => {
             <Button
               width="100"
               font="20"
-              background="#80B2E0"
+              background="#F7A29B"
               color="#ffffff"
               marginTop="30"
               marginRight="30"

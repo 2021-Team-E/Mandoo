@@ -1,35 +1,34 @@
-import styled from 'styled-components';
-import BlankTop from '../components/BlankTop';
-import Button from '../components/Button';
-import React, { useState } from 'react';
-import { useEffect } from 'react';
-import { useHistory, Link } from 'react-router-dom';
-import axios from 'axios';
-import { USER_SERVER } from '../config';
-import Header from '../components/Header';
-import logo from './loginLogo.PNG';
+import styled from "styled-components";
+import BlankTop from "../components/BlankTop";
+import Button from "../components/Button";
+import React, { useState } from "react";
+import { useEffect } from "react";
+import { useHistory, Link } from "react-router-dom";
+import axios from "axios";
+import { USER_SERVER } from "../config";
+import Header from "../components/Header";
+import logo from "./mylogo.PNG";
 
 const Fix = styled.div`
-  background-color: #f0f8ff;
+  background-color: #f5f6f7;
   text-align: center;
 `;
 
 const Wrapper = styled.div`
   width: 50%;
-  height: 100%;
   padding: 30px;
   display: inline-block;
   flex-direction: column;
   margin-left: auto;
   margin-right: auto;
-  margin-top: 60px;
+  margin-top: 55px;
 `;
 
 const GrayCard = styled.div`
   width: 610px;
   margin-left: auto;
   margin-right: auto;
-  font-family: 'NanumSquare';
+  font-family: "NanumSquare";
   padding: 2vw 2vw 2vw 2vw;
   text-align: center;
 `;
@@ -40,19 +39,19 @@ const Input = styled.input`
   background-color: #ffffff;
   margin-top: 20px;
   margin-bottom: 20px;
-  font-family: 'NanumSquare';
+  font-family: "NanumSquare";
   font-size: 20px;
 `;
 
 const Login = () => {
   const history = useHistory();
   const [info, setInfo] = useState({
-    id: '',
-    password: '',
+    id: "",
+    password: "",
   });
 
   const clear = async () => {
-    setInfo({ id: '', password: '' });
+    setInfo({ id: "", password: "" });
   };
 
   const onInputChange = async (e) => {
@@ -66,11 +65,14 @@ const Login = () => {
   const formSubmit = async (evt) => {
     evt.preventDefault();
     try {
-      const response = await axios.post(`${USER_SERVER}/api/v1/user/login`, info);
+      const response = await axios.post(
+        `${USER_SERVER}/api/v1/user/login`,
+        info
+      );
       if (response.data.success) {
-        window.localStorage.setItem('isAuth', 'true');
+        window.localStorage.setItem("isAuth", "true");
         history.push(`/`);
-        alert('로그인 되었습니다.');
+        alert("로그인 되었습니다.");
       }
     } catch (error) {
       alert(error.response.data.message);
@@ -86,15 +88,20 @@ const Login = () => {
       <Wrapper>
         <BlankTop DesktopMargin="3" TabletMargin="3" MobileMargin="1" />
         <img
-          style={{ width: '460px', marginLeft: 'auto', marginRight: 'auto' }}
+          style={{ width: "460px", marginLeft: "auto", marginRight: "auto" }}
           src={logo}
           alt="로고"
         />
         <GrayCard>
           <form>
-            <Input placeholder="  아이디" name="id" value={info.id} onChange={onInputChange} />
             <Input
-              style={{ fontFamily: 'Roboto' }}
+              placeholder="  아이디"
+              name="id"
+              value={info.id}
+              onChange={onInputChange}
+            />
+            <Input
+              style={{ fontFamily: "Roboto" }}
               type="password"
               placeholder="  비밀번호"
               name="password"
@@ -106,7 +113,7 @@ const Login = () => {
               width="460"
               height="55"
               font="20"
-              background="#80B2E0"
+              background="#F7A29B"
               color="#ffffff"
               marginLeft="auto"
               marginRight="auto"
@@ -119,8 +126,11 @@ const Login = () => {
             <br />
             <br />
             <br />
-            <br />
-            <Link to="/signup" style={{ fontSize: '20px', color: '#000000', marginTop: '40px' }}>
+
+            <Link
+              to="/signup"
+              style={{ fontSize: "20px", color: "#000000", marginTop: "40px" }}
+            >
               회원가입
             </Link>
           </form>
