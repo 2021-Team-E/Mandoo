@@ -22,7 +22,10 @@ import datetime, os
 # from prometheus_flask_exporter import PrometheusMetrics
 
 app = Flask(__name__)
-api = Api(app)  # Flask 객체에 Api 객체 등록
+api = Api(app, version='1.0', title='QUIZRIX API',
+          description='퀴즈릭스 REST API 문서')
+ns = api.namespace('api/v1/user', description='user 관련 API 목록')
+ns2 = api.namespace('api/v1/quiz', description='quiz 관련 API 목록')
 # #prometheus
 # metrics = PrometheusMetrics(app)
 # metrics.info("flask_app_info", "App Info, this can be anything you want", version="1.0.0")
@@ -49,14 +52,14 @@ showquiz_fields = api.model('ShowQuiz',{
   'data' : fields.List(fields.Nested(api.model('quizlist',quizList_fields)))
 })
 
-parser = reqparse.RequestParser()
-signup_parser = reqparse.RequestParser()
-login_parser = reqparse.RequestParser()
-logout_parser= reqparse.RequestParser()
-image_parser = reqparse.RequestParser()
-qshow_parser = reqparse.RequestParser()
-qmodify_parser = reqparse.RequestParser()
-qdelete_parser = reqparse.RequestParser()
+parser = ns.parser()
+signup_parser =ns.parser()
+login_parser = ns.parser()
+logout_parser= ns.parser()
+image_parser = ns2.parser()
+qshow_parser = ns2.parser()
+qmodify_parser = ns2.parser()
+qdelete_parser = ns2.parser()
 
 mongo = MongoClient('localhost', 27017) # 나중에 localhost를 mongo_db 로 바꾸기
 #mongo = MongoClient('localhost', 27017)
@@ -68,31 +71,31 @@ quiz = db.quiz   #quiz table
 s3 = boto3.client('s3', aws_access_key_id = AWS_ACCESS_KEY, aws_secret_access_key = AWS_SECRET_KEY)
 #s3 = boto3.resource('s3')
 
-@api.route('/hello')
-class HelloWorld(Resource):
+# @ns.route('/hello')
+# class HelloWorld(Resource):
 
-    @api.expect(parser)
-    @api.response(200, 'Success')
-    @api.response(400, 'Bad Request')
+#     @api.expect(parser)
+#     @api.response(200, 'Success')
+#     @api.response(400, 'Bad Request')
 
-    # @common_counter
+#     # @common_counter
 
-    def get(self):  
+#     def get(self):  
 
-        return "hello"
+#         return "hello"
 
 
-@api.route('/api/signup')
+@ns.route('/signup')
 class Signup(Resource):
 
     signup_parser.add_argument('id', required=True, location='json',type=str, help='아이디')
     signup_parser.add_argument('name', required= True, location='json',type=str, help='사용자명')
     signup_parser.add_argument('password', required=True, location='json',type=str, help="비밀번호")
 
-    @api.expect(signup_parser)
-    @api.response(201, '회원가입 성공')
-    @api.response(400, 'Bad Request')
-    @api.response(403, "아이디가 이미 있습니다")
+    @ns.expect(signup_parser)
+    @ns.response(201, '회원가입 성공')
+    @ns.response(400, 'Bad Request')
+    @ns.response(403, "아이디가 이미 있습니다")
 
     # @common_counter
 
@@ -134,16 +137,16 @@ class Signup(Resource):
        
 
 
-@api.route('/api/login')
+@ns.route('/login')
 class login(Resource):
 
     login_parser.add_argument('id', required=True, location='json',type=str, help='아이디')
     login_parser.add_argument('password', required=True, location='json',type=str, help="비밀번호")
 
-    @api.expect(login_parser)
-    @api.response(201, '로그인 성공')
-    @api.response(400, 'Bad Request')
-    @api.response(403, "해당 아이디가 없습니다\n 비밀번호가 틀렸습니다")
+    @ns.expect(login_parser)
+    @ns.response(201, '로그인 성공')
+    @ns.response(400, 'Bad Request')
+    @ns.response(403, "해당 아이디가 없습니다\n 비밀번호가 틀렸습니다")
     # @common_counter
 
     def post(self):  
@@ -194,12 +197,12 @@ class login(Resource):
             
 
 
-@api.route('/api/logout')
+@ns.route('/logout')
 class logout(Resource):
 
-    @api.expect(logout_parser)
-    @api.response(200, '로그아웃 성공')
-    @api.response(400, 'Bad Request')
+    @ns.expect(logout_parser)
+    @ns.response(200, '로그아웃 성공')
+    @ns.response(400, 'Bad Request')
 
     # @common_counter
 
@@ -217,15 +220,15 @@ class logout(Resource):
             return response 
 
 
-@api.route('/api/imageupload')
+@ns2.route('/imageupload')
 class Image(Resource):
     
     image_parser.add_argument('image', type=FileStorage, required=True, location='files', help="문제 이미지")
 
-    @api.expect(image_parser)
-    @api.response(201, '이미지 등록 성공')
-    @api.response(400, 'Bad Request')
-    @api.response(401, '로그인 필요')
+    @ns2.expect(image_parser)
+    @ns2.response(201, '이미지 등록 성공')
+    @ns2.response(400, 'Bad Request')
+    @ns2.response(401, '로그인 필요')
 
     # @common_counter
 
@@ -290,13 +293,13 @@ class Image(Resource):
         
 
 
-@api.route('/api/showquiz')
+@ns2.route('/show')
 class Showquiz(Resource):
 
-    @api.expect(qshow_parser)
-    @api.response(200, '퀴즈 리스트를 모두 가져옴', showquiz_fields)
-    @api.response(400, 'Bad Request')
-    @api.response(401, '로그인 필요')
+    @ns2.expect(qshow_parser)
+    @ns2.response(200, '퀴즈 리스트를 모두 가져옴', showquiz_fields)
+    @ns2.response(400, 'Bad Request')
+    @ns2.response(401, '로그인 필요')
 
     # @common_counter
 
@@ -335,7 +338,7 @@ class Showquiz(Resource):
 
 
 
-@api.route('/api/quizmodify')
+@ns2.route('/modify')
 class Quizmodify(Resource):
 
     qmodify_parser.add_argument('_id', required=True, location='json',type=str, help="quiz 아이디")
@@ -346,10 +349,10 @@ class Quizmodify(Resource):
     qmodify_parser.add_argument('image', required=True, location='json',type=str, help="image") # 추후에 file type으로 변경 가능성 있음
     qmodify_parser.add_argument('score', required=True, location='json',type=str, help="image") 
     
-    @api.expect(showquiz_fields)
-    @api.response(201, '퀴즈 수정 성공')
-    @api.response(400, 'Bad Request')
-    @api.response(401, '로그인 필요')
+    @ns2.expect(showquiz_fields)
+    @ns2.response(201, '퀴즈 수정 성공')
+    @ns2.response(400, 'Bad Request')
+    @ns2.response(401, '로그인 필요')
 
     # @common_counter
 
@@ -392,16 +395,16 @@ class Quizmodify(Resource):
         return response
         
 
-@api.route('/api/quizdelete')
+@ns2.route('/delete')
 class Quizdelete(Resource):
 
     qdelete_parser.add_argument('quiz_id', required=True, location='json',type=str, help="quiz 아이디")
 
-    @api.expect(qdelete_parser)
-    @api.response(201, '퀴즈 삭제 성공')
-    @api.response(400, 'Bad Request')
-    @api.response(401, '로그인 필요')
-    @api.response(403, '해당 퀴즈가 퀴즈 테이블에 없습니다\n퀴즈를 소유하고 있지 않습니다')
+    @ns2.expect(qdelete_parser)
+    @ns2.response(201, '퀴즈 삭제 성공')
+    @ns2.response(400, 'Bad Request')
+    @ns2.response(401, '로그인 필요')
+    @ns2.response(403, '해당 퀴즈가 퀴즈 테이블에 없습니다\n퀴즈를 소유하고 있지 않습니다')
 
     # @common_counter
 

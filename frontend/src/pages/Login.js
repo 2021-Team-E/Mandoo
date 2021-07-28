@@ -66,7 +66,7 @@ const Login = () => {
   const formSubmit = async (evt) => {
     evt.preventDefault();
     try {
-      const response = await axios.post(`${USER_SERVER}/api/login`, info);
+      const response = await axios.post(`${USER_SERVER}/api/v1/user/login`, info);
       if (response.data.success) {
         window.localStorage.setItem('isAuth', 'true');
         history.push(`/`);
