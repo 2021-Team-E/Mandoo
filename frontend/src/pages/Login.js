@@ -16,13 +16,12 @@ const Fix = styled.div`
 
 const Wrapper = styled.div`
   width: 50%;
-  height: 100%;
   padding: 30px;
   display: inline-block;
   flex-direction: column;
   margin-left: auto;
   margin-right: auto;
-  margin-top: 60px;
+  margin-top: 55px;
 `;
 
 const GrayCard = styled.div`
@@ -127,7 +126,7 @@ const Login = () => {
             <br />
             <br />
             <br />
-            <br />
+
             <Link
               to="/signup"
               style={{ fontSize: "20px", color: "#000000", marginTop: "40px" }}
