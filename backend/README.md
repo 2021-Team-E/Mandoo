@@ -1,22 +1,22 @@
 ## **📋 File Tree**
 ```
 📦backend 
-┃ ┣ 📂models      // YOLO v5
-┃ ┃ ┣ 📂hub
-┃ ┣ 📂utils       // YOLO v5
-┃ ┃ ┣ 📂aws
-┃ ┃ ┣ 📂flask_rest_api
-┃ ┃ ┣ 📂google_app_engine
-┃ ┃ ┣ 📂wandb_logging
-┃ ┣ 📜Dockerfile 
-┃ ┣ 📜README.md
-┃ ┣ 📜app.py                  // Flask server
-┃ ┣ 📜choice5_bestweight.pt   // Pretrained Pytorch weights (answer to 5 choices)
-┃ ┣ 📜detection.py            // Detect input image
-┃ ┣ 📜development.py          // Jwt key, algorithm for development
-┃ ┣ 📜kakaoOcr.py             // extract text
-┃ ┣ 📜modelv2.0.pt            // Pretrained Pytorch weights (image to question/content/answer)
-┃ ┗ 📜requirements.txt
+┣ 📂models      // YOLO v5
+┃ ┣ 📂hub
+┣ 📂utils       // YOLO v5
+┃ ┣ 📂aws
+┃ ┣ 📂flask_rest_api
+┃ ┣ 📂google_app_engine
+┃ ┣ 📂wandb_logging
+┣ 📜Dockerfile 
+┣ 📜README.md
+┣ 📜app.py                  // Flask server
+┣ 📜choice5_bestweight.pt   // Pretrained Pytorch weights (answer to 5 choices)
+┣ 📜detection.py            // Detect input image
+┣ 📜development.py          // Jwt key, algorithm for development
+┣ 📜kakaoOcr.py             // extract text
+┣ 📜modelv2.0.pt            // Pretrained Pytorch weights (image to question/content/answer)
+┗ 📜requirements.txt
 ```
 
 
