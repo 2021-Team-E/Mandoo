@@ -2,7 +2,6 @@ import os
 import boto3
 from s3 import AWS_SECRET_KEY, AWS_ACCESS_KEY, BUCKET_NAME, APPKEY
 import datetime
-import shutil
 import re
 from pathlib import Path
 import cv2
@@ -288,7 +287,6 @@ def get_img(image):
         dict["answer"].append("⑤")
         dict["answer"].append("no exist url")
 
-    #shutil.rmtree('./result/') # 결과 확인 필요 없을 때 주석 풀고 써주기 (result/ 폴더 삭제해주는 기능)
     print(dict)
     title=dict["question"]
     choices=dict["answer"]

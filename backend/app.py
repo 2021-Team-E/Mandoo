@@ -15,6 +15,7 @@ from werkzeug.utils import secure_filename
 import boto3
 from s3 import AWS_SECRET_KEY, AWS_ACCESS_KEY, BUCKET_NAME
 import datetime, os
+import shutil
 
 #prometheus
 # import time
@@ -287,6 +288,8 @@ class Image(Resource):
             "success": True,
             "message" : "이미지 등록 성공",
         }
+        shutil.rmtree('./result/') # 결과 확인 필요 없을 때 주석 풀고 써주기 (result/ 폴더 삭제해주는 기능)
+    
         response = jsonify(data)
         response.status_code = 201 
         return response
