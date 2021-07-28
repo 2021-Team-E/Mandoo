@@ -479,7 +479,7 @@ const MainPage = (props) => {
   return (
     <div
       style={{
-        backgroundColor: "#f0f8ff",
+        backgroundColor: "#FFF5F3",
         width: "100vw",
         minHeight: "88vh",
         marginTop: "80px",
@@ -491,7 +491,7 @@ const MainPage = (props) => {
       </div>
       {window.localStorage.getItem("isAuth") === "true" ? (
         loading ? (
-          <Loader type="spin" color="#ffffff" message={"문제 등록 중입니다."} />
+          <Loader type="spin" color="#F7A29B" message={"문제 등록 중입니다."} />
         ) : (
           <div>
             <div className="content">

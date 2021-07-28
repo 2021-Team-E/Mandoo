@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import logo from './logo.PNG';
-import { Link } from 'react-router-dom';
-import './Header.css';
-import axios from 'axios';
-import { USER_SERVER } from '../config';
-import { useHistory } from 'react-router';
+import React, { useState, useEffect } from "react";
+import logo from "./whiteLogo.PNG";
+import { Link } from "react-router-dom";
+import "./Header.css";
+import axios from "axios";
+import { USER_SERVER } from "../config";
+import { useHistory } from "react-router";
 
 const Header = () => {
-  const [isAuth, setIsAuth] = useState(window.localStorage.getItem('isAuth'));
+  const [isAuth, setIsAuth] = useState(window.localStorage.getItem("isAuth"));
   const history = useHistory();
   useEffect(() => {}, [isAuth]);
 
@@ -15,10 +15,10 @@ const Header = () => {
   const logout = async () => {
     const response = await axios.get(`${USER_SERVER}/api/v1/user/logout`);
     console.log(response);
-    window.localStorage.setItem('isAuth', 'false');
+    window.localStorage.setItem("isAuth", "false");
     setIsAuth(false);
-    history.push('/');
-    alert('로그아웃 되었습니다.');
+    history.push("/");
+    alert("로그아웃 되었습니다.");
   };
 
   // navigation의 메뉴 누르면 각자 페이지로 이동.
@@ -32,19 +32,19 @@ const Header = () => {
       </div>
       <div className="nav-items">
         <Link to="/" className="nav-item">
-          Main{' '}
+          Main{" "}
         </Link>
-        {window.localStorage.getItem('isAuth') === 'true' ? (
+        {window.localStorage.getItem("isAuth") === "true" ? (
           <Link to="/" className="nav-item" onClick={logout}>
             Logout
           </Link>
         ) : (
           <>
             <Link to="/signup" className="nav-item">
-              Signup{' '}
+              Signup{" "}
             </Link>
             <Link to="/login" className="nav-item">
-              Login{' '}
+              Login{" "}
             </Link>
           </>
         )}
