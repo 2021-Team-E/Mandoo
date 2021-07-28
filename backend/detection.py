@@ -203,43 +203,54 @@ def get_img(image):
                                                 gap_y=abs(sorted_choice[i][1] - sorted_choice[i+1][1])
                                                 if gap_y < mingap_y:
                                                     mingap_y = gap_y
+                                    print('mingap_x : ',mingap_x)
+                                    print('mingap_y : ',mingap_y)
+                                    print("sorted_choice :\n", sorted_choice)
+                                    print('choice_number : ',choice_number)
 
                                     # choice 탐지 안된 것들 0으로 표기
                                     if n < 5 : 
-                                        
-                                        for i in range (n-1):
+
+                                        #중간이 탐지 안된 경우
+                                        for i in range (n-1): 
                         
                                             if ((abs(sorted_choice[i][1] - sorted_choice[i+1][1]) > mingap_y*2))  :
                                                 choice_number[i+1]=0
                                                 n=n+1
+                                                print("case 1_1")
                                             elif (abs(sorted_choice[i][0] - sorted_choice[i+1][0]) >= mingap_x*2) :
                                                 choice_number[i+1]=0
                                                 n=n+1
-
-                                        if ((abs(sorted_choice[0][1] - sorted_choice[1][1]) < 10))  : 
+                                                print("case 1_2")
+                                                print("n : ", n)
+                                        
+                                        #뭉텅이로 탐지 안된 경우
+                                        if (mingap_y < 10)  : # x축방향으로 나열된 경우
                                             empty = 5 - n
                                             for i in range(empty) :
                                                 if n<5 and (sorted_choice[0][0] > mingap_x) : 
                                                     choice_number[i]=0
                                                     n=n+1
+                                                    print("case 2_1")
                                             empty = 5 - n
                                             for i in range(4, n - empty  ,-1 ) :    
                                                 if  n<5 and (sorted_choice[n-1][0] < sorted_choice[0][0]+(mingap_x)*4) : 
                                                     choice_number[i]=0
                                                     n=n+1
-
-                                        if ((abs(sorted_choice[0][0] - sorted_choice[1][0]) < 10))  :
+                                                    print("case 2_2")
+                                        if (mingap_x < 10)  :   # y축방향으로 나열된 경우
                                             empty = 5 - n
                                             for i in range(empty) :
                                                 if n<5 and (sorted_choice[0][1] > mingap_y) : 
                                                     choice_number[i]=0
                                                     n=n+1
+                                                    print("case 3_1")
                                             empty = 5 - n
                                             for i in range(4, n - empty  ,-1 ) :    
                                                 if  n<5 and (sorted_choice[n-1][1] < sorted_choice[0][1]+(mingap_y)*4) : 
                                                     choice_number[i]=0
                                                     n=n+1
-                                        
+                                                    print("case 3_2")
 
                                     # Write results
                                     for *xyxy, conf, cls in (det):
