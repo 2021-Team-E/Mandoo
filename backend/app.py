@@ -23,8 +23,8 @@ import shutil
 # from prometheus_flask_exporter import PrometheusMetrics
 
 app = Flask(__name__)
-api = Api(app, version='1.0', title='QUIZRIX API',
-          description='퀴즈릭스 REST API 문서')
+api = Api(app, version='1.0', title='QUIZMAKER API',
+          description='quizmaker REST API 문서')
 ns = api.namespace('api/v1/user', description='user 관련 API 목록')
 ns2 = api.namespace('api/v1/quiz', description='quiz 관련 API 목록')
 # #prometheus
