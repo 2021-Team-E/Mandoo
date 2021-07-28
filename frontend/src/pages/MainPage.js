@@ -373,7 +373,7 @@ const MainPage = (props) => {
                 display: "inline-block",
                 width: "40px",
                 cursor: "pointer",
-                color: "blue",
+                color: "#C95555",
                 textDecoration: "underline",
               }}
               onClick={() => {
@@ -479,7 +479,7 @@ const MainPage = (props) => {
   return (
     <div
       style={{
-        backgroundColor: "#f0f8ff",
+        backgroundColor: "#FFFFFF",
         width: "100vw",
         minHeight: "88vh",
         marginTop: "80px",
@@ -546,7 +546,7 @@ const MainPage = (props) => {
                 width: "85vw",
                 maxHeight: "70vh",
                 overflow: "auto",
-                border: "solid 2px black",
+                border: "solid 1px #000000",
                 marginLeft: "auto",
                 float: "left",
                 marginTop: "60px",

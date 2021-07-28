@@ -14,7 +14,13 @@ function Table({ columns, data }) {
 
   return (
     <>
-      <div style={{ top: "0", position: "sticky", backgroundColor: "#369" }}>
+      <div
+        style={{
+          top: "0",
+          position: "sticky",
+          backgroundColor: "#FD6248",
+        }}
+      >
         <Search onSubmit={setGlobalFilter} />{" "}
         {/*setGolbalFilter 함수 호촐되고 rows 배열에 필터링된 검색 결과 반영 */}
       </div>
@@ -26,16 +32,18 @@ function Table({ columns, data }) {
         style={{
           backgroundColor: "white",
           borderCollapse: "collapse",
+          border: "#000000",
           width: "100%",
         }}
       >
         <thead
           style={{
-            borderBottom: "2px solid #036",
+            borderBottom: "2px solid #FD6248",
+            border: "#FD6248",
             color: "white",
             top: "31.5px",
             position: "sticky",
-            backgroundColor: "#369",
+            backgroundColor: "#FD6248",
           }}
         >
           {headerGroups.map((headerGroup) => (
@@ -66,7 +74,10 @@ function Table({ columns, data }) {
                   (
                     cell //각 칸에 data map
                   ) => (
-                    <td style={{ height: "40px" }} {...cell.getCellProps()}>
+                    <td
+                      style={{ height: "40px", backgroundColor: "#FFFFFF" }}
+                      {...cell.getCellProps()}
+                    >
                       {cell.render("Cell")}
                     </td>
                   )
