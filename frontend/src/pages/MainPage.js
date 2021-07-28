@@ -6,7 +6,7 @@ import Loader from "./Loader";
 import axios from "axios";
 import { USER_SERVER } from "../config";
 import Modal from "../components/Modals/Modal.js";
-import addImg from "./imgIcon.png";
+import addImg from "../assets/upload.png";
 import noLoginImg from "./noLogin.PNG";
 import { useHistory } from "react-router-dom";
 import { EditText } from "react-edit-text";
