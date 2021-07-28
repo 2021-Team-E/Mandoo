@@ -90,7 +90,7 @@
 ```
 📦Mandoo
 ┣ 📂alertmanager
-┃ ┗ 📜config.yml
+┃ ┗ 📜config.yml              // alert manager config file
 ┣ 📂backend
 ┃ ┣ 📂models      // YOLO v5
 ┃ ┃ ┣ 📂hub
@@ -99,7 +99,7 @@
 ┃ ┃ ┣ 📂flask_rest_api
 ┃ ┃ ┣ 📂google_app_engine
 ┃ ┃ ┣ 📂wandb_logging
-┃ ┣ 📜Dockerfile
+┃ ┣ 📜Dockerfile              // flask_app container included in docker-compose.yml
 ┃ ┣ 📜README.md
 ┃ ┣ 📜app.py                  // Flask server
 ┃ ┣ 📜choice5_bestweight.pt   // Pretrained Pytorch weights (answer to 5 choices)
@@ -136,24 +136,24 @@
 ┃ ┃ ┃ ┣ 📜config.js
 ┃ ┃ ┣ 📜index.css
 ┃ ┃ ┗ 📜index.js
-┃ ┣ 📜Dockerfile
+┃ ┣ 📜Dockerfile              // react container included in docker-compose.yml
 ┃ ┗ 📜README.md
 ┣ 📂grafana
-┃ ┣ 📂provisioning
+┃ ┣ 📂provisioning            
 ┃ ┃ ┣ 📂dashboards
-┃ ┃ ┃ ┣ 📜dashboard.yml
-┃ ┃ ┃ ┣ 📜Docker Prometheus Monitoring.json
-┃ ┃ ┃ ┗ 📜FlaskApp_Monitoring.json
+┃ ┃ ┃ ┣ 📜dashboard.yml       // dashboard provider config file
+┃ ┃ ┃ ┣ 📜Docker Prometheus Monitoring.json  // monitoring general information
+┃ ┃ ┃ ┗ 📜FlaskApp_Monitoring.json           // monitoring Flask Application API
 ┃ ┃ ┗ 📂datasources
-┃ ┃ ┃ ┗ 📜datasource.yml
+┃ ┃ ┃ ┗ 📜datasource.yml      // admin config file
 ┃ ┗ 📜config.monitoring
 ┣ 📂nginx
-┃ ┗ 📜nginx.conf
+┃ ┗ 📜nginx.conf              // nginx default config file
 ┣ 📂prometheus
-┃ ┣ 📜alert.rules
-┃ ┗ 📜prometheus.yml
+┃ ┣ 📜alert.rules             // alert.rule config file
+┃ ┗ 📜prometheus.yml          // prometheus config file
 ┣ 📜.gitignore
-┣ 📜docker-compose.yml
+┣ 📜docker-compose.yml        // multi container application(Dockerfile) build file
 ┣ 📜LICENSE
 ┣ 📜README.md
 ┗ 📜README_en.md
