@@ -2,9 +2,9 @@
 
 <br>
 
-# **✍ QUIZRIX**
+# **✍ f(Quiz)**
 
-> This project was carried out for building a prototype for "Quizrix" of Codnut.
+> This project was carried out for building a prototype for "Handshaker."
 
 - Quizrix is a platform with a user-friendly interface designed to upload and view workbook problems via classifying different components of the question from a problem image and saving them to a database.
 
