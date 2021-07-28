@@ -2,9 +2,9 @@
 
 <br>
 
-# **✍ QUIZRIX**
+# **✍ QUIZMAKER**
 
-> 본 프로젝트는 코드넛 'QUIZRIX' 사업의 일부 프로토타입 제작을 위해 진행되었습니다.
+> 본 프로젝트는 'Handshaker' 사업의 일부 프로토타입 제작을 위해 진행되었습니다.
 
 - 학습지 이미지 데이터에서 문항정보를 추출해 데이터베이스에 저장 후 해당 내용을 사용자의 브라우저에서 접속 가능하도록하는 플랫폼
 
@@ -92,46 +92,47 @@
 ┣ 📂alertmanager
 ┃ ┗ 📜config.yml
 ┣ 📂backend
-┃ ┣ 📂models
+┃ ┣ 📂models      // YOLO v5
 ┃ ┃ ┣ 📂hub
-┃ ┣ 📂utils
+┃ ┣ 📂utils       // YOLO v5
 ┃ ┃ ┣ 📂aws
 ┃ ┃ ┣ 📂flask_rest_api
 ┃ ┃ ┣ 📂google_app_engine
 ┃ ┃ ┣ 📂wandb_logging
 ┃ ┣ 📜Dockerfile
 ┃ ┣ 📜README.md
-┃ ┣ 📜app.py
-┃ ┣ 📜choice5_bestweight.pt
-┃ ┣ 📜detection.py
-┃ ┣ 📜development.py
-┃ ┣ 📜kakaoOcr.py
-┃ ┣ 📜modelv2.0.pt
+┃ ┣ 📜app.py                  // Flask server
+┃ ┣ 📜choice5_bestweight.pt   // Pretrained Pytorch weights (answer to 5 choices)
+┃ ┣ 📜detection.py            // Detect input image
+┃ ┣ 📜development.py          // Jwt key, algorithm for development
+┃ ┣ 📜kakaoOcr.py             // extract text
+┃ ┣ 📜modelv2.0.pt            // Pretrained Pytorch weights (image to question/content/answer)
 ┃ ┗ 📜requirements.txt
 ┣ 📂frontend
 ┃ ┣ 📂node_modules
 ┃ ┣ 📂public
 ┃ ┣ 📂src
 ┃ ┃ ┣ 📂components
-┃ ┃ ┃ ┣ 📂Modals
+┃ ┃ ┃ ┣ 📂Modals              // image select modal
 ┃ ┃ ┃ ┃ ┣ 📜Modal.css
 ┃ ┃ ┃ ┃ ┗ 📜Modal.js
-┃ ┃ ┃ ┣ 📜BlankTop.js
-┃ ┃ ┃ ┣ 📜Button.js
+┃ ┃ ┃ ┣ 📜BlankTop.js         // Margin between components
+┃ ┃ ┃ ┣ 📜Button.js           // Button component
 ┃ ┃ ┃ ┣ 📜Header.css
-┃ ┃ ┃ ┣ 📜Header.js
-┃ ┃ ┃ ┣ 📜logo.PNG
-┃ ┃ ┃ ┣ 📜Search.js
-┃ ┃ ┃ ┗ 📜Table.js
+┃ ┃ ┃ ┣ 📜Header.js           // Page Header
+┃ ┃ ┃ ┣ 📜logo.PNG            // Project Logo
+┃ ┃ ┃ ┣ 📜Search.js           // Table Search Function
+┃ ┃ ┃ ┣ 📜Table.js            // Main Page Table
+┃ ┃ ┃ ┗ 📜TableCell.js        // Tabel Cell hover
 ┃ ┃ ┣ 📂pages
-┃ ┃ ┃ ┣ 📜imgIcon.png
-┃ ┃ ┃ ┣ 📜Loader.js
-┃ ┃ ┃ ┣ 📜Login.js
-┃ ┃ ┃ ┣ 📜loginLogo.PNG
-┃ ┃ ┃ ┣ 📜MainPage.js
-┃ ┃ ┃ ┣ 📜noLogin.PNG
-┃ ┃ ┃ ┗ 📜Signup.js
-┃ ┃ ┃ ┣ 📜App.js
+┃ ┃ ┃ ┣ 📜imgIcon.png         // Modal Icon
+┃ ┃ ┃ ┣ 📜Loader.js           // Loading Page
+┃ ┃ ┃ ┣ 📜Login.js            // Login Page
+┃ ┃ ┃ ┣ 📜loginLogo.PNG       // Project Logo
+┃ ┃ ┃ ┣ 📜MainPage.js         // MainPage
+┃ ┃ ┃ ┣ 📜noLogin.PNG         // noLogin Page
+┃ ┃ ┃ ┗ 📜Signup.js           // Signup Page
+┃ ┃ ┃ ┣ 📜App.js              // pages components manage
 ┃ ┃ ┃ ┣ 📜config.js
 ┃ ┃ ┣ 📜index.css
 ┃ ┃ ┗ 📜index.js
@@ -243,7 +244,9 @@ docker-compose up —-build
 <br>
 
 ## **📑 Swagger**
+
 [QUIZRIX Swagger Hub link](https://app.swaggerhub.com/apis/mandoo/QUIZRIX/1.0.0)
+
 <p align="center">
 <img alt="swagger" src="https://user-images.githubusercontent.com/55429156/127174047-172723ce-e143-4494-bdbb-c94732ef473d.PNG">
 </p>
