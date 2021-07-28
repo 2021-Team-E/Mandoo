@@ -48,7 +48,7 @@ run
 (venv) python app.py
 ```
 
-## **API** (자세하게 설명)
+## **API** 
    
 <br>
 
