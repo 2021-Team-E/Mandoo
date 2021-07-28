@@ -28,7 +28,7 @@
      
 <br>
 
-## **📌System Architecture**
+## **📌 System Architecture**
 
 <p align="center">  
   <img src="https://user-images.githubusercontent.com/52441923/126756283-16c5dd0b-8f84-4aab-81f1-b7e4ea4cc171.jpg">
@@ -68,7 +68,7 @@
 
 ## **🦾 AI**
 
-### ✔flow
+### ✔ flow
 
 <p align="center">
 <img alt="flow" src="https://user-images.githubusercontent.com/52441923/127337947-e350e9cb-ff86-4322-9c1d-df96c9c1af70.PNG">
@@ -76,7 +76,7 @@
 
 <br>
 
-### ✔Results
+### ✔ Results
 
 - Model 1
 
@@ -273,7 +273,7 @@ docker-compose up —-build
 - feature-user (feature branch for user related features)  
   <br>
 
-### **✔Commit message**
+### **✔ Commit message**
 
 The following rules are applied when creating a commit message.
 
@@ -322,7 +322,7 @@ fix : Fix typo in cleanup.sh file
 - Each line should now exceed 72 characters.
 - **DOES NOT HAVE TO WRITTEN IN ENGLISH**
 
-### **✔git rebase**
+### **✔ git rebase**
 
 Cleans the project's history beofore requesting a pull from the remote server.
 Before running `rebase`, `pull` from the `develop` branch to apply the commits done in the remote server.

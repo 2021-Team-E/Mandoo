@@ -28,7 +28,7 @@
      
 <br>
 
-## **📌System Architecture**
+## **📌 System Architecture**
 
 <p align="center">  
   <img src="https://user-images.githubusercontent.com/55429156/127281109-0e145109-4bec-4925-9aaf-812a1f58b424.jpg">
@@ -78,7 +78,7 @@
 
 ## **🦾 AI**
 
-### ✔flow
+### ✔ flow
 
 <p align="center">
 <img alt="flow" src="https://user-images.githubusercontent.com/52441923/127337947-e350e9cb-ff86-4322-9c1d-df96c9c1af70.PNG">
@@ -86,7 +86,7 @@
 
 <br>
 
-### ✔결과
+### ✔ 결과
 
 - Model 1
 
@@ -270,7 +270,7 @@ docker-compose up —-build
 - feature-user (사용자 관련 기능을 구현하는 feature branch)  
   <br>
 
-### **✔Commit message**
+### **✔ Commit message**
 
 커밋 메세지를 작성할 때는 다음과 같은 규칙으로 일관성 있게 작성합니다.
 
@@ -319,7 +319,7 @@ fix : Fix typo in cleanup.sh file
 - 각 줄은 72자를 넘기지 않습니다.
 - **본문은 꼭 영어로 작성할 필요는 없습니다.**
 
-### **✔git rebase**
+### **✔ git rebase**
 
 원격 저장소에 Pull Request하기 전 프로젝트의 히스토리를 다듬습니다.  
 `rebase` 를 시행하기 전 원격저장소에서 `develop` 브랜치를 `pull` 받아 원격 저장소에 그동안 반영된 커밋을 가져옵니다.
