@@ -4,7 +4,7 @@
 
 # **✍ QUIZMAKER**
 
-> This project was carried out for building a prototype for "Handshaker."
+> This project was carried out for building a prototype for "Handshaker." <br>
 > 💡 Link: [QUIZMAKER](http://133.186.143.213/)
 
 - QUIZMAKER is a platform with a user-friendly interface designed to upload and view workbook problems via classifying different components of the question from a problem image and saving them to a database.
