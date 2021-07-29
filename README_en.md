@@ -2,11 +2,12 @@
 
 <br>
 
-# **✍ f(Quiz)**
+# **✍ QUIZMAKER**
 
 > This project was carried out for building a prototype for "Handshaker."
+> 💡 Link: [QUIZMAKER](http://133.186.143.213/)
 
-- f(Quiz) is a platform with a user-friendly interface designed to upload and view workbook problems via classifying different components of the question from a problem image and saving them to a database.
+- QUIZMAKER is a platform with a user-friendly interface designed to upload and view workbook problems via classifying different components of the question from a problem image and saving them to a database.
 
 1️⃣ The user uploads the image of the problem.
 
@@ -93,69 +94,70 @@
 ```
 📦Mandoo
 ┣ 📂alertmanager
-┃ ┗ 📜config.yml
+┃ ┗ 📜config.yml              // alert manager config file
 ┣ 📂backend
-┃ ┣ 📂models
+┃ ┣ 📂models                  // YOLO v5
 ┃ ┃ ┣ 📂hub
-┃ ┣ 📂utils
+┃ ┣ 📂utils                   // YOLO v5
 ┃ ┃ ┣ 📂aws
 ┃ ┃ ┣ 📂flask_rest_api
 ┃ ┃ ┣ 📂google_app_engine
 ┃ ┃ ┣ 📂wandb_logging
-┃ ┣ 📜Dockerfile
+┃ ┣ 📜Dockerfile              // flask_app container included in docker-compose.yml
 ┃ ┣ 📜README.md
-┃ ┣ 📜app.py
-┃ ┣ 📜choice5_bestweight.pt
-┃ ┣ 📜detection.py
-┃ ┣ 📜development.py
-┃ ┣ 📜kakaoOcr.py
-┃ ┣ 📜modelv2.0.pt
+┃ ┣ 📜app.py                  // Flask server
+┃ ┣ 📜choice5_bestweight.pt   // Pretrained Pytorch weights (answer to 5 choices)
+┃ ┣ 📜detection.py            // Detect input image
+┃ ┣ 📜development.py          // Jwt key, algorithm for development
+┃ ┣ 📜kakaoOcr.py             // extract text
+┃ ┣ 📜modelv2.0.pt            // Pretrained Pytorch weights (image to question/content/answer)
 ┃ ┗ 📜requirements.txt
 ┣ 📂frontend
 ┃ ┣ 📂node_modules
 ┃ ┣ 📂public
 ┃ ┣ 📂src
 ┃ ┃ ┣ 📂components
-┃ ┃ ┃ ┣ 📂Modals
+┃ ┃ ┃ ┣ 📂Modals              // image select modal
 ┃ ┃ ┃ ┃ ┣ 📜Modal.css
 ┃ ┃ ┃ ┃ ┗ 📜Modal.js
-┃ ┃ ┃ ┣ 📜BlankTop.js
-┃ ┃ ┃ ┣ 📜Button.js
+┃ ┃ ┃ ┣ 📜BlankTop.js         // Margin between components
+┃ ┃ ┃ ┣ 📜Button.js           // Button component
 ┃ ┃ ┃ ┣ 📜Header.css
-┃ ┃ ┃ ┣ 📜Header.js
-┃ ┃ ┃ ┣ 📜logo.PNG
-┃ ┃ ┃ ┣ 📜Search.js
-┃ ┃ ┃ ┗ 📜Table.js
+┃ ┃ ┃ ┣ 📜Header.js           // Page Header
+┃ ┃ ┃ ┣ 📜logo.PNG            // Project Logo
+┃ ┃ ┃ ┣ 📜Search.js           // Table Search Function
+┃ ┃ ┃ ┣ 📜Table.js            // Main Page Table
+┃ ┃ ┃ ┗ 📜TableCell.js        // Tabel Cell hover
 ┃ ┃ ┣ 📂pages
-┃ ┃ ┃ ┣ 📜imgIcon.png
-┃ ┃ ┃ ┣ 📜Loader.js
-┃ ┃ ┃ ┣ 📜Login.js
-┃ ┃ ┃ ┣ 📜loginLogo.PNG
-┃ ┃ ┃ ┣ 📜MainPage.js
-┃ ┃ ┃ ┣ 📜noLogin.PNG
-┃ ┃ ┃ ┗ 📜Signup.js
-┃ ┃ ┃ ┣ 📜App.js
+┃ ┃ ┃ ┣ 📜imgIcon.png         // Modal Icon
+┃ ┃ ┃ ┣ 📜Loader.js           // Loading Page
+┃ ┃ ┃ ┣ 📜Login.js            // Login Page
+┃ ┃ ┃ ┣ 📜loginLogo.PNG       // Project Logo
+┃ ┃ ┃ ┣ 📜MainPage.js         // MainPage
+┃ ┃ ┃ ┣ 📜noLogin.PNG         // noLogin Page
+┃ ┃ ┃ ┗ 📜Signup.js           // Signup Page
+┃ ┃ ┃ ┣ 📜App.js              // pages components manage
 ┃ ┃ ┃ ┣ 📜config.js
 ┃ ┃ ┣ 📜index.css
 ┃ ┃ ┗ 📜index.js
-┃ ┣ 📜Dockerfile
-┃ ┗ 📜README.md
+┃ ┣ 📜Dockerfile              // react container included in docker-compose.yml
+┃ ┗ 📜README.md 
 ┣ 📂grafana
 ┃ ┣ 📂provisioning
 ┃ ┃ ┣ 📂dashboards
-┃ ┃ ┃ ┣ 📜dashboard.yml
-┃ ┃ ┃ ┣ 📜Docker Prometheus Monitoring.json
-┃ ┃ ┃ ┗ 📜FlaskApp_Monitoring.json
+┃ ┃ ┃ ┣ 📜dashboard.yml       // dashboard provider config file
+┃ ┃ ┃ ┣ 📜Docker Prometheus Monitoring.json  // monitoring general information
+┃ ┃ ┃ ┗ 📜FlaskApp_Monitoring.json           // monitoring Flask Application API
 ┃ ┃ ┗ 📂datasources
-┃ ┃ ┃ ┗ 📜datasource.yml
+┃ ┃ ┃ ┗ 📜datasource.yml      // admin config file
 ┃ ┗ 📜config.monitoring
 ┣ 📂nginx
-┃ ┗ 📜nginx.conf
+┃ ┗ 📜nginx.conf              // nginx default config file
 ┣ 📂prometheus
-┃ ┣ 📜alert.rules
-┃ ┗ 📜prometheus.yml
+┃ ┣ 📜alert.rules             // alert.rule config file
+┃ ┗ 📜prometheus.yml          // prometheus config file
 ┣ 📜.gitignore
-┣ 📜docker-compose.yml
+┣ 📜docker-compose.yml        // multi container application(Dockerfile) build file
 ┣ 📜LICENSE
 ┣ 📜README.md
 ┗ 📜README_en.md
@@ -210,7 +212,7 @@
 - detection.py
 
   ```python
-  #서버 환경에서의 tesseract.exe 경로로 설정
+  #Directory for tesseract.exe in server environment
   pytesseract.pytesseract.tesseract_cmd="/usr/bin/tesseract"
   ```
 
