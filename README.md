@@ -38,7 +38,7 @@
 <br>
 
 ## **🛠 Tech Stack**
-
+[▶Tech Stack 선정 이유](https://www.notion.so/Tech-stack-c1044876924244cc9de3e8653c130b15)  
 <br>
 
 | 분류          | 기술                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
