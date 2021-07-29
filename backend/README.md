@@ -20,7 +20,7 @@
 ```
 
 
-## **API** 
+## **📑 API** 
    
 <br>
 
@@ -45,7 +45,7 @@
 
 <br>
 
-## **how to start**
+## **💡 How to start**
 
 ```bash
 cd backend
