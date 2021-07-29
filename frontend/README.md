@@ -35,7 +35,7 @@
 
 <br>
 
-## How to start
+## **💡 How to start**
 
 ### install packages
 
