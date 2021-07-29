@@ -38,7 +38,7 @@
 <br>
 
 ## **🛠 Tech Stack**
-[▶ Reasons for selecting Tech Stack](https://www.notion.so/Tech-stack-c1044876924244cc9de3e8653c130b15)  
+[▶ Reasons for chosing the following Tech Stack](https://www.notion.so/Tech-stack-c1044876924244cc9de3e8653c130b15)  
 <br>
 
 | Category         | Tools/Frameworks                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
