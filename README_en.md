@@ -32,7 +32,7 @@
 ## **📌 System Architecture**
 
 <p align="center">  
-  <img src="https://user-images.githubusercontent.com/52441923/126756283-16c5dd0b-8f84-4aab-81f1-b7e4ea4cc171.jpg">
+  <img src="https://user-images.githubusercontent.com/55429156/127281109-0e145109-4bec-4925-9aaf-812a1f58b424.jpg">
 </p>
 
 <br>
@@ -64,6 +64,18 @@
 | cAdvisor         | 8080       | Measures resource usage by the docker containers and returns it as a time series data.                |
 | Prometheus       | 9090       | Monitors and alerts based on the time series data collected from cAdvisor and NodeExporter            |
 | Node Exporter    | 9100       | Collects host-related data such as, CPU, memory, disk, and network, and reveals it to the API.        |
+
+
+<br>
+
+
+## **📑 Swagger**
+
+[QUIZMAKER Swagger Hub link](https://app.swaggerhub.com/apis/mandoo/QUIZMAKER/1.0.0)
+
+<p align="center">
+<img alt="swagger" src="https://user-images.githubusercontent.com/55429156/127174047-172723ce-e143-4494-bdbb-c94732ef473d.PNG">
+</p>
 
 <br>
 
@@ -247,12 +259,7 @@ docker-compose up —-build
 
 <br>
 
-## **📑 Swagger**
 
-<p align="center">
-<img alt="swagger" src="https://user-images.githubusercontent.com/80239146/127004473-8f2d92cf-6903-4540-9775-58ce8b196d93.PNG">
-</p>
-<br>
 
 ## **🎡 Git Convention**
 
