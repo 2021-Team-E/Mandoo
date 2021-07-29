@@ -349,7 +349,7 @@ Rebase creates a new commit with same content, not using the existing commit.
 
 ## **👪 Members**
 
-| Name                    | Developement Field                 | Skills in Charge                             | Personal Bio                                           |
+| Name                    | Developement Field                | Skills in Charge                             | Personal Bio                                           |
 | ----------------------- | ---------------------------------- | -------------------------------------------- | ------------------------------------------------------ |
 | 🦦Laura Yoonjae Choi    | Front-end, Back-end, Deep learning | Web development,API Design, Data Engineering | [Move to Personal Bio](https://github.com/yunyun3599)  |
 | 🐥Julia CheLim Lee      | Front-end, Devops                  | Web development, Docker                      | [Move to Personal Bio](https://github.com/leecr1215)   |
