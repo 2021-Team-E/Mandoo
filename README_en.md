@@ -14,13 +14,13 @@
 <p>
  <img width="700" alt="quizmaker_imageupload" src="https://user-images.githubusercontent.com/52441923/127331969-c3697793-e664-43c4-8a53-1d96ebe565f7.PNG">
  </p>
-
+<br>
 2️⃣ The components of the problem are classified through a deep-learning model.
 
 <p>
  <img width="700" alt="quizmaker_imageupload" src="https://user-images.githubusercontent.com/52441923/127332101-0407783f-a212-4f6f-a795-204dc318d1e4.PNG">
 </p>
-
+<br>
 ▶ Result
 
 <p>
@@ -38,7 +38,7 @@
 <br>
 
 ## **🛠 Tech Stack**
-
+[▶ Reasons for selecting Tech Stack](https://www.notion.so/Tech-stack-c1044876924244cc9de3e8653c130b15)  
 <br>
 
 | Category         | Tools/Frameworks                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
@@ -48,7 +48,7 @@
 | Back-end         | ![Flask](https://img.shields.io/badge/flask-1.1.2-green?logo=flask) ![Python](https://img.shields.io/badge/python-3.7.6-skyblue?logo=python) ![Gunicorn](https://img.shields.io/badge/gunicorn-gray?logo=gunicorn) ![Postman](https://img.shields.io/badge/postman-gray?logo=postman) ![Swagger](https://img.shields.io/badge/swagger-gray?logo=swagger)                                                                                                                                   |
 | DB               | ![MongoDB](https://img.shields.io/badge/mongodb-gray?logo=mongodb)                                                                                                                                                                                                                                                                                                                                                                                                                         |
 | Deep learning    | ![Pytorch](https://img.shields.io/badge/pytorch-gray?logo=pytorch) ![Colab](https://img.shields.io/badge/colab-gray?logo=GoogleColab) ![Yolov5](https://img.shields.io/badge/yolov5-gray?logo=yolov5)                                                                                                                                                                                                                                                                                      |
-| Etc              | ![Nginx](https://img.shields.io/badge/Nginx-gray?logo=nginx) ![github](https://img.shields.io/badge/github-gray?logo=github) ![VScode](https://img.shields.io/badge/VScode-gray?logo=visual-studio-code) ![AWS](https://img.shields.io/badge/AWS-EC2_instance-orange?logo=aws) ![Prometheus](https://img.shields.io/badge/Prometheus-gray?logo=Prometheus) ![Grafana](https://img.shields.io/badge/Grafana-gray?logo=Grafana) ![Redis](https://img.shields.io/badge/Redis-gray?logo=redis) |
+| Etc              | ![Nginx](https://img.shields.io/badge/Nginx-gray?logo=nginx) ![github](https://img.shields.io/badge/github-gray?logo=github) ![VScode](https://img.shields.io/badge/VScode-gray?logo=visual-studio-code) ![AWS](https://img.shields.io/badge/AWS-EC2_instance-orange?logo=aws) ![Prometheus](https://img.shields.io/badge/Prometheus-gray?logo=Prometheus) ![Grafana](https://img.shields.io/badge/Grafana-gray?logo=Grafana)  |
 
 <br>
 
@@ -221,12 +221,6 @@
   mongo = MongoClient('mongo_db', 27017)
   ```
 
-- detection.py
-
-  ```python
-  #Directory for tesseract.exe in server environment
-  pytesseract.pytesseract.tesseract_cmd="/usr/bin/tesseract"
-  ```
 
 - requirements.txt  
   Libraries installed separately by Dockerfile is commented
