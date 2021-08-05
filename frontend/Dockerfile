@@ -2,7 +2,7 @@
 FROM node:10
 
 # Set working directory
-WORKDIR /usr/src/app/Front
+WORKDIR /usr/src/app/frontend
 
 # add `/app/node_modules/.bin` to environment variables
 ENV PATH /app/node_modules/.bin:$PATH
