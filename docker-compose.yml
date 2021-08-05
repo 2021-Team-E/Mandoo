@@ -17,13 +17,13 @@ services:
 
   react:
     build:
-      context: ./Front
+      context: ./frontend
     container_name: react
     ports:
       - 3000:3000
     volumes:
       - "./:/usr/src/app/"
-      - "/usr/src/app/Front/node_modules"
+      - "/usr/src/app/frontend/node_modules"
     stdin_open: true # react-script 3.4.1 부터 필요
     tty: true
     networks:
@@ -56,20 +56,17 @@ services:
     tty: true # docker run -t
     build:
       context: .
-      dockerfile: ./Backend/Dockerfile
+      dockerfile: ./backend/Dockerfile
     ports:
       - "5000:5000"
     volumes:
-      - ./Backend:/app
+      - ./backend:/app
     links:
       - mongo_db:mongo_db
     depends_on:
       - mongo_db
-      - redis
     networks:
       - app-tier
-        aliases:
-          - flask-app
     restart: always
 
   prometheus:
