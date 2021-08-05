@@ -12,7 +12,7 @@ ENV FLASK_APP=app.py
 ENV FLASK_RUN_HOST=0.0.0.0
 ENV DEBUG_METRICS = 1
 
-COPY ./Backend/requirements.txt requirements.txt
+COPY ./backend/requirements.txt requirements.txt
 RUN pip3 install -r requirements.txt
 
 #relative with ImportError: libGL.so.1 
