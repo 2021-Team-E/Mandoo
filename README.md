@@ -69,7 +69,7 @@
 
 ## **📑 Swagger**
 
-[QUIZMAKER Swagger Hub link](https://app.swaggerhub.com/apis/mandoo/QUIZMAKER/1.0.0)
+[QUIZMAKER Swagger Hub link](https://app.swaggerhub.com/apis/hayoung1214/QUIZMAKER/1.0.0)
 
 <p align="center">
 <img alt="swagger" src="https://user-images.githubusercontent.com/55429156/127174047-172723ce-e143-4494-bdbb-c94732ef473d.PNG">
